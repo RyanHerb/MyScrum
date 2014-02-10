@@ -45,7 +45,7 @@
         #search-tools
           .upper
             .floatleft
-              %input#quicksearch{:type => "text", :name => "q", :placeholder => 'Quickfind pets & owners', :autocomplete => "off"}
+              %input#quicksearch{:type => "text", :name => "q", :placeholder => 'Quickfind pets & user', :autocomplete => "off"}
 
             .clear
           .lower
@@ -60,10 +60,10 @@
             %a{:href => '/admin/'} home
 
           %li.dropdown{'data-dropdown'.to_sym => 'dropdown'}
-            %a.dropdown-toggle{:href => '#'} owners &amp; pets
+            %a.dropdown-toggle{:href => '#'} user &amp; pets
             %ul.dropdown-menu
               %li
-                %a{:href => '/admin/owners'} owners
+                %a{:href => '/admin/user'} user
               %li
                 %a{:href => '/admin/pets'} pets
 

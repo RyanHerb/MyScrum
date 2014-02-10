@@ -12,6 +12,12 @@ local:
 
 development:
   <<: *mysql  
+  adapter: mysql2
+  database: myscrum
+  encoding: utf8
+  host: localhost
+  password: Scrummi3
+  username: scrum
 
 production:
   <<: *mysql

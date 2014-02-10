@@ -31,6 +31,6 @@ map '/admin' do
 end
 
 map '/owner' do
-  run MyScrum::OwnerApp
+  run MyScrum::UserApp
 end
 

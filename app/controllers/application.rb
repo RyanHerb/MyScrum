@@ -44,7 +44,7 @@ module MyScrum
       haml :signup
     end
     
-    post '/owners' do
+    post '/user' do
       @owner = Owner.new(params[:owner])
       begin
         throw Exception if params[:turing_answer] != session[:turing_answer]
