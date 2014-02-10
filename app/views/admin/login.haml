@@ -1,0 +1,31 @@
+!!! Strict
+%html{ html_attrs("en_us") }
+  %head
+    %title 
+      Vet's Klinic Login
+      = if_not_blank(@title, " | ")
+
+    %meta{:content => "text/html; charset=utf-8", "http-equiv" => "content-type"}/
+
+    - %w(jquery-1.7.2.min.js application.js).each do |j|
+      %script{:type => 'text/javascript', :language => 'javascript', :src => "/js/#{j}"}
+
+    %link{:rel => "stylesheet", :type => "text/css",  :href => "/css/site.css"}    
+    
+  %body{:class => @bclass, :id => @bid}
+    
+    -# show flash message if any (from sinatra-flash)
+    =styled_flash
+    #loginpanel{:class => @cclass}      
+      %img{:src => '/img/logo_klinic_280_staff_login.png'}
+      - if @error
+        %p.error=@error
+      %form{:action => "/admin/login", :method => :post}
+        .field
+          %label{:for => :login} Email address
+          %input#login{:name => :email, :type => 'email'}
+        .field
+          %label{:for => :password} Password
+          %input#password{:type => :password, :name => :password}
+        .field.submit
+          %input{:type => :submit, :name => '', :value => "log in"}

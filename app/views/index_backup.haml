@@ -1,0 +1,258 @@
+- @bclass = 'home'
+- @title = 'Welcome to Vet’s Klinic'
+
+:javascript
+
+  var banner_interval;
+  $(function(){
+    startRotation();
+    
+    $('.prev_next a').click(function(e) {
+      e.preventDefault();
+      var dir = $(this).attr('rel');
+      clearInterval(banner_interval);
+      rotateBanner('#slider', '.slide', { dir: dir });
+      startRotation();
+    });
+    
+    $('#indicator a').click(function() {
+      $('#indicator li').removeClass('current');
+      clearInterval(banner_interval);
+      rotateBanner('#slider', '.slide', { goto: $(this).attr('rel') });
+      startRotation();
+    });    
+    
+  });
+  
+  function startRotation() {
+    banner_interval = setInterval("rotateBanner('#slider', '.slide')", 4000);
+  }
+  
+  
+
+.article.mainpanel
+  .panel.wrap
+  
+    %img.joepet.floatright{:src => '/img/joe_jack.png', :alt => 'Joe the vet'}
+
+    %h1
+      A new world of pet care
+
+    %p.intro
+      <strong>State-of-the-art</strong> veterinary centres, an amazing <strong>interactive</strong> online media channel and <strong>great value</strong> online shop, created by veterinary expert Joe Inglis.
+  
+    .wrapsections
+      .header
+
+      .col.third.left
+        .panel.veterinaries
+          %h2 Vet centres
+          %img{:src => '/img/temp/surgery-3.jpg', :alt => 'Vet centres'}
+          %h3 Top quality personalised veterinary care at affordable prices.
+          %h4
+            %strong Opening in Swindon UK, 20th August 2012!
+          %a.badge{:href => '/klinics'}
+            learn more »
+  
+      .col.third.middle
+        .panel.veterinaries
+          %h2 Vet’s Klinic TV
+          %img{:src => '/img/temp/online-2.jpg', :alt => 'Vet’s Klinic TV'}
+          %h3 Watch, learn and engage with our experts through our free online media channel.
+          %h4
+            %strong Join us for LIVE interactive shows
+          %a.badge{:href => '/klinicstv'}
+            learn more »
+        
+      .col.third.right
+        .panel.veterinaries
+          %h2 VK online store
+          %img{:src => '/img/temp/health-2.jpg', :alt => 'VK online store'}
+          %h3 Everything you need to keep your pets healthy and happy at the best prices.
+          %h4 
+            %strong
+              FREE delivery on orders over £30!
+          %a.badge{:href => '/online_store'}
+            learn more »
+  
+      .clear      
+    
+    
+  / .panel.video
+  /   Live broadcast / video
+  / .video-share
+  /   %p.floatleft{:style => 'margin-top: 15px'}
+  /     Email / Favourite / Like / Tweet
+  /   %p.floatright{:style => 'margin: 15px'}
+  /     Live chat is off      
+
+      
+  / .panel.vetskstore
+  /   %h3 Latest offers from the store
+  /   %p.floatright{:style => 'margin-top: 10px'}
+  /     %a.badge
+  /       view all offers »
+  /   .clear
+
+
+.aside
+
+  .panel.latestnews
+    %h2 Latest News
+    - if Date.today < Date.parse('2012-08-19')
+      %p.title  Public Open Day
+      %p  
+        August 19th 2012. Be the first to see our exciting new veterinary revolution!  
+    %p.title 200 FREE vaccinations! 
+    %p
+      To celebrate the launch of Vet’s Klinic Swindon, we are offering 200 free vaccinations for cats and dogs. 
+      %a{:href => '/book_appointment'} Book online now 
+      to reserve your appointment!’
+
+  .panel
+    %h2 Follow us online
+    .socialmedia.group
+
+      %a{:href => 'http://twitter.com/#/vetsklinic', :target => 'blank'}
+        %img{:src => '/img/icons/social_twitter_32.png', :alt => 'Follow us on Twitter'}
+      %a{:href => 'https://www.facebook.com/Vets.Klinic1', :target => 'blank'}
+        %img{:src => '/img/icons/social_fb_32.png', :alt => 'Be our friend on Facebook'}
+      %a{:href => 'http://pinterest.com/vetsklinic/', :target => 'blank'}
+        %img{:src => '/img/icons/social_pinterest_32.png', :alt => 'Pin us on Pinterest'}
+    
+    %h3.tweets 
+      Latest tweets    
+           
+    %script{:charset => "utf-8", :src => "http://widgets.twimg.com/j/2/widget.js"}
+    :javascript
+      new TWTR.Widget({
+        version: 2,
+        type: 'profile',
+        rpp: 3,
+        interval: 30000,
+        width: 'auto',
+        height: 300,
+        theme: {
+          shell: {
+            background: '#ffffff',
+            color: '#3b233b'
+          },
+          tweets: {
+            background: '#f6f6f6',
+            color: '#92a41f',
+            links: '#7c6a55'
+          }
+        },
+        features: {
+          scrollbar: false,
+          loop: false,
+          live: false,
+          behavior: 'all'
+        }
+      }).render().setUser('@FranceOClinic').start();
+
+          
+  / .wrapsections  
+  /   .panel.vetskitchen
+  /     %h3
+  /       %img{:src => '/img/logos/vetsKitchen.png'} 
+  /       %br
+  /       Natural, hypoallergenic veterinary diets and supplements, available from supermarkets and online
+  /     
+  /     .product
+  /       %img{:src => '/img/temp/VKD01-Adult-Chicken-1.3kg.jpg'}
+  /       %p
+  /         VK Adult Chicken 1.3kg
+  /     .product
+  /       %img{:src => '/img/temp/VKD02-Adult-Salmon-1.3kg.jpg', :width => '90px'}
+  /       %p
+  /         VK Adult Salmon 1.3kg
+  /     .product.last
+  /       %img{:src => '/img/temp/VKS01-Active-Joints-boxBottle.jpg'}
+  /       %p
+  /         VK Active Joints Bottle
+  /     .clear
+  /     
+  /     %p.floatright{:style => 'margin-top: 10px'}
+  /       %a.badge
+  /         view all our product range »
+  /     .clear          
+  
+  
+  / .panel
+  /   %h2 Recently on Vet’s Klinic TV
+  / 
+  /   .media_thumb.video.group
+  /     .placeholder
+  /     %a{:href => '#'}
+  /       Help your pets free of fleas and worms
+  /       %span 2m 35s   
+  /     
+  /   .media_thumb.video.group
+  /     .placeholder  
+  /     %a{:href => '#'}    
+  /       How does neutering in pets work? 
+  /       %span 1m 20s
+  /   
+  /   .media_thumb.video.group
+  /     .placeholder  
+  /     %a{:href => '#'}    
+  /       How does neutering in pets work? 
+  /       %span 1m 20s    
+  /   
+  /   %a.badge.floatright{:href => '#'} 
+  /     view all videos »
+  /   .clear
+    
+  
+  / .panel    
+  /   %h2 Latest case studies
+  /   
+  /   .media_thumb.pdf.group
+  /     .placeholder
+  /     %a{:href => '#'}
+  /       Emergencies: First Aid Essentials
+  /       %br/
+  /       %span 7 First Aid Essentials
+  /       %p.download
+  /         download »
+  /   
+  /   .media_thumb.pdf.group
+  /     .placeholder
+  /     %a{:href => '#'}
+  /       Parasites: Ticks
+  /       %br/
+  /       %span Dealing with ticks on your pets
+  /       %p.download
+  /         download »
+  /         
+  /   .media_thumb.pdf.group
+  /     .placeholder
+  /     %a{:href => '#'}
+  /       Parasites: Ticks
+  /       %br/
+  /       %span Dealing with ticks on your pets
+  /       %p.download
+  /         download »          
+  /   
+  /   %a.badge.floatright{:href => '#'} 
+  /     view all videos »
+  /   .clear
+
+  .clear
+  
+  .wrapsections
+    .panel.vetskitchen
+      %img{:src => '/img/logos/vetsKitchen.png', :style => "width: 180px; margin: 0 15px 10px 0", :alt => 'Vets Kitchen'} 
+
+      %h3
+        Natural, hypoallergenic veterinary diets and supplements, available from supermarkets and online
+  
+      %img{:src => '/img/temp/products.png', :alt => 'Vets Kitchen products'}
+    
+      %p{:style => 'border-top: 1px dotted #ccc; padding-top: 20px; margin-top: 10px'}
+      
+        %a.badge{:href => "http://www.vetskitchen.co.uk", :target => "_blank"}
+          Visit the Vet’s Kitchen site to find out more »
+      .clear
+  

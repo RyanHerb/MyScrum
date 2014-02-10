@@ -1,0 +1,34 @@
+#!/bin/bash
+
+txtred=$(tput setaf 1)    # Red
+txtgrn=$(tput setaf 2)    # Green
+txtrst=$(tput sgr0)       # Text reset
+
+HOST=foc.obdev.co.uk
+SSHUSER=myscrum
+DB=myscrum
+
+function notify {
+  if [ $VERBOSE -eq 1 ]; then
+    say $@
+  fi
+}
+
+function warn {
+  echo "$txtred$@$txtrst"
+}
+
+function say {
+  echo "$txtgrn$@$txtrst"
+}
+
+which=$1
+shift
+
+if [ "$which" == "production" ]; then
+  HOST=myscrum.com
+fi
+
+say "About to grab $DB from $HOST"
+
+ssh $SSHUSER@$HOST "mysqldump -B $DB | gzip " | gunzip | mysql

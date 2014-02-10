@@ -1,0 +1,17 @@
+global: &mysql
+  adapter: mysql2
+  database: myscrum
+  encoding: utf8
+  host: localhost
+  password: Scrummi3
+  username: scrum
+  
+local:
+  <<: *mysql  
+  logfile: 'log/db.local'
+
+development:
+  <<: *mysql  
+
+production:
+  <<: *mysql

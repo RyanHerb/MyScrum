@@ -1,0 +1,10 @@
+%h2 After the #{@appointment.hospital ? 'operation' : 'appointment'}
+
+%p Dear #{@appointment.owner.first_name || Client}
+
+- if @appointment.hospital
+  %p I hope that #{@appointment.pets_name} is recovering well after their stay with us yesterday. You should have a post-operative appointment booked in, and provided all is well, we look forward to seeing you then.
+- else
+  %p It was very nice to see you and #{@appointment.pets_name} at Vet’s Klinic Swindon Yesterday. I hope all is well after your appointment, but if you have any concerns or questions, or to give us feedback on your visit, please don’t hesitate to ring the practice on 01793 876619 or email contact@vetsklinic.co.uk.
+
+%p If you have any concerns or questions in the meantime please don’t hesitate to ring the practice on 01793 876619 or email contact@vetsklinic.co.uk.

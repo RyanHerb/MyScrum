@@ -1,0 +1,823 @@
+// Get globally applicable styles
+@import global.sass
+
+body
+  background: url(/img/bg_body.png)
+  
+h1, h2, h3, p
+  font-weight: normal
+  margin: 0 0 0.5em
+  
+h1, h2, h3, h4
+  font-family: $nicefont
+
+
+h1
+  font-size: 2em
+  color: $brown
+  margin: 0
+  .home &
+    letter-spacing: -1px
+    font-weight: 600
+  .about &, .klinics &, .online_store &, .vets_kitchen &, .klinicstv &, .pricing &, .faqs &, .shop &, .newsletters &
+    color: $orange
+  span
+    font-weight: 500
+
+h2
+  color: $midgreen
+  font-size: 1.7em
+  font-weight: 600
+  line-height: 1
+  span
+    color: $lightgreen
+  .pricing &
+    color: $orange
+    font-size: 0.7em
+    font-size: 1.1rem
+
+h3
+  color: $brown
+  font-size: 1.1em
+  font-weight: 500
+
+
+h4
+  margin: 0
+  display: block
+  font-weight: 400
+  font-size: 1em
+  line-height: 1.3
+  color: #666
+  .owner &
+    margin: 0
+    color: $midgreen
+  
+p
+  font-size: 0.9em
+  line-height: 1.5
+
+#content h1
+  font-size: 2.3em
+  text-shadow: 0 1px 0 #fff
+  .home &
+    margin: 0
+    line-height: 1
+  .shop &
+    // font-size: 2em 
+
+// PAGE BLOCKS
+
+#header
+  background: url(/img/bgds/pets-header.png) no-repeat 350px 8px $brown
+  border-bottom: 1px solid white
+  +boxshadow($xoff: 0, $yoff: 5px, $blur: 6px, $spread: 0, $color: rgba(0,0,0,0.3))
+  margin: 0 auto
+  padding: 0 3% 0
+  .owner &
+    border-bottom: none
+
+#nav
+  margin: 0 auto
+  box-shadow: 0 5px 6px 0 rgba(0,0,0,0.3)
+
+
+#content, #footer
+  width: 90%
+  margin: 0 auto
+  padding: 0 
+  span
+    text-align: left
+
+#footer
+  padding: 0
+  line-height: 1.5
+  .smallprint
+    background: #fff
+    border-bottom: 1px dotted #333
+    margin: 0 0 10px
+    padding: 5px 0
+    text-align: center
+
+#content
+  margin: 20px auto 0
+
+#breadcrumb
+  font-size: 0.8em
+  padding: 20px 0
+  color: #666
+
+
+a.badge
+  cursor: pointer
+  background: url(/img/bgds/lime-grd-bgd.png) repeat-x 0 0 $vetsk-green-mid
+  border: 2px solid #7d9423
+  font-size: 0.9em
+  font-weight: bold
+  +roundcorners(20px)
+  color: #fff
+  text-shadow: 0 1px 0 $vetsk-green-dark
+  text-decorartion: none
+  padding: 3px 10px
+  &:hover
+    background: $vetsk-green
+    color: #fff
+    text-shadow: none
+    text-shadow: 0 1px 0 $vetsk-green-dark
+    
+  #header &
+    background: url(/img/bgds/orange-grd-bgd.png) repeat-x 0 0 $vetsk-green-mid
+    border: 2px solid #fff
+    padding: 5px 12px
+    text-shadow: none
+    
+  .col &
+    margin: 10px 0 0
+    display: block
+    width: 110px
+    padding: 8px
+    text-align: center
+
+// HEADER STYLES
+
+#logo
+  padding: 5px 0 10px
+
+img.visitshop    
+  margin: -82px 20px 0 0
+  float: right
+
+img.petprofile
+  width: 95%
+  margin: 15px 10px 0 0
+
+// CONTENT TEMPLATES
+
+.panel
+  // background: url(/img/bgds/grey-grd-bgd.png) repeat-x 0 0 white 
+  background: white
+  +roundcorners(10px)
+  margin: 0 0 15px
+  padding: 10px
+  +boxshadow
+  &.video
+    background: #000
+    color: #fff
+    border: 10px solid #fff
+    z-index: 200
+    position: relative
+    
+  p
+    font-size: 0.95em 
+    line-height: 1.4
+    color: $brown
+    .shop &
+      font-size: 0.8em
+  
+  &.veterinaries, &.klinictv, &.shoponline
+    a.badge
+      &:hover
+        background-image: none
+    h2
+      margin: 0
+    img
+      margin: 5px 0 0 !important
+    h3
+      margin: 5px 0 10px 0
+      line-height: 1.4      
+        
+  &.veterinaries
+    h2, h4
+      color: $orange
+    a.badge 
+      background: url(/img/bgds/blue-grd-bgd.png) repeat-x center top $vetsk-skyblue 
+      border: 2px solid $orange
+  &.klinictv
+    h2, h4
+      color: $orange  
+    a.badge 
+      background: url(/img/bgds/orange-grd-bgd.png) repeat-x center top #8A71F0 
+      border: 2px solid #bd6c13
+  &.shoponline
+    h2, h4
+      color: $purple  
+    a.badge 
+      background: url(/img/bgds/purple-grd-bgd.png) repeat-x center top $purple 
+      border: 2px solid #8c3e77   
+      
+  &.vetskitchen
+    h3
+      color: $midgreen
+      font-size: 1.23em
+      line-height: 1.3
+    .product
+      padding: 10px 
+      width: 37%
+      float: left
+      margin: 10px 10px 0 0
+      text-align: center
+      +roundcorners
+      &.last
+        margin-right: 0
+      p
+        margin: 0
+        padding: 5px 0 5px
+        line-height: 1
+        color: $blue
+
+    a.badge 
+      font-size: 1.1em
+      display: block
+      text-align: center
+  
+  &.subscribe
+    width: 28%
+    float: right
+    h2
+      font-size: 1.4em
+      margin: 0
+      
+  &.latestnews
+    p
+      font-size: 1.2em
+      padding: 5px 0    
+    p.title
+      font-weight: bold  
+      font-size: 1.3em  
+      border-top: 1px dotted #ccc 
+      border-bottom: 1px dotted #ccc
+      color: #DF8B16 
+      
+  &.v2
+    background: url(/img/bgds/grey-grd-bgd-2.png) repeat-x center bottom white    
+    
+  &.online_shop
+    ul
+      li
+        border-top: 1px dotted #ccc
+        h3
+          font-size: 1.4em  
+          font-weight: bold
+          margin: 0
+          color: $green
+          &:hover
+            color: #000
+        p
+          padding: 0 0 0 10px
+          font-size: 1.1em 
+          &:hover
+            color: #000
+
+  .newsletters &  
+    min-height: 345px
+
+     
+img.joepet  
+  margin: 10px 0 0
+
+  
+.video-share
+  height: 50px
+  background: #fff
+  box-shadow: 1px 1px 2px #bbb inset
+  width: 98%
+  margin: -5px auto
+  z-index: 1
+  +roundbottomcorners 
+  
+
+
+
+// ========
+// = TABS =
+// ========
+
+.pane
+  +roundcorners(10px)
+  padding: 10px
+  background: #fff
+.tab
+  +roundtopcorners(5px)
+  padding: 10px
+  float: left
+  color: $vetsk-blue-dark
+  background: #fff
+  margin-left: 10px
+  &.inactive
+    background: $vetsk-blue
+    border-top: 2px solid #fff
+    border-left: 2px solid #fff
+    border-right: 2px solid #fff
+    padding: 8px 8px 10px
+
+
+
+.promopanel
+  +roundcorners
+  padding: 10px
+  background: #fff
+  border: 1px solid #ccc
+  margin: 0 0 10px 
+  img#profilephoto
+    float: left
+    width: 160px
+    margin-right: 20px
+    border: 5px solid #fff
+    +boxshadow
+  h2
+    line-height: 1.3    
+
+  
+  
+// ============
+// = HOMEPAGE =
+// ============
+
+.media_thumb
+  width: 100%
+  margin: 10px 10px 10px 0
+  border-bottom: 1px dotted #ccc
+  a
+    display: block
+    font-weight: bold
+    color: $vetsk-grey
+    line-height: 1.4
+    
+    span
+      font-weight: normal
+      display: block
+      font-size: 0.8em
+      color: #999
+      padding-top: 5px
+  p
+    padding: 0
+    
+  &.video .placeholder, &.pdf .placeholder
+    background: #ececec
+    border: 1px solid #ccc
+    float: left
+    width: 130px
+    height: 80px
+    margin: 0 15px 5px 0
+    background: url(/img/icons/play-btn.png) no-repeat center center #ececec
+  &.pdf .placeholder
+    width: 80px
+    height: 100px
+    margin: 0 15px 5px 0
+    background: url(/img/icons/pdf.png) no-repeat center center #ececec
+.socialmedia
+  padding: 5px 5px 3px
+  border-top: 1px dotted $vetsk-grey
+    
+      
+// ============
+// = Carousel =
+// ============
+
+.carousel
+  padding: 10px 0
+  position: relative
+  overflow: hidden
+  height: 200px
+  .slide
+    position: absolute
+    +roundcorners
+    background: #fff
+    padding: 4px
+    border: 1px solid #ccc
+    width: 95%
+    min-height: 195px
+    p
+
+      color: #999
+      font-size: 1.4em
+      font-family: $seriffont
+      font-style: italic
+      padding: 30px 5px 5px 5px
+      
+    img
+      float: left  
+      margin-right: 15px
+
+.controls
+  // border: 1px solid green
+  overflow: hidden
+  position: relative 
+  height: 30px
+  
+.prev_next
+  margin: 0 10px 0 0
+  a
+    color: $brown
+    // font-weight: bold
+  
+#indicator
+  position: absolute
+  top: 0
+  left: 0
+
+  ul
+    height: 20px
+    display: block
+    // width: 200px
+    overflow: hidden
+    height: 20px
+    padding: 0
+    margin: 0
+  li 
+    background: #ececec
+    list-style: none
+    padding: 0
+    margin: 5px 2px
+    width: 10px
+    height: 10px
+    display: inline
+    float: left
+    +roundcorners
+    &.current
+      background: $lightgreen
+      
+// ================
+// = Twitter feed =
+// ================
+
+h3.tweets
+  padding: 8px 0 0 0
+  border-top: 1px dotted #ccc
+  color: $midgreen
+  font-size: 1rem
+
+.twtr-hd, .twtr-ft div
+  display: none
+  
+#twtr-widget-1 .twtr-bd, #twtr-widget-1 .twtr-timeline i a, #twtr-widget-1 .twtr-bd p
+  font-size: 13px !important
+  line-height: 1.4 !important
+  
+#twtr-widget-1 .twtr-doc, #twtr-widget-1 .twtr-hd a, #twtr-widget-1 h3, #twtr-widget-1 h4
+  background-color:  none !important
+
+.twtr-widget em, .twtr-widget .twtr-new-results
+  font-size: 10px !important
+  
+// =====================
+// = STATIC PAGES TEMP =
+// =====================
+
+/* KLINICS Page */
+.klinics, .klinicstv, .online_store, .pricing
+  .article.mainpanel
+    margin: 0 0 10px
+    .panel
+      img
+        margin: 20px 0 10px 30px
+        border: 8px solid white
+        +boxshadow
+        &.map
+          margin: 0
+          border: 0 
+          box-shadow: none
+          
+        
+.klinics, .pricing, .shop
+  ul.centre
+    li
+      background: url(/img/heart-bullet.png) no-repeat 0 9px
+      padding-left: 25px !important
+      list-style: none  
+      &.price
+        background: none
+        margin: 10px 0
+        color: black
+        font-size: 1em      
+        
+/* ABOUT Page */
+.about
+  .article.mainpanel
+    .panel
+      img
+        margin: 20px 0 10px 10px
+        border: 8px solid white
+        +boxshadow
+      p
+        padding: 20px 0 0 200px
+      ul
+        margin: 20px 0 10px 190px
+        li
+          background: url(/img/heart-bullet.png) no-repeat 0 8px
+          padding-left: 25px
+          list-style: none
+.quick-contact
+  p
+    font-size: 1.1em !important
+
+// ================
+// = PRICING PAGE =
+// ================         
+table.pricing
+  border: 5px solid white
+  margin: 20px 0 0
+  font-size: 0.9em
+  width: 100%
+  +boxshadow
+  td
+    width: 40%
+  thead
+    background: #ccc  
+    color: #000
+    width: 50%
+    th
+      color: $green
+      background: #f4f9d7
+      font-size: 1em
+      font-weight: normal
+      &.title
+        color: $green
+        font-weight: bold
+        font-size: 1.1em 
+        
+// =============
+// = FAQs Page =
+// =============        
+p.q
+  font-weight: bold
+  color: $midgreen
+  font-size: 1.2em
+p.a         
+  // border-bottom: 1px dotted #ccc
+         
+// ================
+// = SIGN UP Page =
+// ================         
+ul.signup
+  margin: 5px 10px  
+  padding: 0
+  li
+    padding: 0 0 0 30px
+    list-style: none
+    font-size: 0.95em       
+    color: $brown   
+    line-height: 2.2    
+    &.interact
+      background: url(/img/speechbubbles-24.png) no-repeat 0 4px 
+    &.updates
+      background: url(/img/emailalert-24.png) no-repeat 0 4px
+    &.videos
+      background: url(/img/videos-24.png) no-repeat 0 4px
+    &.discounts
+      background: url(/img/label-24.png) no-repeat 0 4px
+    &.register
+      background: url(/img/usercard-24.png) no-repeat 0 4px        
+               
+ 
+.terms
+  height: 90px
+  font-size: 0.9em
+  color: #999
+  width: 91%
+  padding: 5px 3% 5px 1%
+  border: 1px solid #333
+  margin: 0 0 5px
+  overflow-y: scroll
+  h4
+    background: lighten($vetsk-grey, 20%)
+    padding: 5px 
+    color: #fff
+    margin: 0 0 10px
+    font-weight: bold
+    text-transform: uppercase
+               
+
+// ===================
+// = KLINICS TV Page =
+// ===================
+
+#tv
+  position: relative
+  h1
+    position: absolute
+    top: 0
+    right: 15px
+    margin: 0 0 5px 0
+  .addthis_toolbox
+    position: absolute
+    top: 45px
+    right: 15px
+    padding: 0
+    iframe
+      border: none 
+      padding: 0
+      width: 80px !important
+      height: 50px !important
+    a
+      float: left
+  iframe
+    border: none 
+    padding: 0
+    width: 100%
+  .player
+    width: 640px
+    border: 8px solid white
+    height: 360px
+    margin: 10px auto
+    +roundcorners(8px)
+    +boxshadow
+  .show_title
+    width: 640px
+    margin: 20px auto 0 
+    p
+      color: white
+      font-size: 1.1em 
+      padding: 0
+      span
+        background: #CFC6BD
+        color: $darkbrown
+        font-weight: bold
+        padding: 2px 8px
+        +roundcorners
+        
+
+ul.upcoming
+  margin: 0 0 0 5px
+  padding: 0
+  li
+    list-style: none
+    background: #ececec
+    margin: 5px 0
+    p
+      font-size: 1.3em
+      padding: 0 10px
+
+
+// ===============
+// = SHOP Online =
+// ===============
+
+.results
+  border-bottom: 1px dotted $orange
+  border-top: 1px dotted $orange
+  .results_display, .results_pages
+    p
+      font-size: 0.7em
+      color: $orange
+      padding: 5px 0
+      span
+        font-weight: bold
+  .results_pages 
+    width: 140px
+    a.nextpage
+      background: $orange 
+      padding: 0 8px
+      color: white
+      +roundcorners(3px)
+
+.shop
+  .products_wrap
+    margin: 20px 0 0
+  .product  
+    // +lineargradient(#fff, #ececec)
+    background-image: linear-gradient(bottom, rgb(236,236,236) 17%, rgb(255,255,255) 40%)
+    background-image: -o-linear-gradient(bottom, rgb(236,236,236) 17%, rgb(255,255,255) 40%)
+    background-image: -moz-linear-gradient(bottom, rgb(236,236,236) 17%, rgb(255,255,255) 40%)
+    background-image: -webkit-linear-gradient(bottom, rgb(236,236,236) 17%, rgb(255,255,255) 40%)
+    background-image: -ms-linear-gradient(bottom, rgb(236,236,236) 17%, rgb(255,255,255) 40%)
+    background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0.17, rgb(236,236,236)),color-stop(0.4, rgb(255,255,255)))
+    float: left  
+    padding: 10px 1% 5px 1%
+    width: 20%
+    border: 1px dotted #BFAA93
+    margin: 2px 3% 0 0
+    +roundcorners   
+    &.detail
+      width: 100%
+      background-image: none
+      border: none
+      margin: 10px 0 0
+      font-size: 1em
+      ul
+        margin: 0
+        padding: 0
+        li
+      p.image
+        float: left
+        overflow: hidden
+        text-align: center
+        padding: 0
+        // border: 1px solid red
+        a
+          font-weight: normal
+          color: #999
+          font-style: italic
+    &.action
+      float: right
+      padding: 5px 10px
+      margin-right: 1%
+      p, label
+        color: $orange
+        font-weight: bold
+    &.last
+      margin-right: 0
+    a, p.title
+      font-weight: bold
+      color: $orange
+      &:hover
+        color: black
+      &.back
+        font-weight: normal
+        color: $midgreen
+        padding: 0 10px 0 0
+    p
+      font-size: 0.8em
+      // padding: 5px 0
+      &.price
+        font-weight: bold  
+        color: $darkbrown
+        line-height: 1
+        font-size: 1em
+    img
+      display: block
+      margin: 0 auto
+  iframe
+    width: 350px
+    height: 285px
+    margin-left: 25px
+
+  .vetsk-tabs
+    .pane
+      ul
+        margin: 0
+        padding-left: 15px
+        li
+          font-size: 0.8em
+          font-weight: normal
+      h4
+        color: $green
+      &.reviews
+        padding-top: 0
+        
+  .testimonial
+    border-top: 1px dotted #ccc
+    overflow: hidden
+    p.by, p.date
+      padding: 10px 0 0
+    p.by
+      font-size: 0.8em
+      color: $green
+      float: left
+      font-weight: bold
+    p.date
+      font-size: 0.75em
+      color: $green
+      float: right
+    p.text
+      font-style: italic
+    p.rating
+      color: #999
+      font-size: 0.7em
+      padding: 0 0 10px
+      img      
+        vertical-align: middle
+        margin-bottom: 5px
+          
+          
+a.addproduct
+  font-size: 0.9em
+  font-size: 0.9rem
+  margin: 0
+  // color: $vetsk-grey
+  color: white !important
+  float: right
+  +textshadow
+  background: #8EA01E
+  padding: 3px 10px
+  +roundcorners(5px)
+  border: 1px solid #5A6512
+  &:hover
+    background: #9bae21     
+
+        
+  
+// =============
+// = CARESHEET =
+// =============
+
+.care_sheets
+  margin-top: 1em
+  a
+    color: #999966
+  .care_title
+    border-bottom-width: 1px
+    border-bottom-style: solid
+    border-bottom-color: #7C6A55
+  .sheet
+    background: #FFFFFF
+    padding: 10px
+    border-bottom-width: 1px
+    border-bottom-style: dotted
+    border-bottom-color: #7C6A55
+  .sheet:last-child
+    border-bottom-width: 0px
+    -moz-border-radius-bottomleft: 5px
+    -moz-border-radius-bottomright: 5px
+    border-bottom-left-radius: 5px
+    border-bottom-right-radius: 5px

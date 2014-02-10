@@ -1,0 +1,26 @@
+%h2 Appointment confirmation
+
+%p Dear #{@appointment.owner.first_name || Client}
+
+%p Thank you for booking #{@appointment.pets_name} with Vet’s Klinic. Your appointment is confirmed as follows:
+
+%table
+  %tr
+    %th Pet(s)
+    %td= @appointment.pets_name
+  %tr
+    %th Date and time
+    - unless @appointment.hospital
+      %td #{@appointment.start_at.strftime("%d %b %Y")} at #{@appointment.start_at.strftime("%H:%M")}
+    - else
+      %td #{@appointment.start_at.strftime("%d %b %Y")}
+  %tr
+    %th Seeing:
+    %td=@appointment.user.name
+
+- if @appointment.hospital
+  %p On the day of your appointment, please bring #{@appointment.pets_name} into the Klinic between 8am and 9am. We have attached a Care Guide which gives you more details about your pet’s day with us, and what to expect before, during and after your pet’s procedure. If you have any concerns please don’t hesitate to ring the practice on 01793 876619 or email contact@vetsklinic.co.uk.
+
+%p If you need to change or cancel this appointment, you can do so in the ‘My Appointment’ section of the Vet’s Klinic website.
+
+%p We very much look forward to seeing you and #{@appointment.pets_name} at the Klinic.

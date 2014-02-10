@@ -1,0 +1,26 @@
+%h3 Sent Emails
+
+%table.datatable#emails
+  %thead
+    %tr
+      %th.hidden &nbsp;
+      %th.hidden &nbsp;
+      %th Recipient
+      %th Destination
+      %th.hidden %nbsp;
+      %th Appointment Date
+      %th Template
+      %th Actions
+  %tbody
+    - @email.each do |email|
+      %tr
+        %td.hidden= email.id
+        %td.hidden= email.owner_id
+        %td= email.owner.name
+        %td= email.owner_email
+        %td.hidden= email.appointment_id
+        %td= email.appointment.start_at.short_datetime
+        %td= email.template
+        %td.right
+          %a{:href => "/admin/emails/#{email.pk}"}
+            %img{:src => '/img/icons/view.png', :alt => 'View this email', :title => 'View this email'}

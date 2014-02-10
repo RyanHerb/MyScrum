@@ -1,0 +1,49 @@
+=partial :front_desk_menu
+
+
+#today-wrapper
+  #check_in_tabs
+    %ul
+      %li
+        %a{:href => "#consultation_tab"} Consultations
+      %li
+        %a{:href => "#hospitalization_tab"} Operations
+
+    #consultation_tab
+
+      - unless @current_consultation.blank?
+        .hour
+          - @current_consultation.each_pair do |hour, appointments|
+            %h4.hourRow="#{hour}00"
+            - appointments.each do |a|
+              = partial :appointment, :locals => {:appointment => a, :type => ''}
+      - else
+        %p.blankstate No consultations booked
+        
+    #hospitalization_tab
+      -#%h3 All day appointments
+      - unless @current_hospitalization.blank?
+        - @current_hospitalization.each do |a|
+          = partial :appointment, :locals => {:appointment => a, :type => ''}
+      - else
+        %p.blankstate No operations booked
+        
+:javascript
+  $(function(){
+    $('#check_in_tabs').tabs();
+    
+    $('.checkIn, .uncheckIn').click(function(e){
+      e.preventDefault();
+      //TODO: fix the need to reload the page
+      //if( link.data('consultation') == 1 ) {
+        //link.parents('.appt').addClass('checked_in');
+        //link.fadeOut();
+        //link.siblings().fadeOut();
+      //} else {
+      //  link.parents('.appt').remove();
+      //}
+      $.post($(this).attr('href'), function(res){
+        location.reload();
+      });
+    });   
+  });

@@ -1,0 +1,22 @@
+%h2 Appointment reminder
+
+%p Dear #{@appointment.owner.first_name || Client}
+
+%p Just a quick reminder about your appointment for #{@appointment.pets_name} at Vet’s Klinic Swindon tomorrow.
+
+%table
+  %tr
+    %th Pet(s)
+    %td= @appointment.pets_name
+  %tr
+    %th Date and time
+    - unless @appointment.hospital
+      %td #{@appointment.start_at.strftime("%d %b %Y")} at #{@appointment.start_at.strftime("%H:%M")}
+    - else
+      %td #{@appointment.start_at.strftime("%d %b %Y")}
+  %tr
+    %th Seeing:
+    %td=@appointment.user.name
+- if @appointment.hospital
+  %p On the day of your appointment, please bring #{@appointment.pets_name} into the Klinic between 8am and 9am. 
+%p We very much look forward to seeing you and #{@appointment.pets_name} at the Klinic.
