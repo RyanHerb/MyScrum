@@ -1,0 +1,7 @@
+
+rvm use ruby-2.1.0
+rvm gemset create myscrum > /dev/null
+sleep 1
+rvm gemset use myscrum
+rvm info homes
+

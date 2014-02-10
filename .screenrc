@@ -1,0 +1,31 @@
+# use xterm scrollbars
+termcapinfo xterm ti@:te@
+termcapinfo xterm-color ti@:te@
+
+# allow bold colors - necessary for some reason
+attrcolor b ".I"
+
+#change the hardstatus settings to give an window list at the bottom of the
+#screen, with the time and date and with the current window highlighted
+hardstatus alwayslastline 
+hardstatus string '%{= kG}%{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}'
+
+# PS1 is set in .bashrc
+
+
+# setup scrollback press ^A-[ then use Ctl-B for back and Ctl-F for forward a page
+defscrollback 5000
+
+bindkey "^[OR" prev
+bindkey "^[OS" next
+
+screen -t "server" 0 
+stuff "rerun -p \"{./,app/*/,app/*/*/,config/*/}*.rb\" \"thin -e local -R config.ru start\"\012"
+
+screen -t "racksh" 1 
+stuff "export RACK_ENV=local; racksh\012"
+
+screen -t "bash" 2
+stuff "rake -T\012"
+stuff "mate ."
+
