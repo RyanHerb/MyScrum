@@ -11,17 +11,24 @@
     - %w(jquery-1.7.2.min.js front_end.js jquery-ui-1.8.21.custom.min.js bootstrap-dropdown.js application.js slimbox2.js).each do |j|
       %script{:type => 'text/javascript', :language => 'javascript', :src => "/js/#{j}"}             
 
-    %link{:rel => "stylesheet", :type => "text/css",  :href => "/css/site.css"} 
-    %link{:rel => "stylesheet", :type => "text/css",  :href => "/stylesheets/cupertino/jquery-ui-1.8.21.custom.css"} 
+    %link{:rel => "stylesheet", :type => "text/css",  :href => "/css/site.css"}
+    
+
+    %link{:href => 'http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,700|Waiting+for+the+Sunrise', :rel => 'stylesheet', :type => 'text/css'}
+    
+    /[if lte IE 8] 
+      %link{:rel => "stylesheet", :type => "text/css",  :href => "/css/site-ie.css"} 
+      %link{:rel => "stylesheet", :type => "text/css",  :href => "/css/site768.css"} 
+    
     
   %body{:class => @bclass, :id => @bid}
     #header{:role => 'header'}
 
       #userlogin.floatright
-        .contact_header     
+        %a.badge{:href  => '/signup'} sign up
+        %a.badge{:href  => '/user/login'} login 
+        %a.badge{:href => '/user/logout'} log out
 
-
-        
       #logo
         %a{:href => '/'}
 

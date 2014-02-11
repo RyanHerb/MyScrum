@@ -22,7 +22,7 @@ module MyScrum
 
     get '/css/:stylesheet.css' do |stylesheet|
       content_type 'text/css', :charset => 'utf-8'
-      sass :"css/#{stylesheet}"
+        sass "css/site".to_sym
     end
 
     # =====

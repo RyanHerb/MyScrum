@@ -27,5 +27,5 @@ stuff "export RACK_ENV=local; racksh\012"
 
 screen -t "bash" 2
 stuff "rake -T\012"
-stuff "mate ."
+stuff "sublime ."
 
