@@ -1,13 +1,13 @@
-# require /owner
+# require /user
 # load controllers
 
 
 module MyScrum
   class UserApp < Sinatra::Application
     
-    Dir[ROOT_DIR + '/app/controllers/owner/*.rb'].sort.each {|file| require file }
+    Dir[ROOT_DIR + '/app/controllers/user/*.rb'].sort.each {|file| require file }
     
-    set :views, ROOT_DIR + "/app/views/owner"
+    set :views, ROOT_DIR + "/app/views/user"
     register Sinatra::Flash
     
     # ==========
@@ -15,7 +15,7 @@ module MyScrum
     # ==========
 
     error 401 do
-      redirect '/owner/login'
+      redirect '/user/login'
     end
 
     not_found do
@@ -24,7 +24,7 @@ module MyScrum
 
     before do
       
-      protected!(:owner) unless ['/login', '/send_password_reset', '/reset_password'].include?(request.path_info)
+      protected!(:user) unless ['/login', '/send_password_reset', '/reset_password'].include?(request.path_info)
       
       show_me( params.inspect )
       show_me( session.inspect )
@@ -50,11 +50,11 @@ module MyScrum
 
     post '/login' do
       @title = "Login"
-      if authenticate!(:owner)
+      if authenticate!(:user)
         if session[:return_to] && session[:return_to] !~ /login/
-          redirect "/owner#{session.delete(:return_to)}"
+          redirect "/user#{session.delete(:return_to)}"
         else
-          redirect '/owner'
+          redirect '/user'
         end
       else
         @error = "Invalid username or password. Please try again."
@@ -63,7 +63,7 @@ module MyScrum
     end
 
     get '/logout' do
-      logout(:owner)
+      logout(:user)
       redirect '/'
     end
 
