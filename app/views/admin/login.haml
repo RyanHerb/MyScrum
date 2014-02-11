@@ -2,7 +2,7 @@
 %html{ html_attrs("en_us") }
   %head
     %title 
-      Vet's Klinic Login
+      MyScrum
       = if_not_blank(@title, " | ")
 
     %meta{:content => "text/html; charset=utf-8", "http-equiv" => "content-type"}/
@@ -17,7 +17,6 @@
     -# show flash message if any (from sinatra-flash)
     =styled_flash
     #loginpanel{:class => @cclass}      
-      %img{:src => '/img/logo_klinic_280_staff_login.png'}
       - if @error
         %p.error=@error
       %form{:action => "/admin/login", :method => :post}

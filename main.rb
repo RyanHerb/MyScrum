@@ -1,11 +1,3 @@
-# 
-#  Vets Kitchen
-#  -------------------------------------------------------------------------
-#  Created by OB Team for Joe Inglis / Pets Kitchen
-#  Copyright 2011 Osborne Brook Partnership Limited. All rights reserved.
-#
-
-
 ROOT_DIR = File.expand_path File.dirname(__FILE__)
 
 puts "Launching MyScrum in \e[01;32m#{ENV['RACK_ENV']}\033[0m mode"

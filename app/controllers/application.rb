@@ -32,36 +32,6 @@ module MyScrum
     get '/' do
       haml :index
     end
-    
-    # ================
-    # = Owner signup =
-    # ================
-
-    get '/signup' do
-      @owner = Owner.new
-      @turing_test = TuringTest.new
-      session[:turing_answer] = @turing_test.answer
-      haml :signup
-    end
-    
-    post '/user' do
-      @owner = Owner.new(params[:owner])
-      begin
-        throw Exception if params[:turing_answer] != session[:turing_answer]
-        @owner.save
-        session[:owner] = @owner.pk
-        @current_owner = @owner
-        flash[:notice] = "Account created."
-        redirect '/owner'
-      rescue
-        @owner.valid? if params[:turing_answer] != session[:turing_answer]
-        @errors = @owner.errors
-        @errors[:turing_answer] = "Your answer is incorrect. Please try again" if params[:turing_answer] != session[:turing_answer]
-        @turing_test = TuringTest.new
-        session[:turing_answer] = @turing_test.answer
-        haml :signup
-      end
-    end
 
     # ===========
     # = The End =

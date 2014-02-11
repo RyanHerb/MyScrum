@@ -2,7 +2,7 @@
 %html{:lang => 'en'}
   %head
     %title
-      FranceOneCall #{@title.blank? ? '' : "– #{@title}"}
+      MyScrum #{@title.blank? ? '' : "– #{@title}"}
       
 
     %meta{:content => "text/html; charset=utf-8", "http-equiv" => "content-type"}/
@@ -12,47 +12,18 @@
       %script{:type => 'text/javascript', :language => 'javascript', :src => "/js/#{j}"}             
 
     %link{:rel => "stylesheet", :type => "text/css",  :href => "/css/site.css"} 
-    %link{:rel => "stylesheet", :href => '/css/site768.css', :media => "only screen and (min-width: 768px)"}
-    %link{:rel => "stylesheet", :href => '/css/site1050.css', :media => "only screen and (min-width: 1050px)"}
     %link{:rel => "stylesheet", :type => "text/css",  :href => "/stylesheets/cupertino/jquery-ui-1.8.21.custom.css"} 
-    %link{:rel => "stylesheet", :type => "text/css",  :href => "/stylesheets/jqui-vetsk-public/vetsk-public.css"}   
-    %link{:rel => "stylesheet", :type => "text/css",  :href => "/stylesheets/bootstrap-dropdown.css"}
-    %link{:rel => "stylesheet", :type => "text/css",  :href => "/stylesheets/slimbox/slimbox2.css", :media => "screen"}
     
-
-    %link{:href => 'http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,700|Waiting+for+the+Sunrise', :rel => 'stylesheet', :type => 'text/css'}
-    
-    /[if lte IE 8] 
-      %link{:rel => "stylesheet", :type => "text/css",  :href => "/css/site-ie.css"} 
-      %link{:rel => "stylesheet", :type => "text/css",  :href => "/css/site768.css"} 
-    
-    
-    =partial :analytics  
-
   %body{:class => @bclass, :id => @bid}
     #header{:role => 'header'}
 
       #userlogin.floatright
         .contact_header     
-        
-        - if current_owner
-          %a.badge{:href => '/admin/return'} Back to Admin »
-        - unless current_owner
-          %a.badge{:href  => '/signup'} sign up »
-          %a.badge{:href  => '/owner/login'} login » 
-        - else
-          %a.badge{:href => '/owner/logout'}
-            %img{:src => '/img/icons/user-16.png', :style => 'vertical-align: middle;'}
-            log out
 
 
         
       #logo
         %a{:href => '/'}
-          %img{:src => '/img/logo_klinic_280_inverse-beta.png'}
-      
-      -# %a.nomobile{:href => 'http://www.vetskitchen.co.uk', :target => 'blank'}     
-      -#   %img.visitshop{:src => '/img/logos/vetsKitchen-visit.png'} 
 
     /content from views spits out here
     #contentwrap
