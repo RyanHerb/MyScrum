@@ -1,0 +1,45 @@
+!!!
+%html
+  %head
+    %meta{charset: "UTF-8"}/
+    %title Insert title here
+    %link{href: "registration.css", media: "all", rel: "stylesheet", type: "text/css"}/
+  %body
+    %form#registration
+      %ol
+        %legend Registration
+      %fieldset
+        %ol
+          %li
+            %label{for: "login"} Username
+            %input#login{autofocus: "", name: "username", placeholder: "username", required: "", type: "text"}/
+          %li
+            %label{for: "firstname"} First Name
+            %input#firstname{autofocus: "", name: "firstname", placeholder: "first name", required: "", type: "text"}/
+          %li
+            %label{for: "lastname"} Last Name
+            %input#lastname{autofocus: "", name: "lastname", placeholder: "last name", required: "", type: "text"}/
+          %li
+            %label{for: "email"} Email
+            %input#email{name: "email", placeholder: "exemple@domaine.com", required: "", type: "email"}/
+          %li
+            %label{for: "password"} Password
+            %input#password{name: "telephone", placeholder: "password", required: "", type: "password"}/
+          %li
+            %fieldset
+              %legend User Type
+              %ol
+                %li
+                  %input#admin{name: "admin", type: "radio"}/
+                  %label{for: "visa"} Admin
+                %li
+                  %input#productowner{name: "productowner", type: "radio"}/
+                  %label{for: "productowner"} Product Owner
+                %li
+                  %input#scrummaster{name: "type_de_carte", type: "radio"}/
+                  %label{for: "scrummaster"} Scrum Master
+                %li
+                  %input#developer{name: "type_de_carte", type: "radio"}/
+                  %label{for: "developer"} Developer
+      %fieldset
+        %button{type: "submit"} Register
