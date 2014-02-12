@@ -34,24 +34,24 @@ module MyScrum
     end
 
     get '/signup' do
-      @user = User.new
+      @owner = Owner.new
       @turing_test = TuringTest.new
       session[:turing_answer] = @turing_test.answer
       haml :signup
     end
       
-    post '/users' do
-      @user = User.new(params[:user])
+    post '/owners' do
+      @owner = Owner.new(params[:owner])
       begin
         throw Exception if params[:turing_answer] != session[:turing_answer]
-        @user.save
-        session[:user] = @user.pk
-        @current_user = @user
+        @owner.save
+        session[:owner] = @owner.pk
+        @current_owner = @owner
         flash[:notice] = "Account created."
         redirect '/'
       rescue
-        @user.valid? if params[:turing_answer] != session[:turing_answer]
-        @errors = @user.errors
+        @owner.valid? if params[:turing_answer] != session[:turing_answer]
+        @errors = @owner.errors
         @errors[:turing_answer] = "Your answer is incorrect. Please try again" if params[:turing_answer] != session[:turing_answer]
         @turing_test = TuringTest.new
         session[:turing_answer] = @turing_test.answer

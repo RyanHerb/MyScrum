@@ -23,12 +23,15 @@
     
   %body{:class => @bclass, :id => @bid}
     #header{:role => 'header'}
-
-      #userlogin.floatright
-        %a.badge{:href  => '/signup'} sign up
-        %a.badge{:href  => '/user/login'} login 
-        %a.badge{:href => '/user/logout'} log out
-        %a.badge{:href => '/user/index'} account settings
+      - if @current_owner
+        "name #{@current_owner.first_name}"
+      #ownerlogin.floatright
+        - unless @current_owner
+          %a.badge{:href  => '/signup'} sign up
+          %a.badge{:href  => '/owner/login'} login 
+        - else
+          %a.badge{:href => '/owner/logout'} log out
+          %a.badge{:href => '/owner/index'} account settings
 
       #logo
         %a{:href => '/'}

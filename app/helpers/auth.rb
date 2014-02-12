@@ -11,8 +11,8 @@ helpers do
 
     #TODO make this more DRY on obvious pattern for basic stuff
     case scope
-    when :user
-      act_on_fail.call unless current_user
+    when :owner
+      act_on_fail.call unless current_owner
     else
       raise "No authentication scope provided"
     end
@@ -21,7 +21,7 @@ helpers do
   def check_access_rights(scope = nil, redir_url = nil)
     case scope
     when :admin
-      halt(403) unless current_user.admin?
+      halt(403) unless current_owner.admin?
     else
       raise "No scope provided"
     end
@@ -29,21 +29,21 @@ helpers do
 
   def authenticate!(scope = nil)
     case scope
-    when :user
-      if o = User.auth_with_password(params)
-        session[:user] = o.id
-        @current_user = o
+    when :owner
+      if o = Owner.auth_with_password(params)
+        session[:owner] = o.id
+        @current_owner = o
       end
     else
       false
     end
   end
   
-  # Check that a session is valid - use for when current_user is not called
+  # Check that a session is valid - use for when current_owner is not called
   def is_logged_in(scope)
     case scope
-    when :user
-      !session[:user].blank?
+    when :owner
+      !session[:owner].blank?
     else
       false
     end
@@ -55,14 +55,14 @@ helpers do
     else      
       session[scopes.shift] = nil
       session.clear # Is it safe ?
-      response.set_cookie("user", :value => nil)
+      response.set_cookie("owner", :value => nil)
       logout(scopes) unless scopes.empty?
     end
   end
 
   #TODO fix these boring defs with some meta-magic
-  def current_user
-    @current_user ||= User[session[:user]]
+  def current_owner
+    @current_owner ||= Owner[session[:owner]]
   end
   
 end
