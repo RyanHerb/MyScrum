@@ -2,44 +2,32 @@
 %html
   %head
     %meta{charset: "UTF-8"}/
-    %title Insert title here
+    %title Signup
     %link{href: "registration.css", media: "all", rel: "stylesheet", type: "text/css"}/
   %body
-    %form#registration
+    = form_for @user, :enctype => 'multipart/form-data' do |f|
       %ol
         %legend Registration
       %fieldset
         %ol
           %li
-            %label{for: "login"} Username
-            %input#login{autofocus: "", name: "username", placeholder: "username", required: "", type: "text"}/
+            = f.input :username, :label => 'Username'
           %li
-            %label{for: "firstname"} First Name
-            %input#firstname{autofocus: "", name: "firstname", placeholder: "first name", required: "", type: "text"}/
+            = f.input :first_name, :label => 'First name'
           %li
-            %label{for: "lastname"} Last Name
-            %input#lastname{autofocus: "", name: "lastname", placeholder: "last name", required: "", type: "text"}/
+            = f.input :last_name, :label => 'Last name'
           %li
-            %label{for: "email"} Email
-            %input#email{name: "email", placeholder: "exemple@domaine.com", required: "", type: "email"}/
+            = f.input :email, :label => 'Email'
           %li
-            %label{for: "password"} Password
-            %input#password{name: "telephone", placeholder: "password", required: "", type: "password"}/
+            = f.input :password, {:type => 'password', :label => "Password"}
           %li
-            %fieldset
-              %legend User Type
-              %ol
-                %li
-                  %input#admin{name: "admin", type: "radio"}/
-                  %label{for: "visa"} Admin
-                %li
-                  %input#productowner{name: "productowner", type: "radio"}/
-                  %label{for: "productowner"} Product Owner
-                %li
-                  %input#scrummaster{name: "type_de_carte", type: "radio"}/
-                  %label{for: "scrummaster"} Scrum Master
-                %li
-                  %input#developer{name: "type_de_carte", type: "radio"}/
-                  %label{for: "developer"} Developer
+            = f.input :password_confirmation, {:type => 'password', :label => "Confirm your password"}
+          %li
+            %label{:for => "answer"}
+              = @turing_test.question
+            %input#turing_test_answer.vshort{:style => 'width: 50px;', :type => :text, :name => "turing_answer"}          
+            .hint We just want to check that you're a real, live human being
+            - if(@errors[:turing_answer].length > 0 rescue false)
+              .error=@errors[:turing_answer]
       %fieldset
         %button{type: "submit"} Register
