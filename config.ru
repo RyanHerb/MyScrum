@@ -34,7 +34,3 @@ map '/user' do
   run MyScrum::UserApp
 end
 
-map '/signup' do
-  run MyScrum::RegisterApp
-end
-
