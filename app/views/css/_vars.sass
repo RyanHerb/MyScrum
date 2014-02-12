@@ -1,0 +1,106 @@
+// ================
+// = BRAND COLORS =
+// ================
+
+// Use named colors and percentage tints used (e.g myvetsorange, myvetsorange93). Use 0to255.com to generate tints
+
+$vetsk-grey: #7c6a55
+$vetsk-grey-dark: darken($vetsk-grey, 20%)
+
+$vetsk-green: #c1d82f
+$vetsk-green-mid: darken($vetsk-green, 15%)
+$vetsk-green-dark: darken($vetsk-green, 30%)
+
+$vetsk-blue: #e9f2f7
+$vetsk-blue-light: lighten($vetsk-blue, 5%)
+$vetsk-blue-dark: darken($vetsk-blue, 85%)
+
+$vetsk-skyblue: #13b5ea
+
+$vetsk-brown: #ca6300
+$vetsk-beige: #d7cfc5
+
+$greenvlight: #f5fcf6
+$greenlight: #dbf4e1
+$greenmid: #3ec55d
+$greendark: #2c9344
+$greenvdark: #065719
+
+// Bruno's colors
+$darkbrown: #483c2f
+$midbrown: #bfaa93
+$brown: #7d6a55
+
+$grey: #9f9788
+$midgrey: #c1beb8
+
+$orange: #c57210
+$midorange: #f79742
+
+$green: #535d11
+$midgreen: #92a41f
+$lightgreen: #c1d82f
+
+$blue: #13b5ea
+$pink: #ee396b
+$purple: #c377af
+
+
+// =========================
+// = FONTS AND TEXT COLORS =
+// =========================
+
+$textcolor: #333
+$linkcolor: $vetsk-green-mid
+
+$basefont: unquote("Helvetica Neue, Helvetica, Arial, sans-serif;")
+$headingfont: unquote("Helvetica Neue, Helvetica, Arial, sans-serif;")
+$seriffont: unquote("Georgia, Times New Roman, serif")
+$handwritingfont: unquote("Helvetica, Arial, sans-serif")
+$nicefont: unquote("Source Sans Pro, arial, sans-serif")
+  
+// ==========
+// = MIXINS =
+// ==========
+
+=nolist
+  list-style: none
+  margin: 0
+  padding: 0
+
+=textshadow($blur: 4px, $color: rgba(0, 0, 0, 0.8))
+  -webkit-text-shadow: 0 0 $blur $color
+  -moz-text-shadow: 0 0 $blur $color
+  text-shadow: 0 0 $blur $color  
+
+=boxshadow($class: '', $xoff: 1px, $yoff: 1px, $blur: 5px, $spread: 0, $color: rgba(0, 0, 0, 0.5))
+  -moz-box-shadow: $xoff $yoff $blur $spread $color
+  box-shadow: $xoff $yoff $blur $spread $color
+
+
+=roundcorners($radius: 6px)
+  -moz-border-radius: $radius
+  border-radius: $radius
+
+=roundtopcorners($radius: 6px)
+  -moz-border-radius-topleft: $radius
+  -moz-border-radius-topright: $radius
+  border-top-left-radius: $radius
+  border-top-right-radius: $radius
+  
+=roundbottomcorners($radius: 6px)
+  -moz-border-radius-bottomleft: $radius
+  -moz-border-radius-bottomright: $radius
+  border-bottom-left-radius: $radius
+  border-bottom-right-radius: $radius
+
+=roundleftcorners($radius: 6px)
+  -moz-border-radius-topleft: $radius
+  -moz-border-radius-bottomleft: $radius
+  border-top-left-radius: $radius
+  border-bottom-left-radius: $radius
+
+
+=lineargradient($color1, $color2)
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from($color1), to($color2) )
+  background: -moz-linear-gradient(top, $color1 0%, $color2 100%)

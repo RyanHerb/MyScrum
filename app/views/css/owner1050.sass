@@ -1,0 +1,132 @@
+// Variables
+@import vars.sass
+@import global768.sass
+
+.panel, .panel.v2
+
+  h2.appointments, h2.alarm
+    padding: 3px 15px 3px 40px
+
+.panel
+  background: url(/img/bgds/grey-grd-bgd.png) repeat-x center top white 
+  border: 2px solid white
+  &.v2
+    background: url(/img/bgds/grey-grd-bgd-2.png) repeat-x center bottom white 
+  &.wrap
+    background: url(/img/bgds/grey-grd-bgd.png) repeat-x center top white
+    margin: 15px 0
+      
+.appointment, .reminder
+  border: 1px solid white
+  background: lighten($vetsk-grey, 50%)
+  font-size: 0.9em
+  +roundcorners
+  +boxshadow
+
+  padding: 5px      
+
+.appointment, .reminder
+  font-size: 1em
+  dt  
+    width: 15%
+    clear: both
+    border: none
+    font-weight: bold  
+    &.time-icon
+      background: url(/img/icons/app-time-2.png) no-repeat 0 4px
+      padding-left: 23px
+    &.vet-icon
+      background: url(/img/icons/app-vet-2.png) no-repeat 0 4px
+      padding-left: 23px
+    &.pet-icon
+      background: url(/img/icons/app-pet-2.png) no-repeat 0 4px
+      padding-left: 23px
+    &.procedure-icon
+      background: url(/img/icons/app-procedure-2.png) no-repeat 0 4px 
+      padding-left: 23px  
+  dd
+    width: 70%
+    
+
+.article
+  float: left
+  width: 66%
+  padding-right: 2%
+  .owner &
+    width: 50%
+
+.aside
+  float: right
+  width: 30%
+  .owner &
+    width: 48%
+  
+.userprofile  
+  h1
+    font-size: 2em  
+  .details
+    p
+      font-size: 1em
+    
+dl#pet_fullprofile
+  width: 33%
+  float: left
+  dt 
+    width: 35%
+  dd 
+    width: 50%
+    
+p.pet_description 
+  width: 45% 
+  
+#profilephoto
+  &.pet
+    img
+      width: 120px  
+      
+.petprofile 
+  // margin-left: 0
+  h1
+    line-height: 0.5
+    // margin: 85px 0 0
+    padding: 10px 0 15px
+  .details
+    dl
+      min-width: 180px
+      float: left
+    dt
+      width: 35%
+      float: left
+    dd
+      width: 50%
+      float: left
+ 
+#pets-and-procedures
+  width: 30% 
+  margin: 0 20px 0 0
+  
+#procedure-list
+  width: 64%
+  .procedure
+    margin: 0 1% 15px 1%
+    height: 120px
+    padding: 5px 1% 3%
+  h2
+    text-align: left
+    
+.pet-procedures
+  dl
+    background: #f6f6f6
+    float: left
+    font-size: 0.75em
+  dt
+    font-weight: bold
+    padding: 5px 
+  dd
+    padding: 5px 0 
+    
+.pet-appointment
+  h1
+    margin: 0 8px 0 132px
+    
+  
