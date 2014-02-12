@@ -68,6 +68,16 @@ module MyScrum
     end
 
     # ========================
+    # = User Settings =
+    # ========================
+
+    get '/form' do
+      haml :form, :layout => false
+    end
+
+
+
+    # ========================
     # = Owner password reset =
     # ========================
 
