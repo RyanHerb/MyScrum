@@ -54,7 +54,7 @@ module MyScrum
         if session[:return_to] && session[:return_to] !~ /login/
           redirect "/user#{session.delete(:return_to)}"
         else
-          redirect '/user'
+          redirect '/'
         end
       else
         @error = "Invalid username or password. Please try again."
