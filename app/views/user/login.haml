@@ -5,14 +5,14 @@
     %title Insert title here
     %link{href: "style.css", media: "all", rel: "stylesheet", type: "text/css"}/
   %body
-    %form#registration{:method => :post}
+    %form#registration{:action => "/user/login", :method => :post}
       %ol
         %legend Login
       %fieldset
         %ol
           %li
-            %label{for: "login"} Username
-            %input#login{autofocus: "", name: "username", placeholder: "username", required: "", type: "text"}/
+            %label{for: "login"} email
+            %input#login{autofocus: "", name: "email", placeholder: "email", required: "", type: "text"}/
           %li
             %label{for: "password"} Password
             %input#password{name: "password", placeholder: "password", required: "", type: "password"}/
