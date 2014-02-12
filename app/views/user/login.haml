@@ -1,0 +1,20 @@
+!!!
+%html
+  %head
+    %meta{charset: "UTF-8"}/
+    %title Insert title here
+    %link{href: "style.css", media: "all", rel: "stylesheet", type: "text/css"}/
+  %body
+    %form#registration
+      %ol
+        %legend Login
+      %fieldset
+        %ol
+          %li
+            %label{for: "login"} Username
+            %input#login{autofocus: "", name: "username", placeholder: "username", required: "", type: "text"}/
+          %li
+            %label{for: "password"} Password
+            %input#password{name: "password", placeholder: "password", required: "", type: "password"}/
+      %fieldset
+        %button{type: "submit"} connexion
