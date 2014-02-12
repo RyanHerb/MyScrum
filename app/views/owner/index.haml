@@ -8,16 +8,16 @@
     %table
       %tr
         %th First Name
-        %td= @user.first_name
+        %td= @current_owner.first_name
       %tr
         %th Last Name
-        %td= @user.last_name
+        %td= @current_owner.last_name
       %tr
         %th Usernmame
-        %td= @user.username
+        %td= @current_owner.username
       %tr
         %th Email
-        %td= @user.email
+        %td= @current_owner.email
 
 %a.badge{:href  => '/form_edit'} edit
 

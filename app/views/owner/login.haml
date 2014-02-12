@@ -1,0 +1,16 @@
+!!!
+%html
+  %head
+    %meta{charset: "UTF-8"}/
+    %title Insert title here
+    %link{href: "style.css", media: "all", rel: "stylesheet", type: "text/css"}/
+  %body
+    %form{:action => "/owner/login", :method => :post}
+      .field
+        %label{:for => :login} Login
+        %input#login{:name => :email, :type => 'email'}
+      .field
+        %label{:for => :password} Password
+        %input#password{:type => :password, :name => :password}
+      .field.submit
+        %input{:type => :submit, :name => '', :value => "log in"}
