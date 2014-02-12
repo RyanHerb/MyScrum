@@ -2,25 +2,29 @@
 %html
   %head
     %meta{charset: "UTF-8"}/
-    %title Insert title here
+    %Account Settings
     %link{href: "style.css", media: "all", rel: "stylesheet", type: "text/css"}/
   %body
-    %form#registration
+    = form_for @user, :enctype => 'multipart/form-data' do |f|
       %ol
         %legend Edit Profile
       %fieldset
         %ol
           %li
-            %label{for: "login"} Username
-            %input#login{autofocus: "", name: "username", placeholder: "username", required: "", type: "text"}/
-           %li
-            %label{for: "email"} Email
-            %input#email{autofocus: "", name: "email", placeholder: "email", required: "", type: "text"}/
-	  %li
-            %label{for: "password"} New Password
-            %input#password{name: "password", placeholder: "password", required: "", type: "password"}/
-	   %li
-            %label{for: "password"} Confirm Password
-            %input#password{name: "password", placeholder: "password", required: "", type: "password"}/
+            = f.input :name, :label => 'First Name'
+          %li
+            = f.input :name, :label => 'Last Name'
+          %li
+            = f.input :username, :label => 'Username'
+          %li
+            = f.input :email, :label => 'Email'
+          %li
+            = f.input :password, {:type => 'password', :label => "New Password"}
+          %li
+            = f.input :password_confirmation, {:type => 'password', :label => "Confirm"}
       %fieldset
         %button{type: "submit"} Update
+
+- @name = User.name
+%h3
+  #{@user.first_name}

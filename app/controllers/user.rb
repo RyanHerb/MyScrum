@@ -49,12 +49,14 @@ module MyScrum
     end
 
     post '/login' do
+      puts "post to /user/login"
       @title = "Login"
       if authenticate!(:user)
+        puts "authenticated"
         if session[:return_to] && session[:return_to] !~ /login/
           redirect "/user#{session.delete(:return_to)}"
         else
-          redirect '/user'
+          redirect '/'
         end
       else
         @error = "Invalid username or password. Please try again."
@@ -71,8 +73,21 @@ module MyScrum
     # = User Settings =
     # ========================
 
-    get '/form' do
+    get '/profile' do
+      @user = @current_user
+      haml :index, :layout => false
+    end
+
+    get '/profile/form' do
+      @user = @current_user
       haml :form, :layout => false
+    end
+
+    put '/profile/form' do
+      @current_user.set(params[:user]) 
+      @current_user.save
+      flash[:notice] = "Account Updated"
+      redirect '/'
     end
 
 
@@ -117,9 +132,6 @@ module MyScrum
     #  haml :index
     #end
 
-    get '/profile' do
-      haml :profile
-    end
 
     #put '/update' do # update profile
 #      puts params.inspect
