@@ -40,10 +40,10 @@
     
     #header
       #userlogin.floatright
-        
+        %a.badge{:href => '/'} Home
         - if @current_user
           %a.badge{:href => '/admin/return'} Back to Admin »
-        %a.badge{:href => '/owner/logout'} log out
+        %a.badge{:href => '/owner/logout'} Log Out
 
         
       #logo
