@@ -2,22 +2,23 @@
 
 .wrapsections
   .panel
-    %Account Settings
-    %link{href: "style.css", media: "all", rel: "stylesheet", type: "text/css"}/
-    %table
-      %tr
-        %th First Name
-        %td= @current_owner.first_name
-      %tr
-        %th Last Name
-        %td= @current_owner.last_name
-      %tr
-        %th Usernmame
-        %td= @current_owner.username
-      %tr
-        %th Email
-        %td= @current_owner.email
+    %fieldset
+      %legend Account Settings
+      %link{href: "style.css", media: "all", rel: "stylesheet", type: "text/css"}/
+      %table
+        %tr
+          %th First Name
+          %td= @current_owner.first_name
+        %tr
+          %th Last Name
+          %td= @current_owner.last_name
+        %tr
+          %th Username
+          %td= @current_owner.username
+        %tr
+          %th Email
+          %td= @current_owner.email
 
-    %a.badge{:href  => '/owner/profile'} edit
+      %a.badge{:href  => '/owner/profile'} edit
 
 
