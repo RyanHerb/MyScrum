@@ -72,27 +72,27 @@ module MyScrum
     # ========================
 
     post '/send_password_reset' do
-      #@owner = Owner.find(:email => params[:email])
-      #unless @owner.blank?
-        # @owner.generate_auth_token
-      #    mail(:name => @owner.name,
+      @owner = Owner.find(:email => params[:email])
+      unless @owner.blank?
+        @owner.generate_auth_token
+          mail(:name => @owner.name,
           
-       #  :email => @owner.email,
-         #    :subject => "Reset your password",
-        #     :body => haml(:"mail/password_reset", :layout => false))
-        #{}"OK"
-      #end
+          :email => @owner.email,
+             :subject => "Reset your password",
+             :body => haml(:"mail/password_reset", :layout => false))
+        "OK"
+      end
     end
 
     get '/reset_password' do 
-      #unless(@owner = Owner.auth_with_token(params[:t]))
-       # flash[:alert] = 'Invalid token, please request another'
-        #redirect '/owner/login'
-      #else
-       # session[:owner] = @owner.pk
-        #flash[:notice] = "You have been logged in, please change your password"
-        #redirect '/owner/profile'
-      #end
+      unless(@owner = Owner.auth_with_token(params[:t]))
+        flash[:alert] = 'Invalid token, please request another'
+        redirect '/owner/login'
+      else
+        session[:owner] = @owner.pk
+        flash[:notice] = "You have been logged in, please change your password"
+        redirect '/owner/profile'
+      end
     end
 
 

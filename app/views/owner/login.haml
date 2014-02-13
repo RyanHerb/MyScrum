@@ -2,8 +2,9 @@
 %html
   %head
     %meta{charset: "UTF-8"}/
-    %title Insert title here
+    %title Log in
     %link{href: "style.css", media: "all", rel: "stylesheet", type: "text/css"}/
+    %script{:src => "/js/jquery-1.7.2.min.js"}
   %body
     %form{:action => "/owner/login", :method => :post}
       .field
@@ -14,3 +15,60 @@
         %input#password{:type => :password, :name => :password}
       .field.submit
         %input{:type => :submit, :name => '', :value => "log in"}
+
+
+      
+%p Not registered?
+%a.badge{:href => '../signup'} Sign up
+
+
+%p.smaller.nomargin
+  %a#forgot_show{:href => "/owner/forgotten_password"} Forgot password?
+
+#forgot{:style => "display: none;"}
+  %p.center
+    Enter your email address below to send a password reset email.
+  %form#forgot_form{:action => "/owner/send_password_reset", :method => :post}
+    .field
+      %label{:for => :login} Email address
+      %input#reset_email{:name => :email, :type => 'email'}
+    .field.submit
+      %input{:type => :submit, :name => '', :value => "Send"}
+    #reset_success
+    #reset_error
+        
+#ajax_spinner{:style => "display: none; text-align: center;"}
+  %img{:src => "/images/ajax-loader-g.gif"}
+  .submit_msg.center.nomargin#reset_error{:style => "color: #c00;"}
+  .submit_msg.center.nomargin#reset_success{:style => "color: #3ec55d;"}
+
+:javascript
+  $(function(){
+    $('#forgot_show').on('click', function(e){
+      e.preventDefault();
+      $('#forgot').fadeIn(250);
+    });
+
+    $('#login_show').on('click', function(e){
+      e.preventDefault();
+      $('#forgot').hide(); $('#login').fadeIn(250);
+    });
+
+    $('#forgot_form').submit(function(e){
+      e.preventDefault();
+      $('#ajax_spinner').show();
+      $('.submit_msg').text('');
+      var reset_email = $('#reset_email').val();
+      $.post($(this).attr('action'), {'email': reset_email}, function(r){
+        $('#ajax_spinner').hide();
+        if(r == "OK"){
+          $('#reset_success').text("Password reset email sent");
+        } else {
+          $('#reset_error').text("Email address not found");
+        }
+      });
+    });
+  });
+
+
+
