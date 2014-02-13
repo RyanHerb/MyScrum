@@ -9,7 +9,8 @@
         %th Repository
         %th isPublic
         %th.right.nosort Actions
-    %tbody    
+    %tbody
+      %a.badge{:href  => '/owner/projects/create'} Create a new project
       - @projects.each do |p|
         %tr.selectable{:rel => "/owner/projects/#{p.pk}/show"}
           %td= p.title
