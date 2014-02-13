@@ -4,13 +4,12 @@
     %meta{charset: "UTF-8"}/
     %title Signup
   %body
-    = form_for @user, :enctype => 'multipart/form-data' do |f|
-      %ol
-        %legend Registration
+    = form_for @owner, :enctype => 'multipart/form-data' do |f|
       %fieldset
-        = f.input :username, :label => 'Username'
+        %legend Registration
         = f.input :first_name, :label => 'First name'
         = f.input :last_name, :label => 'Last name'
+        = f.input :username, :label => 'Username'
         = f.input :email, :label => 'Email'
         = f.input :password, {:type => 'password', :label => "Password"}
         = f.input :password_confirmation, {:type => 'password', :label => "Confirm your password"}

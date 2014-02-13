@@ -1,25 +1,14 @@
 !!!
-%html
-  %head
-    %meta{charset: "UTF-8"}/
-    %Account Settings
-  %body
-    = form_for @current_owner, :action => '/owner/update' do |f|
-      %ol
-        %legend Edit Profile
-      %fieldset
-        %ol
-          %li
-            = f.input :first_name, :label => 'First Name'
-          %li
-            = f.input :last_name, :label => 'Last Name'
-          %li
-            = f.input :username, :label => 'Username'
-          %li
-            = f.input :email, :label => 'Email'
-          %li
-            = f.input :password, {:type => 'password', :label => "New Password"}
-          %li
-            = f.input :password_confirmation, {:type => 'password', :label => "Confirm"}
-      %fieldset
-        %button{type: "submit"} Update
+%Account Settings
+%body
+  = form_for @current_owner, :action => '/owner/update' do |f|
+    %legend Edit Profile
+    %fieldset
+      = f.input :first_name, :label => 'First Name'
+      = f.input :last_name, :label => 'Last Name'
+      = f.input :username, :label => 'Username'
+      = f.input :email, :label => 'Email'
+      = f.input :password, {:type => 'password', :label => "New Password"}
+      = f.input :password_confirmation, {:type => 'password', :label => "Confirm"}
+    %fieldset
+      %button{type: "submit"} Update

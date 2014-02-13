@@ -1,10 +1,9 @@
 !!!
-%html
-  %head
-    %meta{charset: "UTF-8"}/
+
+.wrapsections
+  .panel
     %Account Settings
     %link{href: "style.css", media: "all", rel: "stylesheet", type: "text/css"}/
-  %body
     %table
       %tr
         %th First Name
@@ -19,6 +18,6 @@
         %th Email
         %td= @current_owner.email
 
-%a.badge{:href  => '/form_edit'} edit
+    %a.badge{:href  => '/owner/profile'} edit
 
 
