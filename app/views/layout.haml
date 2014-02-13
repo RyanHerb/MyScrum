@@ -30,7 +30,7 @@
           %a.badge{:href  => '/signup'} Sign Up
           %a.badge{:href  => '/owner/login'} Login 
         - else
-          %a.badge{:href => '/owner/logout'} Log Out
+          %a.badge{:href => '/owner/logout'} #{current_owner.username} - Log Out
           %a.badge{:href => '/owner'} Account Settings
 
       #logo
