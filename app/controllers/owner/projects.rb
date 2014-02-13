@@ -34,6 +34,12 @@ module MyScrum
     post '/projects' do
       @project = Project.new
       @project.set(params[:project])
+      if @project.valid?
+        @project.save
+        flash[:notice] = "Project created"
+      else
+        flash[:notice] = "Error creating project"
+      end
       @project.save
       redirect "/owner/projects"
     end
@@ -45,7 +51,12 @@ module MyScrum
         end
       end
       @project.set(params[:project])
-      @project.save
+      if @project.valid?
+        @project.save
+        flash[:notice] = "Project updated"
+      else
+        flash[:notice] = "Error updating project"
+      end
       redirect '/owner/projects'
     end
 
