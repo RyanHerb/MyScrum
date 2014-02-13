@@ -6,28 +6,18 @@ module MyScrum
       haml :"/projects/index"
     end
 
-    get '/projects/:id/show' do |id|
-      @project = @current_owner.projects.inject do |n, p|
-        if p.id == id
-          return p
-        end
-      end
+    get '/projects/:id/show' do |i|
+      @project = @current_owner.projects.find(:id => i).first
       haml :"/projects/show"
     end
 
-    get '/projects/:id/edit' do |id|
-      @project = @current_owner.projects.inject do |n, p|
-        if p.id == id
-          return p
-        end
-      end
+    get '/projects/:id/edit' do |i|
+      @project = @current_owner.projects.find(:id => i).first
       haml :"/projects/edit"
     end
 
     get '/projects/create' do
       @project = Project.new
-      #@project.set(params[:project])
-      #@project.save
       haml :"/projects/edit"
     end
 
