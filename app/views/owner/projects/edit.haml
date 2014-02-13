@@ -1,6 +1,7 @@
 !!!
+%h1 = @project.new? ? "Create Project" : "Edit #{@project.title}"
 %fieldset
-  %legend Project Settings
+  %legend Project Details
   %body
     //= form_for @project, :action => "/owner/projects/#{@project.pk}/update" do |f|
     = form_for @project do |f|
