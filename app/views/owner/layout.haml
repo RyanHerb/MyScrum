@@ -43,6 +43,8 @@
         %a.badge{:href => '/'} Home
         - if @current_user
           %a.badge{:href => '/admin/return'} Back to Admin »
+        %a.badge{:href => '/owner/projects'} Projects
+        %a.badge{:href => '/owner'} Account Settings
         %a.badge{:href => '/owner/logout'} #{current_owner.username} - Log Out
 
         
