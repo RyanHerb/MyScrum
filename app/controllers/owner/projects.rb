@@ -7,12 +7,24 @@ module MyScrum
     end
 
     get '/projects/:id/show' do |i|
-      @project = @current_owner.projects.find(:id => i).first
+      @project = @current_owner.projects.inject([]) do |arr, p|
+        if p.pk == i.to_i
+          arr << p
+        end
+        arr
+      end
+      @project = @project.first
       haml :"/projects/show"
     end
 
     get '/projects/:id/edit' do |i|
-      @project = @current_owner.projects.find(:id => i).first
+      @project = @current_owner.projects.inject([]) do |arr, p|
+        if p.pk == i.to_i
+          arr << p
+        end
+        arr
+      end
+      @project = @project.first
       haml :"/projects/edit"
     end
 
