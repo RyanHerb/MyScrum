@@ -1,1 +1,19 @@
-SHOW PROJECT
+!!!
+
+.wrapsections
+  .panel
+    %fieldset
+      %legend Project
+      %link{href: "style.css", media: "all", rel: "stylesheet", type: "text/css"}/
+      %table
+        %tr
+          %th Title
+          %td= @project.title
+        %tr
+          %th Repository
+          %td= @project.repo
+        %tr
+          %th Public
+          %td= @project.public
+
+      %a.badge{:href  => "/owner/projects/#{@project.pk}/edit"} Edit
