@@ -1,0 +1,78 @@
+%h2= @user.new? ? 'Add new staff member' : "Edit #{@user.name}"
+
+= form_for @user, :enctype => 'multipart/form-data' do |f|
+  .col.half.left
+    %fieldset
+      %legend Basic information
+      = f.input :first_name
+      = f.input :last_name
+      = f.input :initials, :input_options => {:class => 'vshort'}, :hint => 'Up to three letters, appears in calendars etc.', :label => 'Initials (required)'
+      = f.input :email
+      = f.input :mobile
+      = f.input :twitter
+      
+    %fieldset
+      %legend Biography
+      %textarea#user_bio{:name => 'user[bio]', :rows => '6'}= @user.bio
+      .hint This text is seen by user and can be styled using <a href="http://bywordapp.com/markdown/syntax.html" target="blank">Markdown</a>
+      -# = f.textarea :bio, :hint => 'This text is seen by user and can be styled using <a href="http://bywordapp.com/markdown/syntax.html" target="blank">Markdown</a>', :input_options => {:rows => 6}
+  
+  .col.half.right
+    %fieldset
+      %legend Photo
+      - if @user.photo_exists?(:profile)
+        #profile_photo.floatright
+          %img{:src => @user.photo_url(:profile)}
+          %a.delete_link{:href => "/admin/users/#{@user.pk}/photo", :rel => 'Are you sure you want to delete this photo?', :rev => "#eval__$('#profile_photo').fadeOut('slow')"}
+            %img#delete_photo{:src => '/img/icons/delete.png'}
+      = f.input :photo, :type => :file, :class => 'floatleft', :label => @user.photo_exists?(:profile) ? 'Update photo' : 'upload a photo'
+          
+    %fieldset.roles
+      %legend Role(s)
+      .block{:style => "clear: both;"}
+        = f.checkbox :admin
+      .block{:style => "clear: both;"}
+        = f.checkbox :vet
+      .block{:style => "clear: both;"}
+        = f.checkbox :behaviourist
+      .block{:style => "clear: both;"}
+        = f.checkbox :assistant
+      .block{:style => "clear: both;"}
+        = f.checkbox :media
+  
+    - if @user.new?
+      %fieldset
+        %legend Set password
+        = f.input :password
+        = f.input :password_confirmation
+  
+    - else
+      %fieldset
+        %legend Working pattern
+        .field
+          %label Selected working pattern
+          %select{:name => "user[working_pattern_id]"}
+            %option{:value => ''} none
+            - WorkingPattern.all.each do |wp|
+              %option{:value => wp.pk, :selected => (@user.working_pattern_id == wp.pk)}=wp.name
+        .field
+          %label{:for => 'apply_pattern_from'} Apply working pattern from
+          %input.date#apply_pattern_from{:type => :text, :name => "user[apply_pattern_from]", :value => (@user.pattern_apply_until.uk rescue ''), :placeholder => 'apply working pattern from…'}
+        .field
+          %label{:for => 'apply_pattern'} Working pattern applies until
+          %input.date#apply_pattern{:type => :text, :name => "user[apply_pattern]", :value => (@user.pattern_apply_until.uk rescue ''), :placeholder => 'pattern applies until date…'}
+  
+  = f.submit
+     
+
+:javascript
+  $(function(){
+    $('#delete_photo').hover(
+      function() {
+        $('#profile_photo').animate({ opacity: 0.4}, 1000);
+      },
+      function() {
+        $('#profile_photo').css('opacity', 1);
+      }
+    );
+  });
