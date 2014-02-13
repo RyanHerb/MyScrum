@@ -38,6 +38,7 @@ module MyScrum
       @project.set(params[:project])
       if @project.valid?
         @project.save
+        @current_owner.add_project(@project)
         flash[:notice] = "Project created"
       else
         flash[:notice] = "Error creating project"
