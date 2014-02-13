@@ -2,6 +2,12 @@ class Owner < Sequel::Model
   include GeneralUser
   extend GeneralUser::ClassMethods
 
+  # ================
+  # = Associations =
+  # ================
+
+  many_to_many :projects, class: :Project , join_table: :user_project, left_key: :user, right_key: :project
+
   # =========
   # = Hooks =
   # =========

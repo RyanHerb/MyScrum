@@ -2,8 +2,8 @@
 %Account Settings
 %body
   = form_for @current_owner, :action => '/owner/update' do |f|
-    %legend Edit Profile
     %fieldset
+    %legend Edit Profile
       = f.input :first_name, :label => 'First Name'
       = f.input :last_name, :label => 'Last Name'
       = f.input :username, :label => 'Username'
