@@ -1,6 +1,6 @@
 Sequel.migration do
   up do
-     run "alter table projects add column description varchar(64) after repo"
+     run "alter table projects add column description varchar(255) after repo"
   end
 
   down do
