@@ -1,4 +1,5 @@
 class Project < Sequel::Model
+  require 'uri'
 
 	# ================
 	# = Associations =
@@ -9,6 +10,8 @@ class Project < Sequel::Model
   def validate
     validates_presence :title, :message => 'Title must not be blank'
     validates_unique :title
+    validates_max_length 255, :description, :message => 'Description must not exceed 255 characters'
+    validates_format URI.regexp, :repo, :allow_blank => true, :message => 'Repository URL is not valid'
   end
   
 end

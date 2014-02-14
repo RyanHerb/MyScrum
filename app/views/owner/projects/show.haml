@@ -17,14 +17,16 @@
               %th Title
               %td= @project.title
             %tr
+              %th Description
+              %td= @project.description
+            %tr
               %th Repository
               %td= @project.repo
             %tr
               %th Public
-              %td= @project.public ? "True" : "False"
+              %td= @project.public ? "Yes" : "No"
           -# if @current_owner.ScrumMaster?
           %a.badge{:href  => "/owner/projects/#{@project.pk}/edit"} Edit
 
         #tab2.pane
           test
-
