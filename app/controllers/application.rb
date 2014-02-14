@@ -30,6 +30,16 @@ module MyScrum
     # =====
 
     get '/' do
+      @projects = Project.all
+      @public = @projects.inject([])  do |a,p|
+        if p.public
+          a << p
+        end
+        a
+      end
+      if @public.nil?
+        puts "FUUUUUUUUUUUUUUUCK"
+      end
       haml :index
     end
 

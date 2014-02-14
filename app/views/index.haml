@@ -2,4 +2,18 @@
 
 %h1.center MyScrum Homepage
 .div.center
-	MyScrum Website
+  MyScrum Website
+%p
+%p
+
+.content
+  %table.datatable{:style => "width: 100%"}
+    %thead
+      %tr
+        %th Title
+        %th Repository
+    %tbody
+      - @public.each do |p|
+        %tr.selectable
+          %td= p.title
+          %td= p.repo
