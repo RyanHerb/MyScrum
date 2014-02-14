@@ -9,4 +9,6 @@
         = f.input :description, :label => 'Description'
         = f.input :repo, :label => 'Repository'
         = f.checkbox :public, :label => 'Public'
+        = f.select :collaborators, :label => 'Collaborators', :options => @collaborators
+
         = f.submit "Submit"
