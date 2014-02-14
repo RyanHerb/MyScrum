@@ -3,16 +3,28 @@
   .panel
     %fieldset
       %legend Project
-      %link{href: "style.css", media: "all", rel: "stylesheet", type: "text/css"}/
-      %table
-        %tr
-          %th Title
-          %td= @project.title
-        %tr
-          %th Repository
-          %td= @project.repo
-        %tr
-          %th Public
-          %td= @project.public ? "True" : "False"
+      .tabs
+        %ul
+          %li.tab
+            %a.nolink{:href => '#tab1'} Details
+          %li.tab
+            %a{:href => '#tab2'} Team
+        .clear
 
-      %a.badge{:href  => "/owner/projects/#{@project.pk}/edit"} Edit
+        #tab1 
+          %table
+            %tr
+              %th Title
+              %td= @project.title
+            %tr
+              %th Repository
+              %td= @project.repo
+            %tr
+              %th Public
+              %td= @project.public ? "True" : "False"
+          -# if @current_owner.ScrumMaster?
+          %a.badge{:href  => "/owner/projects/#{@project.pk}/edit"} Edit
+
+        #tab2.pane
+          test
+
