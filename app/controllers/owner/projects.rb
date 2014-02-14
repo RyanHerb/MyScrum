@@ -48,11 +48,13 @@ module MyScrum
     end
 
     put '/projects/:id' do |id|
-      @project = @current_owner.projects.inject do |n, p|
-        if p.id == id
-          return p
+      @project = @current_owner.projects.inject([]) do |arr, p|
+        if p.pk == id.to_i
+          arr << p
         end
+        arr
       end
+      @project = @project.first
       @project.set(params[:project])
       if @project.valid?
         @project.save
