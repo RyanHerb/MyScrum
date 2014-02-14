@@ -69,7 +69,7 @@ p
 // PAGE BLOCKS
 
 #header
-  background: url(/img/bgds/pets-header.png) no-repeat 350px 8px $brown
+  background: $brown
   border-bottom: 1px solid white
   +boxshadow($xoff: 0, $yoff: 5px, $blur: 6px, $spread: 0, $color: rgba(0,0,0,0.3))
   margin: 0 auto
@@ -126,7 +126,7 @@ a.badge
     text-shadow: 0 1px 0 $vetsk-green-dark
     
   #header &
-    background: url(/img/bgds/orange-grd-bgd.png) repeat-x 0 0 $vetsk-green-mid
+    background: $vetsk-green-mid
     border: 2px solid #fff
     padding: 5px 12px
     text-shadow: none
@@ -190,19 +190,19 @@ img.petprofile
     h2, h4
       color: $orange
     a.badge 
-      background: url(/img/bgds/blue-grd-bgd.png) repeat-x center top $vetsk-skyblue 
+      background: center top $vetsk-skyblue 
       border: 2px solid $orange
   &.klinictv
     h2, h4
       color: $orange  
     a.badge 
-      background: url(/img/bgds/orange-grd-bgd.png) repeat-x center top #eb9719 
+      background: center top #eb9719 
       border: 2px solid #bd6c13
   &.shoponline
     h2, h4
       color: $purple  
     a.badge 
-      background: url(/img/bgds/purple-grd-bgd.png) repeat-x center top $purple 
+      background: center top $purple 
       border: 2px solid #8c3e77   
       
   &.vetskitchen
@@ -742,7 +742,7 @@ ul.upcoming
     height: 285px
     margin-left: 25px
 
-  .vetsk-tabs
+  .tabs
     .pane
       ul
         margin: 0
@@ -754,6 +754,9 @@ ul.upcoming
         color: $green
       &.reviews
         padding-top: 0
+
+  .ui-tabs-hide
+    display: none
         
   .testimonial
     border-top: 1px dotted #ccc

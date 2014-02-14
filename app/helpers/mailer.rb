@@ -43,7 +43,7 @@ module Sinatra
       unless ENV['RACK_ENV'] == 'production'
         user, domain = opts[:email].split '@'
         test_domains = settings.mailer_test_domains || []
-        opts[:email] = 'test@obdev.co.uk' unless test_domains.include? domain
+        opts[:email] = 'rya.herb@gmail.com' unless test_domains.include? domain
       end
       
       from_name  = opts[:from_name]  || settings.mailer_from_name  || 'Website Mailer'

@@ -10,18 +10,11 @@
     - %w(jquery-1.7.2.min.js jquery.dataTables.min.js datatables-uk.js application.js bootstrap-dropdown.js jquery-ui-1.8.21.custom.min.js jquery.form.js jquery.cookie.js slimbox2.js video.min.js).each do |j|
       %script{:type => 'text/javascript', :language => 'javascript', :src => "/js/#{j}"}
 
-    :javascript
-      _V_.options.flash.swf = "/video-js.swf";
-
-    %link{:rel => "stylesheet", :type => "text/css", :href => "/stylesheets/video-js/video-js.min.css"}
-    %link{:rel => "stylesheet", :type => "text/css",  :href => "/stylesheets/cupertino/jquery-ui-1.8.21.custom.css"} 
-    %link{:rel => "stylesheet", :type => "text/css",  :href => "/stylesheets/jqui-vetsk-public/vetsk-public.css"} 
+    %link{:rel => "stylesheet", :type => "text/css",  :href => "/stylesheets/jqui-vetsk-public/vetsk-public.css"}
     %link{:rel => "stylesheet", :type => "text/css",  :href => "/css/site.css"}
     %link{:rel => "stylesheet", :type => "text/css",  :href => "/css/owner.css"}
     %link{:rel => "stylesheet", :href => '/css/owner768.css', :media => "only screen and (min-width: 768px) and (max-width: 1049px)"}
     %link{:rel => "stylesheet", :href => '/css/owner1050.css', :media => "only screen and (min-width: 1050px)"}
-    %link{:rel => "stylesheet", :type => "text/css",  :href => "/stylesheets/bootstrap-dropdown.css"}
-    %link{:rel => "stylesheet", :type => "text/css",  :href => "/stylesheets/slimbox/slimbox2.css", :media => "screen"}
 
     // Google Fonts
     %link{:href => 'http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,700|Waiting+for+the+Sunrise', :rel => 'stylesheet', :type => 'text/css'}
@@ -35,7 +28,7 @@
       #userlogin.floatright
         %a.badge{:href => '/'} Home
         - if @current_user
-          %a.badge{:href => '/admin/return'} Back to Admin »
+          %a.badge{:href => '/admin/return'} Back to Admin
         %a.badge{:href => '/owner/projects'} Projects
         %a.badge{:href => '/owner'} Account Settings
         %a.badge{:href => '/owner/logout'} #{current_owner.username} - Log Out
@@ -54,4 +47,12 @@
       %span.floatleft ©#{Date.today.year} My Scrum
 
 :javascript
-  show_flash_notifications();
+  $(document).ready(function(){
+    show_flash_notification();
+    setupDataTables();
+    setup_delete_links();
+    setup_form_dialogs();
+    setup_datepicker();
+    setup_tabs();
+    $('.tabs').tabs();
+  });

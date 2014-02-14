@@ -203,7 +203,7 @@ function setup_timepicker() {
 }
 
 function setup_tabs() {
-  $(".vetsk-tabs").tabs();
+  $(".tabs").tabs();
 }
 
 function dialog_alert(msg){
@@ -249,7 +249,7 @@ function ajax_put(url){
   }).error(function(e){ dialog_alert(e.status + ": " + e.statusText); });
 }
 
-$(function(){
+$(document).ready(function(){
   show_flash_notification();
   setupDataTables();
   setup_delete_links();
