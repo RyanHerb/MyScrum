@@ -1,5 +1,4 @@
 !!!
-
 .wrapsections
   .panel
     %fieldset
@@ -14,6 +13,6 @@
           %td= @project.repo
         %tr
           %th Public
-          %td= @project.public
+          %td= @project.public ? "True" : "False"
 
       %a.badge{:href  => "/owner/projects/#{@project.pk}/edit"} Edit

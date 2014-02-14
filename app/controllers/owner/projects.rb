@@ -6,28 +6,30 @@ module MyScrum
       haml :"/projects/index"
     end
 
-    get '/projects/:id/show' do |id|
-      @project = @current_owner.projects.inject do |n, p|
-        if p.id == id
-          return p
+    get '/projects/:id/show' do |i|
+      @project = @current_owner.projects.inject([]) do |arr, p|
+        if p.pk == i.to_i
+          arr << p
         end
+        arr
       end
+      @project = @project.first
       haml :"/projects/show"
     end
 
-    get '/projects/:id/edit' do |id|
-      @project = @current_owner.projects.inject do |n, p|
-        if p.id == id
-          return p
+    get '/projects/:id/edit' do |i|
+      @project = @current_owner.projects.inject([]) do |arr, p|
+        if p.pk == i.to_i
+          arr << p
         end
+        arr
       end
+      @project = @project.first
       haml :"/projects/edit"
     end
 
     get '/projects/create' do
       @project = Project.new
-      #@project.set(params[:project])
-      #@project.save
       haml :"/projects/edit"
     end
 
@@ -36,6 +38,7 @@ module MyScrum
       @project.set(params[:project])
       if @project.valid?
         @project.save
+        @current_owner.add_project(@project)
         flash[:notice] = "Project created"
       else
         flash[:notice] = "Error creating project"

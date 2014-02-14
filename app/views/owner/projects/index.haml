@@ -15,7 +15,7 @@
         %tr.selectable{:rel => "/owner/projects/#{p.pk}/show"}
           %td= p.title
           %td= p.repo
-          %td= p.public
+          %td= p.public ? "True" : "False"
           %td.right.actions
             %a{:href => "/owner/projects/#{p.pk}/show"}
               %img{:src => '/img/icons/view.png', :title => "view #{p.title}"}
