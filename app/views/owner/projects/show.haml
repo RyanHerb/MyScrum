@@ -14,5 +14,8 @@
         %tr
           %th Public
           %td= @project.public ? "True" : "False"
+        %tr
+          %th Project Owner
+          %td= "placeholder"
 
       %a.badge{:href  => "/owner/projects/#{@project.pk}/edit"} Edit

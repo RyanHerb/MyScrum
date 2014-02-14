@@ -7,15 +7,15 @@
       %tr
         %th Title
         %th Repository
-        %th isPublic
+        %th Public
         %th.right.nosort Actions
     %tbody
       %a.badge{:href  => '/owner/projects/create'} Create a new project
       - @projects.each do |p|
-        %tr.selectable{:rel => "/owner/projects/#{p.pk}/show"}
+        %tr.selectable
           %td= p.title
           %td= p.repo
-          %td= p.public ? "True" : "False"
+          %td= p.public ? "Yes" : "No"
           %td.right.actions
             %a{:href => "/owner/projects/#{p.pk}/show"}
               %img{:src => '/img/icons/view.png', :title => "view #{p.title}"}
