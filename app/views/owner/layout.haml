@@ -26,13 +26,6 @@
     // Google Fonts
     %link{:href => 'http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,700|Waiting+for+the+Sunrise', :rel => 'stylesheet', :type => 'text/css'}
     
-    /[if lte IE 9] 
-      %link{:rel => "stylesheet", :type => "text/css",  :href => "/css/site768.css"} 
-      %link{:rel => "stylesheet", :type => "text/css",  :href => "/css/site-ie.css"} 
-
-    /[if IE 7 ] 
-      %link{:rel => "stylesheet", :type => "text/css",  :href => "/css/site-ie7.css"}
-    
   %body{:class => @bclass, :id => @bid}
     
     -# show flash message if any (from sinatra-flash)
