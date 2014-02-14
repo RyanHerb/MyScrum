@@ -40,11 +40,10 @@ module MyScrum
         @project.save
         @current_owner.add_project(@project)
         flash[:notice] = "Project created"
+        redirect "/owner/projects"
       else
-        flash[:notice] = "Error creating project"
-      end
-      @project.save
-      redirect "/owner/projects"
+        haml :"/projects/edit"
+      end 
     end
 
     put '/projects/:id' do |id|
@@ -59,10 +58,11 @@ module MyScrum
       if @project.valid?
         @project.save
         flash[:notice] = "Project updated"
+        redirect '/owner/projects'
       else
-        flash[:notice] = "Error updating project"
+        haml :"/projects/edit"
       end
-      redirect '/owner/projects'
+      
     end
 
   end
