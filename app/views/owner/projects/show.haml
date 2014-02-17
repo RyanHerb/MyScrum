@@ -29,4 +29,33 @@
           %a.badge{:href  => "/owner/projects/#{@project.pk}/edit"} Edit
 
         #tab2.pane
-          test
+          %table.datatable
+            %thead
+              %tr
+                %th Name
+                %th Role
+                %th  Actions
+            %tbody
+              - @team.each do |t|
+                %tr
+                  %td= t.username ? t.username : t.name
+                  %td= "role"
+                  %td
+                    %a#remove{:href => "/owner/projects/#{@project.pk}/remove_owner/#{t.pk}", :"data-pid" => "#{@project.pk}", :"data-oid" => "#{t.pk}"} 
+                      %img{:src=>"/img/icons/delete.png", :title => "Remove "}
+
+:javascript
+  $(function() {
+    $('#remove').click(function(e) {
+      e.preventDefault();
+      $.post($(this).attr('href'), {'pid': $(this).attr('data-pid'), 'oid': $(this).attr('data-oid')}, function(r){
+        //$('#ajax_spinner').hide();
+        if(r == "OK"){
+          $(this).hide();
+        }
+      });
+    });
+  });
+
+
+

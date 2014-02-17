@@ -14,6 +14,7 @@ module MyScrum
         arr
       end
       @project = @project.first
+      @team = @project.users
       haml :"/projects/show"
     end
 
@@ -62,7 +63,12 @@ module MyScrum
       else
         haml :"/projects/edit"
       end
-      
+    end
+
+    post '/projects/:pid/remove_owner/:oid' do |pid, oid|
+      @project = Project.find(:id => pid)
+      @owner = Owner.find(:id => oid)
+      @project.remove_user(@Owner)
     end
 
   end
