@@ -6,6 +6,7 @@
     %thead
       %tr
         %th Title
+        %th Description
         %th Repository
         %th Public
         %th.right.nosort Actions
@@ -14,6 +15,7 @@
       - @projects.each do |p|
         %tr.selectable
           %td= p.title
+          %td= p.description
           %td= p.repo
           %td= p.public ? "Yes" : "No"
           %td.right.actions

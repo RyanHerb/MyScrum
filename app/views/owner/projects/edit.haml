@@ -6,7 +6,7 @@
     = form_for @project do |f|
       %fieldset
         = f.input :title, :label => 'Title'
-        = f.input :description, :label => 'Description'
+        = f.textarea  :description, :input_options => {:rows => 6}, :label => 'Description'
         = f.input :repo, :label => 'Repository'
         = f.checkbox :public, :label => 'Public'
         = f.submit "Submit"
