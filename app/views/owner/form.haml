@@ -11,5 +11,4 @@
       = f.input :email, :label => 'Email'
       = f.input :password, {:type => 'password', :label => "New Password"}
       = f.input :password_confirmation, {:type => 'password', :label => "Confirm"}
-    %fieldset
-      %button{type: "submit"} Update
+      = f.submit "Submit"
