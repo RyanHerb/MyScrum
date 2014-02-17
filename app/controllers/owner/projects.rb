@@ -18,7 +18,7 @@ module MyScrum
       @project_owner = @project.users_dataset.where(:position => "project owner").first
       @scrum_master = @project.users_dataset.where(:position => "scrum master").first
       @owners = Owner.all.inject([]) do |arr2, o|
-        unless @project.users.include?(o)
+        if @project.users.find_index(o).nil?
           arr2 << o
         end
         arr2
@@ -57,16 +57,24 @@ module MyScrum
       end
       @owner = @owner.first
       @scrum_master = @project.users_dataset.where(:position => "scrum master").first
-      if !@owner.nil? and @owner.valid?
+      
+      if @owner.nil?
         unless @scrum_master.nil?
-          @project.users_dataset.where(:user => @scrum_master.pk).update(:position => "developer")
+            @project.users_dataset.where(:user => @scrum_master.pk).update(:position => "developer")
         end
-        @project.remove_user(@owner)
-        @project.add_user(@owner)
-        @project.users_dataset.where(:user => @owner.pk).update(:position => "scrum master") 
         redirect "/owner/projects/#{@project.pk}/show"
       else
-        redirect "/owner/projects/#{@project.pk}/users/add"
+        if @owner.valid?
+          unless @scrum_master.nil?
+            @project.users_dataset.where(:user => @scrum_master.pk).update(:position => "developer")
+          end
+          @project.remove_user(@owner)
+          @project.add_user(@owner)
+          @project.users_dataset.where(:user => @owner.pk).update(:position => "scrum master") 
+          redirect "/owner/projects/#{@project.pk}/show"
+        else
+          redirect "/owner/projects/#{@project.pk}/users/add"
+        end
       end
       
     end
