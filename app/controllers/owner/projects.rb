@@ -79,8 +79,6 @@ module MyScrum
       
     end
 
-
-
     post '/projects/:id/users/add' do |i|
       @project = Project.find(:id => i)
       @owner = Owner.all.inject([]) do |arr2, o|
@@ -101,22 +99,15 @@ module MyScrum
       end
     end
 
-
-
-
     get '/projects/:id/edit' do |i|
       @project = Project.find(:id => i)
-      haml :"/projects/edit"
+      haml :"/projects/form"
     end
-
-
 
     get '/projects/create' do
       @project = Project.new
-      haml :"/projects/edit"
+      haml :"/projects/form"
     end
-
-
 
     post '/projects' do
       @project = Project.new
@@ -128,7 +119,7 @@ module MyScrum
         flash[:notice] = "Project created"
         redirect "/owner/projects"
       else
-        haml :"/projects/edit"
+        haml :"/projects/form"
       end 
     end
 
@@ -140,39 +131,15 @@ module MyScrum
         flash[:notice] = "Project updated"
         redirect '/owner/projects'
       else
-        haml :"/projects/edit"
+        haml :"/projects/form"
       end
     end
 
-    get '/projects/:pid/remove_user/:oid' do |pid, oid|
+    delete '/projects/:pid/remove_user/:oid' do |pid, oid|
       @project = Project.find(:id => pid)
       @owner = Owner.find(:id => oid)
       @project.remove_user(@owner)
       redirect "/owner/projects/#{@project.pk}/show"
-    end
-
-    get '/projects/:id/sprint_create' do 
-      @sprint = Sprint.new
-      haml :"/projects/sprint_create"
-    end
-
-    post '/projects/:id/sprints/:id' do |id|
-      @project = @current_owner.projects.inject([]) do |arr, p|
-        if p.pk == id.to_i
-          arr << p
-        end
-        arr
-      end
-      @project = @project.first
-      @sprint = Sprint.new
-      @sprint.set(params[:sprint])
-      if @sprint.valid?
-        @sprint.save
-        @project.add_sprint(@sprint)
-        redirect "/projects/show"
-      else
-        haml :"/projects/sprint_create"
-      end
     end
 
   end
