@@ -9,6 +9,8 @@
             %a.nolink{:href => '#tab1'} Details
           %li.tab
             %a{:href => '#tab2'} Team
+          %li.tab
+            %a{:href => '#tab3'} Sprints
         .clear
 
         #tab1 
@@ -43,6 +45,20 @@
                   %td
                     %a#remove{:href => "/owner/projects/#{@project.pk}/remove_owner/#{t.pk}", :"data-pid" => "#{@project.pk}", :"data-oid" => "#{t.pk}"} 
                       %img{:src=>"/img/icons/delete.png", :title => "Remove "}
+
+
+        #tab3.pane
+          %table.datatable
+            %thead
+              %tr
+                %th ID
+                %th Stats
+                %th User Stories
+                %th Start Date
+                %th Duration (days)
+                %th Actions
+          %a.badge{:href  => "/owner/projects/#{@project.pk}/sprint_create"} Create new sprint
+
 
 :javascript
   $(function() {
