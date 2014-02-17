@@ -7,25 +7,40 @@ module MyScrum
     end
 
     get '/projects/:id/show' do |i|
-      @project = @current_owner.projects.inject([]) do |arr, p|
-        if p.pk == i.to_i
-          arr << p
-        end
-        arr
-      end
-      @project = @project.first
+      @project = Project.find(:id => i)
       @team = @project.users
       haml :"/projects/show"
     end
 
-    get '/projects/:id/edit' do |i|
-      @project = @current_owner.projects.inject([]) do |arr, p|
-        if p.pk == i.to_i
-          arr << p
+    get '/projects/:id/users/add' do |i|
+      @project = Project.find(:id => i)
+      @owners = Owner.all.inject([]) do |arr2, o|
+        unless o.projects.include?(@project)
+          arr2 << o
         end
-        arr
+        arr2
       end
-      @project = @project.first
+      haml :"/projects/users"
+    end
+
+    post '/projects/:id/users/add' do |i|
+      @project = Project.find(:id => i)
+      @owner = Owner.all.inject([]) do |arr2, o|
+        if o.pk == params[:owner].to_i
+          arr2 << o
+        end
+        arr2
+      end
+      @owner = @owner.first
+
+      if @owner.valid?
+        @project.add_user(@owner)
+      end
+      redirect "/owner/projects/#{@project.pk}/show"
+    end
+
+    get '/projects/:id/edit' do |i|
+      @project = Project.find(:id => i)
       haml :"/projects/edit"
     end
 
@@ -48,13 +63,7 @@ module MyScrum
     end
 
     put '/projects/:id' do |id|
-      @project = @current_owner.projects.inject([]) do |arr, p|
-        if p.pk == id.to_i
-          arr << p
-        end
-        arr
-      end
-      @project = @project.first
+      @project = Project.find(:id => id)
       @project.set(params[:project])
       if @project.valid?
         @project.save
@@ -65,7 +74,7 @@ module MyScrum
       end
     end
 
-    post '/projects/:pid/remove_owner/:oid' do |pid, oid|
+    post '/projects/:pid/remove_user/:oid' do |pid, oid|
       @project = Project.find(:id => pid)
       @owner = Owner.find(:id => oid)
       @project.remove_user(@Owner)
