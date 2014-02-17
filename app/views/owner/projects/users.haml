@@ -4,22 +4,44 @@
 %fieldset
   %legend Add a collaborator
   %body
-    %form{:action => "/owner/projects/#{@project.pk}/project_owner", :method => :post}
+    %form{:action => "/owner/projects/#{@project.pk}/users/project_owner", :method => :post}
       .field
-        %label{:for => :collaborator} Project Owner
-        %select#collaborator{:name => :collaborator}
+        %label{:for => :owner} Project Owner
+        %select#project_owner{:name => :owner}
+          - unless @project_owner.nil?
+            - @id_owner = @project_owner.pk
+          - else
+            - @id_owner = -1
+            %option
+          - Owner.all.each do |i|
+            - if i.id == @id_owner
+              %option{:value => i.id, :selected => "selected"}= i.username
+            - else
+              %option{:value => i.id}= i.username
       .field.submit
         %input{:type => :submit, :name => '', :value => "Update"}
-    %form{:action => "/owner/projects/#{@project.pk}/scrum_master", :method => :post}
+    %form{:action => "/owner/projects/#{@project.pk}/users/scrum_master", :method => :post}
       .field
-        %label{:for => :collaborator} Scrum Master
-        %select#collaborator{:name => :collaborator}
+        %label{:for => :owner} Scrum Master
+        %select#scrum_master{:name => :owner}
+          - unless @scrum_master.nil?
+            - @id_scrum = @scrum_master.pk
+          - else
+            - @id_scrum = -1
+            %option
+          - Owner.all.each do |i|
+            - if i.id == @id_scrum
+              %option{:value => i.id, :selected => "selected"}= i.username
+            - else
+              %option{:value => i.id}= i.username
+          
       .field.submit
         %input{:type => :submit, :name => '', :value => "Update"}
     %form{:action => "/owner/projects/#{@project.pk}/users/add", :method => :post}
       .field
-        %label{:for => :owner} Collaborator
+        %label{:for => :owner} Select a new collaborator
         %select#owner{:name => :owner}
+          %option
           - @owners.each do |i|
             %option{:value => i.id}= i.username
       .field.submit

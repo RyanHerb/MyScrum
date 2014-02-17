@@ -6,7 +6,7 @@ class Owner < Sequel::Model
   # = Associations =
   # ================
 
-  many_to_many :projects, class: :Project , join_table: :user_project, left_key: :user, right_key: :project
+  many_to_many :projects, class: :Project , join_table: :user_project, left_key: :user, right_key: :project, :select => [:projects.*, :user_project__position]
 
   # =========
   # = Hooks =
