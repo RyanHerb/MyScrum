@@ -1,0 +1,11 @@
+!!!
+%h1= "Create new sprint"
+%fieldset
+  %legend Sprint details
+  %body
+    = form_for @sprint do |f|
+      %fieldset
+        = f.input :start_date, :label => 'Start date'
+        = f.input :duration, :label => 'Duration'
+        = f.input :user_stories, :label => 'User stories'
+        = f.submit "Submit"
