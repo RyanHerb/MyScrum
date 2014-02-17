@@ -9,6 +9,7 @@ module MyScrum
     get '/projects/:id/show' do |i|
       @project = Project.find(:id => i)
       @team = @project.users
+      @roles = @project.users_dataset
       haml :"/projects/show"
     end
 
@@ -35,6 +36,7 @@ module MyScrum
 
       if @owner.valid?
         @project.add_user(@owner)
+        @project.users_dataset.where(:user => @owner.pk).update(:position => "developer")
       end
       redirect "/owner/projects/#{@project.pk}/show"
     end
@@ -54,7 +56,8 @@ module MyScrum
       @project.set(params[:project])
       if @project.valid?
         @project.save
-        @current_owner.add_project(@project)
+        @project.add_user(@current_owner)
+        @project.users_dataset.where(:user => @current_owner.pk).update(:position => "project owner")
         flash[:notice] = "Project created"
         redirect "/owner/projects"
       else
@@ -74,10 +77,11 @@ module MyScrum
       end
     end
 
-    post '/projects/:pid/remove_user/:oid' do |pid, oid|
+    get '/projects/:pid/remove_user/:oid' do |pid, oid|
       @project = Project.find(:id => pid)
       @owner = Owner.find(:id => oid)
-      @project.remove_user(@Owner)
+      @project.remove_user(@owner)
+      redirect "/owner/projects/#{@project.pk}/show"
     end
 
   end
