@@ -1,0 +1,30 @@
+!!!Strict
+-@bclass = 'project edit'
+
+.content
+  %table.datatable{:style => "width: 100%"}
+    %thead
+      %tr
+        %th Id
+        %th Title
+        %th Description
+        %th Priority
+        %th Diffilculty
+        %th Finished
+        %th Validate
+        %th.right.nosort Actions
+    %tbody
+      - @userstories.each do |u|
+        %tr.selectable
+          %td= u.id
+          %td= u.title
+          %td= u.description
+          %td= u.priority
+          %td= u.diffilculty
+          %td= u.finished ? "Yes" : "No"
+          %td= u.isvalidate ? "Yes" : "No"
+          %td.right.actions
+            %a{:href => "/owner/userstories/#{u.pk}/show"}
+              %img{:src => '/img/icons/view.png', :title => "view #{u.title}"}
+            %a{:href => "/owner/userstories/#{u.pk}/edit"}
+              %img{:src => '/img/icons/edit.png', :title => "edit #{u.title}"}
