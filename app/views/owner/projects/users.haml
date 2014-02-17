@@ -16,9 +16,11 @@
         %select#collaborator{:name => :collaborator}
       .field.submit
         %input{:type => :submit, :name => '', :value => "Update"}
-    %form{:action => "/owner/projects/#{@project.pk}/add", :method => :post}
+    %form{:action => "/owner/projects/#{@project.pk}/users/add", :method => :post}
       .field
-        %label{:for => :collaborator} Collaborator
-        %select#collaborator{:name => :collaborator}
+        %label{:for => :owner} Collaborator
+        %select#owner{:name => :owner}
+          - @owners.each do |i|
+            %option{:value => i.id}= i.username
       .field.submit
         %input{:type => :submit, :name => '', :value => "Add collaborator(s)"}
