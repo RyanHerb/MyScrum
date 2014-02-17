@@ -18,7 +18,7 @@ module MyScrum
       @project_owner = @project.users_dataset.where(:position => "project owner").first
       @scrum_master = @project.users_dataset.where(:position => "scrum master").first
       @owners = Owner.all.inject([]) do |arr2, o|
-        unless @project.users.include?(o)
+        if @project.users.find_index(o).nil?
           arr2 << o
         end
         arr2
@@ -57,21 +57,27 @@ module MyScrum
       end
       @owner = @owner.first
       @scrum_master = @project.users_dataset.where(:position => "scrum master").first
-      if !@owner.nil? and @owner.valid?
+      
+      if @owner.nil?
         unless @scrum_master.nil?
-          @project.users_dataset.where(:user => @scrum_master.pk).update(:position => "developer")
+            @project.users_dataset.where(:user => @scrum_master.pk).update(:position => "developer")
         end
-        @project.remove_user(@owner)
-        @project.add_user(@owner)
-        @project.users_dataset.where(:user => @owner.pk).update(:position => "scrum master") 
         redirect "/owner/projects/#{@project.pk}/show"
       else
-        redirect "/owner/projects/#{@project.pk}/users/add"
+        if @owner.valid?
+          unless @scrum_master.nil?
+            @project.users_dataset.where(:user => @scrum_master.pk).update(:position => "developer")
+          end
+          @project.remove_user(@owner)
+          @project.add_user(@owner)
+          @project.users_dataset.where(:user => @owner.pk).update(:position => "scrum master") 
+          redirect "/owner/projects/#{@project.pk}/show"
+        else
+          redirect "/owner/projects/#{@project.pk}/users/add"
+        end
       end
       
     end
-
-
 
     post '/projects/:id/users/add' do |i|
       @project = Project.find(:id => i)
@@ -93,22 +99,15 @@ module MyScrum
       end
     end
 
-
-
-
     get '/projects/:id/edit' do |i|
       @project = Project.find(:id => i)
-      haml :"/projects/edit"
+      haml :"/projects/form"
     end
-
-
 
     get '/projects/create' do
       @project = Project.new
-      haml :"/projects/edit"
+      haml :"/projects/form"
     end
-
-
 
     post '/projects' do
       @project = Project.new
@@ -120,7 +119,7 @@ module MyScrum
         flash[:notice] = "Project created"
         redirect "/owner/projects"
       else
-        haml :"/projects/edit"
+        haml :"/projects/form"
       end 
     end
 
@@ -132,39 +131,15 @@ module MyScrum
         flash[:notice] = "Project updated"
         redirect '/owner/projects'
       else
-        haml :"/projects/edit"
+        haml :"/projects/form"
       end
     end
 
-    get '/projects/:pid/remove_user/:oid' do |pid, oid|
+    delete '/projects/:pid/remove_user/:oid' do |pid, oid|
       @project = Project.find(:id => pid)
       @owner = Owner.find(:id => oid)
       @project.remove_user(@owner)
       redirect "/owner/projects/#{@project.pk}/show"
-    end
-
-    get '/projects/:id/sprint_create' do 
-      @sprint = Sprint.new
-      haml :"/projects/sprint_create"
-    end
-
-    post '/projects/:id/sprints/:id' do |id|
-      @project = @current_owner.projects.inject([]) do |arr, p|
-        if p.pk == id.to_i
-          arr << p
-        end
-        arr
-      end
-      @project = @project.first
-      @sprint = Sprint.new
-      @sprint.set(params[:sprint])
-      if @sprint.valid?
-        @sprint.save
-        @project.add_sprint(@sprint)
-        redirect "/projects/show"
-      else
-        haml :"/projects/sprint_create"
-      end
     end
 
   end

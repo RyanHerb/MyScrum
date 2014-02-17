@@ -42,7 +42,7 @@
                 %tr
                   %td= t.username ? t.username : t.name
                   - role = @roles.where(:user => t.pk).first
-                  %td= role[:position].capitalize
+                  %td= role[:position].capitalize rescue '-'
                   %td
                     %a#remove{:href => "/owner/projects/#{@project.pk}/remove_user/#{t.pk}"} 
                       %img{:src=>"/img/icons/view.png", :title => "Remove "}
