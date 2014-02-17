@@ -18,6 +18,18 @@ module MyScrum
       haml :"/projects/show"
     end
 
+    get '/projects/:id/users/add' do |i|
+      @project = @current_owner.projects.inject([]) do |arr, p|
+        if p.pk == i.to_i
+          arr << p
+        end
+        arr
+      end
+      @project = @project.first
+      @owners = Owner.all
+      haml :"/projects/users"
+    end
+
     get '/projects/:id/edit' do |i|
       @project = @current_owner.projects.inject([]) do |arr, p|
         if p.pk == i.to_i
@@ -65,7 +77,7 @@ module MyScrum
       end
     end
 
-    post '/projects/:pid/remove_owner/:oid' do |pid, oid|
+    post '/projects/:pid/remove_user/:oid' do |pid, oid|
       @project = Project.find(:id => pid)
       @owner = Owner.find(:id => oid)
       @project.remove_user(@Owner)

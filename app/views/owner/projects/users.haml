@@ -1,0 +1,24 @@
+!!!
+
+%h1= @project.new? ? "Create Project" : "Edit #{@project.title}"
+%fieldset
+  %legend Add a collaborator
+  %body
+    %form{:action => "/owner/projects/#{@project.pk}/project_owner", :method => :post}
+      .field
+        %label{:for => :collaborator} Project Owner
+        %select#collaborator{:name => :collaborator}
+      .field.submit
+        %input{:type => :submit, :name => '', :value => "Update"}
+    %form{:action => "/owner/projects/#{@project.pk}/scrum_master", :method => :post}
+      .field
+        %label{:for => :collaborator} Scrum Master
+        %select#collaborator{:name => :collaborator}
+      .field.submit
+        %input{:type => :submit, :name => '', :value => "Update"}
+    %form{:action => "/owner/projects/#{@project.pk}/add", :method => :post}
+      .field
+        %label{:for => :collaborator} Collaborator
+        %select#collaborator{:name => :collaborator}
+      .field.submit
+        %input{:type => :submit, :name => '', :value => "Add collaborator(s)"}

@@ -34,7 +34,7 @@
               %tr
                 %th Name
                 %th Role
-                %th  Actions
+                %th Actions
             %tbody
               - @team.each do |t|
                 %tr
@@ -42,7 +42,8 @@
                   %td= "role"
                   %td
                     %a#remove{:href => "/owner/projects/#{@project.pk}/remove_owner/#{t.pk}", :"data-pid" => "#{@project.pk}", :"data-oid" => "#{t.pk}"} 
-                      %img{:src=>"/img/icons/delete.png", :title => "Remove "}
+                      %img{:src=>"/img/icons/view.png", :title => "Remove "}
+          %a.badge{:href  => "/owner/projects/#{@project.pk}/users/add"} Edit collaborators
 
 :javascript
   $(function() {
