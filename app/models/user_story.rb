@@ -1,4 +1,5 @@
 class UserStory < Sequel::Model
+  one_to_many :tests
   
   	def validate
     	validates_presence :title, :message => 'Title must not be blank'
