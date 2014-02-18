@@ -1,10 +1,33 @@
 module MyScrum
   class OwnerApp < Sinatra::Application
 
+    # =============
+    # = /projects =
+    # =============
+
     get '/projects' do
       @projects = @current_owner.projects
       haml :"/projects/index"
     end
+
+
+    post '/projects' do
+      @project = Project.new
+      @project.set(params[:project])
+      if @project.valid?
+        @project.save
+        @project.add_user(@current_owner)
+        @project.users_dataset.where(:user => @current_owner.pk).update(:position => "project owner")
+        flash[:notice] = "Project created"
+        redirect "/owner/projects"
+      else
+        haml :"/projects/form"
+      end 
+    end
+
+    # ======================
+    # = /projects/:id/show =
+    # ======================
 
     get '/projects/:id/show' do |i|
       @project = Project.find(:id => i)
@@ -14,6 +37,11 @@ module MyScrum
       @user_stories = @project.user_stories
       haml :"/projects/show"
     end
+
+
+    # =========================
+    # = /projects/:id/users/* =
+    # =========================
 
     get '/projects/:id/users/add' do |i|
       @project = Project.find(:id => i)
@@ -27,6 +55,8 @@ module MyScrum
       end
       haml :"/projects/users"
     end
+
+    # =========================
 
     post '/projects/:id/users/project_owner' do |i|
       @project = Project.find(:id => i)
@@ -48,6 +78,8 @@ module MyScrum
       end
       redirect "/owner/projects/#{@project.pk}/show"
     end
+
+    # =========================
 
     post '/projects/:id/users/scrum_master' do |i|
       @project = Project.find(:id => i)
@@ -81,6 +113,8 @@ module MyScrum
       
     end
 
+    # =========================
+
     post '/projects/:id/users/add' do |i|
       @project = Project.find(:id => i)
       @owner = Owner.all.inject([]) do |arr2, o|
@@ -101,6 +135,11 @@ module MyScrum
       end
     end
 
+
+    # ======================
+    # = /projects/:id/edit =
+    # ======================
+
     get '/projects/:id/edit' do |i|
       @project = Project.find(:id => i)
       haml :"/projects/form"
@@ -111,19 +150,10 @@ module MyScrum
       haml :"/projects/form"
     end
 
-    post '/projects' do
-      @project = Project.new
-      @project.set(params[:project])
-      if @project.valid?
-        @project.save
-        @project.add_user(@current_owner)
-        @project.users_dataset.where(:user => @current_owner.pk).update(:position => "project owner")
-        flash[:notice] = "Project created"
-        redirect "/owner/projects"
-      else
-        haml :"/projects/form"
-      end 
-    end
+    
+    # =================
+    # = /projects/:id =
+    # =================
 
     put '/projects/:id' do |id|
       @project = Project.find(:id => id)
@@ -136,6 +166,10 @@ module MyScrum
         haml :"/projects/form"
       end
     end
+
+    # ==========
+    # = Remove =
+    # ==========
 
     get '/projects/:pid/remove_user/:oid' do |pid, oid|
       @project = Project.find(:id => pid)
