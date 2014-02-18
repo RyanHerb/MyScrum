@@ -1,0 +1,31 @@
+!!!
+.wrapsections
+  .panel
+    %fieldset
+      %legend User Story 
+      %table
+        %tr
+          %th Id
+          %td= @user_story.id
+        %tr
+          %th Title
+          %td= @user_story.title
+        %tr
+          %th Description
+          %td= @user_story.description
+        %tr
+          %th Priority
+          %td= @user_story.priority
+        %tr
+          %th Diffilculty
+          %td= @user_story.diffilculty
+        %tr
+          %th Finished
+          %td= @user_story.finished
+        %tr
+          %th Validate
+          %td= @user_story.isvalidate
+          
+      %a.badge{:href  => "/owner/user_stories/#{@user_story.pk}/edit"} Edit
+
+

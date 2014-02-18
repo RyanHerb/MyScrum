@@ -18,7 +18,7 @@ helpers do
     opts = { :method => :post }
     mfield = ""
     if object.new?
-      opts[:action] = request.script_name.gsub(/\/$/, '') + prefix + "/#{object.class.to_s.underscore}s"
+      opts[:action] = request.script_name.gsub(/\/$/, '') + prefix + "/#{object.class.to_s.underscore.pluralize}"
     else
       opts[:action] = request.script_name.gsub(/\/$/, '') + prefix + "/#{object.class.to_s.underscore}s/#{object.pk}"
       mfield = :input.tag(:type => 'hidden', :name => '_method', :value => 'put')

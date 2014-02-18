@@ -11,10 +11,10 @@
         %th Priority
         %th Diffilculty
         %th Finished
-        %th Validate
+        %th Validated
         %th.right.nosort Actions
     %tbody
-      - @userstories.each do |u|
+      - @user_stories.each do |u|
         %tr.selectable
           %td= u.id
           %td= u.title
@@ -22,9 +22,9 @@
           %td= u.priority
           %td= u.diffilculty
           %td= u.finished ? "Yes" : "No"
-          %td= u.isvalidate ? "Yes" : "No"
+          %td= u.valid ? "Yes" : "No"
           %td.right.actions
-            %a{:href => "/owner/userstories/#{u.pk}/show"}
+            %a{:href => "/owner/users_tories/#{u.pk}/show"}
               %img{:src => '/img/icons/view.png', :title => "view #{u.title}"}
-            %a{:href => "/owner/userstories/#{u.pk}/edit"}
+            %a{:href => "/owner/user_stories/#{u.pk}/edit"}
               %img{:src => '/img/icons/edit.png', :title => "edit #{u.title}"}

@@ -5,6 +5,5 @@ class UserStory < Sequel::Model
     	validates_unique :title
 
     	validates_presence :description, :message => 'Description must not be blank'
-    	validates_unique :description  
   	end
 end

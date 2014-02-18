@@ -8,7 +8,7 @@ Sequel.migration do
       Integer :priority
       Integer :diffilculty
       TrueClass :finished
-      TrueClass :isvalidate
+      TrueClass :validate
       
       DateTime :created_at
       DateTime :updated_at
