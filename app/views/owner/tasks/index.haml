@@ -1,0 +1,28 @@
+-@title = "Tasks"
+
+%h1 Tasks
+
+%table.datatable
+  %thead
+  	%tr
+  	 %th Title
+     %th Description
+     %th Status
+     %th Difficulty
+     %th Associated User Story
+     %th.nosort Actions
+  %tbody
+    %tr
+      %td= @task.title
+      %td= @task.description
+      %td= @task.status
+      %td= @task.difficulty
+      %td
+        %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{@user_story.pk}/show"} #US
+      %td
+        %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{@user_story.pk}/tasks/#{@task.pk}/show"}
+          %img{:src => "/img/icons/view.png"}
+        %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{@user_story.pk}/tasks/#{@task.pk}/edit"}
+          %img{:src => "/img/icons/edit.png"}
+        %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{@user_story.pk}/tasks/#{@task.pk}/delete"}
+          %img{:src => "/img/icons/delete.png"}

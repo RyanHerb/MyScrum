@@ -41,9 +41,10 @@
               - @team.each do |t|
                 %tr
                   %td= t.username ? t.username : t.name
-                  %td= "role"
+                  - role = @roles.where(:user => t.pk).first
+                  %td= role[:position].capitalize rescue '-'
                   %td
-                    %a#remove{:href => "/owner/projects/#{@project.pk}/remove_owner/#{t.pk}", :"data-pid" => "#{@project.pk}", :"data-oid" => "#{t.pk}"} 
+                    %a#remove{:href => "/owner/projects/#{@project.pk}/remove_user/#{t.pk}"} 
                       %img{:src=>"/img/icons/view.png", :title => "Remove "}
           %a.badge{:href  => "/owner/projects/#{@project.pk}/users/add"} Edit collaborators
 
@@ -69,20 +70,6 @@
                   %td= t.duration
                   %td= " "
           %a.badge{:href  => "/owner/projects/#{@project.pk}/sprint_create"} Create new sprint
-
-
-:javascript
-  $(function() {
-    $('#remove').click(function(e) {
-      e.preventDefault();
-      $.post($(this).attr('href'), {'pid': $(this).attr('data-pid'), 'oid': $(this).attr('data-oid')}, function(r){
-        //$('#ajax_spinner').hide();
-        if(r == "OK"){
-          $(this).hide();
-        }
-      });
-    });
-  });
 
 
 

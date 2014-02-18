@@ -3,12 +3,9 @@
 %fieldset
   %legend Sprint details
   %body
-    = form_for @sprint, :action => "/owner/projects/#{@project.pk}/sprint_create" do |f|
+    = form_for @sprint do |f|
       %fieldset
-        = f.select :days, :options => ("0".."31").to_a
-        = f.select :month, :options => {"1" => "january", "2" => "february", "3" => "march", "4" => "april", "5" => "may", "6" => "june", "7" => "july", "8" => "august", "9" => "september", "10" => "october", "11" => "november", "12" => "december"}
-        = f.select :year, :options => ("2010".."2050").to_a
+        = f.input :start_date, :label => 'Start date'
         = f.input :duration, :label => 'Duration'
+        = f.input :user_stories, :label => 'User stories'
         = f.submit "Submit"
-
-
