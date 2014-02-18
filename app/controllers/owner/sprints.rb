@@ -33,7 +33,7 @@ module MyScrum
 
     get '/projects/:pid/sprints/:sid/show' do |i,j|
       @tasks = Task.new
-      @sprint = Sprint.find(:id => j).first
+      @sprint = Sprint.find(:id => j)
       @project = Project.find(:id => i)
       haml :"/sprints/show"
     end
