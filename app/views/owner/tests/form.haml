@@ -1,0 +1,12 @@
+!!!
+%h1= "Create new Test"
+%fieldset
+  %legend Test details
+  %body
+    = form_for @test, :action => "/owner/projects/#{@project.pk}/test/create" do |f|
+      %fieldset
+        = f.select :user_stories, :options => @user_stories
+
+
+
+
