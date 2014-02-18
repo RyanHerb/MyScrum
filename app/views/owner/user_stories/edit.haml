@@ -1,7 +1,7 @@
 !!!
 - @title = "User Stories"
 
-= form_for @user_story do |f|
+= form_for @user_story, :action => "/owner/projects/#{@project.pk}/user_stories" do |f|
   %fieldset
     %legend Create New User Story
     = f.input :title, :label => 'Title'
