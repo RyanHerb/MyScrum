@@ -41,14 +41,14 @@
               %tr
                 %th Name
                 %th Role
-                %th Actions
+                %th.right.nosort Actions
             %tbody
               - @team.each do |t|
                 %tr
                   %td= t.username ? t.username : t.name
                   - role = @roles.where(:user => t.pk).first
                   %td= role[:position].capitalize rescue '-'
-                  %td
+                  %td.right.actions
                     %a#remove{:href => "/owner/projects/#{@project.pk}/remove_user/#{t.pk}"} 
                       %img{:src=>"/img/icons/view.png", :title => "Remove "}
 
