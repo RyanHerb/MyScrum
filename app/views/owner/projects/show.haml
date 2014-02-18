@@ -63,13 +63,13 @@
               - @sprint.each do |t|
                 %tr.selectable
                   %td 
-                    %a{:href  => "/owner/projects/#{@project.pk}/sprints/"} t.id
+                    %a{:href  => "/owner/projects/#{@project.pk}/sprints/#{t.id}/show"} #{t.id}
                   %td= " "
                   %td= " "
                   %td= t.start_date
                   %td= t.duration
                   %td= " "
-          %a.badge{:href  => "/owner/projects/#{@project.pk}/sprint_create"} Create new sprint
+          %a.badge{:href  => "/owner/projects/#{@project.pk}/sprint/create"} Create new sprint
 
 
 
