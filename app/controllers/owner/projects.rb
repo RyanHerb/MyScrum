@@ -19,11 +19,11 @@ module MyScrum
       @project = Project.find(:id => i)
       @project_owner = @project.users_dataset.where(:position => "project owner").first
       @scrum_master = @project.users_dataset.where(:position => "scrum master").first
-      @owners = Owner.all.inject([]) do |arr2, o|
-        if @project.users.find_index(o).nil?
-          arr2 << o
+      @owners = Owner.all.inject([]) do |arr, o|
+        if @project.users_dataset.where(:user => o.pk).first.nil?
+          arr << o
         end
-        arr2
+        arr
       end
       haml :"/projects/users"
     end
@@ -137,7 +137,7 @@ module MyScrum
       end
     end
 
-    delete '/projects/:pid/remove_user/:oid' do |pid, oid|
+    get '/projects/:pid/remove_user/:oid' do |pid, oid|
       @project = Project.find(:id => pid)
       @owner = Owner.find(:id => oid)
       @project.remove_user(@owner)
