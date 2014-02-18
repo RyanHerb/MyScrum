@@ -32,7 +32,7 @@ module MyScrum
     get '/projects/:id/show' do |i|
       @project = Project.find(:id => i)
       @team = @project.users
-      @sprint = @project.sprints
+      @sprints = @project.sprints
       @roles = @project.users_dataset
       @user_stories = @project.user_stories
       haml :"/projects/show"
