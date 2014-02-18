@@ -5,7 +5,14 @@
   %body
     = form_for @test, :action => "/owner/projects/#{@project.pk}/test/create" do |f|
       %fieldset
-        = f.select :user_stories, :options => @user_stories
+        = f.input :title, :label => "Title"
+        = f.input :input, :label => "Input"
+        = f.textarea :test_case, :input_options => {:rows => 6}, :label => "Test Case"
+        = f.textarea :expected, :input_options => {:rows => 6}, :label => "Expected Result"
+        = f.textarea :comment, :input_options => {:rows => 6}, :label => "Comment"
+        = f.select :owner_id, :options => @owners.inject([]){ |arr, o| arr << [o.pk, o.username]; arr}, :label => "Tester"
+        = f.select :user_story_id, :options => @user_stories.inject([]){ |arr, o| arr << [o.pk, o.title]; arr}, :label => "User story"
+        = f.submit "Submit"
 
 
 

@@ -35,6 +35,10 @@ module MyScrum
       @sprints = @project.sprints
       @roles = @project.users_dataset
       @user_stories = @project.user_stories
+      @tests = []
+      @user_stories.each do |u|
+        @tests.concat(u.tests)
+      end
       haml :"/projects/show"
     end
 

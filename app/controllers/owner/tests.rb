@@ -5,16 +5,20 @@ module MyScrum
     get '/projects/:id/test/create' do |i|
       @project = Project.find(:id => i)
       @test = Test.new
+      @owners = @project.users
       @user_stories = @project.user_stories
       haml :"/tests/form"
     end
 
-    post '/:id/test/create' do |i|
+    post '/projects/:id/test/create' do |i|
       @project = Project.find(:id => i)
-      @trst = Test.new
+      @test = Test.new
+      #@test.title = params[:test][:title]
+      #@test.input = params[:test][:input]
+      #params[:test][:owners]=Owner.find(:id => params[:test][:owners])
+      @test.set(params[:test])
       if @test.valid?
         @test.save
-        puts @project.inspect
         redirect "owner/projects/#{@project.pk}/show"
       else
         haml :"/tests/form"
@@ -22,7 +26,7 @@ module MyScrum
     end
 
     get '/projects/:pid/tests/:sid/show' do |i,j|
-      @test = Sprint.find(:id => j)
+      @test = Test.find(:id => j)
       @project = Project.find(:id => i)
       haml :"/tests/show"
     end

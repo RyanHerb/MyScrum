@@ -104,7 +104,25 @@
 
         #tab5.pane
           %a.badge{:href  => "/owner/projects/#{@project.pk}/test/create"} Create new Test
-
+          %table.datatable
+            %thead
+              %tr
+                %th Title
+                %th State
+                %th Tester
+                %th.right.nosort Actions
+            %tbody
+              - @tests.each do |t|
+                - @tester = Owner.find(:id => t.owner_id)
+                %tr.selectable{:rel => "/owner/user_stories/#{t.pk}/show"}
+                  %td= t.title
+                  %td= ""
+                  %td= @tester.username
+                  %td.right.actions
+                    %a{:href => "/owner/user_stories/#{t.pk}/show"}
+                      %img{:src => '/img/icons/view.png', :title => "view #{t.title}"}
+                    %a{:href => "/owner/user_stories/#{t.pk}/edit"}
+                      %img{:src => '/img/icons/edit.png', :title => "edit #{t.title}"}
 
 
 
