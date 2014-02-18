@@ -5,6 +5,7 @@ module MyScrum
     get '/projects/:id/sprint/create' do |i|
       @project = Project.find(:id => i)
       @sprint = Sprint.new
+      @user_stories = @project.user_stories
       haml :"/sprints/form"
     end
 
@@ -28,6 +29,7 @@ module MyScrum
     end
 
     get '/projects/:pid/sprints/:sid/show' do |i,j|
+      @tasks = Task.new
       @sprint = Sprint.find(:id => j)
       @project = Project.find(:id => i)
       haml :"/sprints/show"
