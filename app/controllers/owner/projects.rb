@@ -11,6 +11,7 @@ module MyScrum
       @team = @project.users
       @sprint = @project.sprints
       @roles = @project.users_dataset
+      @user_stories = @project.user_stories
       haml :"/projects/show"
     end
 

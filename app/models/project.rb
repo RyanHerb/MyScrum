@@ -5,7 +5,8 @@ class Project < Sequel::Model
 	# = Associations =
 	# ================
   
-  one_to_many :sprints, :key => :project
+  one_to_many :sprints
+  one_to_many :user_stories
 	many_to_many :users, class: :Owner , join_table: :user_project, left_key: :project, right_key: :user, :select => [:owners.*, :user_project__position]
 
   def validate
