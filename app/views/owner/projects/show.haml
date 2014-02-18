@@ -11,9 +11,12 @@
             %a{:href => '#tab2'} Team
           %li.tab
             %a{:href => '#tab3'} Sprints
+          %li.tab
+            %a{:href => '#tab4'} Backlog
         .clear
 
         #tab1 
+          %a.badge{:href  => "/owner/projects/#{@project.pk}/edit"} Edit Details
           %table
             %tr
               %th Title
@@ -27,10 +30,10 @@
             %tr
               %th Public
               %td= @project.public ? "Yes" : "No"
-          -# if @current_owner.ScrumMaster?
-          %a.badge{:href  => "/owner/projects/#{@project.pk}/edit"} Edit
+          -# if @current_owner.scrumMaster?
 
         #tab2.pane
+          %a.badge{:href  => "/owner/projects/#{@project.pk}/users/add"} Edit collaborators
           %table.datatable
             %thead
               %tr
@@ -46,30 +49,52 @@
                   %td
                     %a#remove{:href => "/owner/projects/#{@project.pk}/remove_user/#{t.pk}"} 
                       %img{:src=>"/img/icons/view.png", :title => "Remove "}
-          %a.badge{:href  => "/owner/projects/#{@project.pk}/users/add"} Edit collaborators
-
 
         #tab3.pane
+          %a.badge{:href  => "/owner/projects/#{@project.pk}/sprint_create"} Create new Sprint
           %table.datatable
             %thead
               %tr
-                %th ID
-                %th Stats
+                %th Charts
                 %th User Stories
                 %th Start Date
                 %th Duration (days)
                 %th Actions
             %tbody
               - @sprint.each do |t|
-                %tr.selectable
-                  %td 
-                    %a{:href  => "/owner/projects/#{@project.pk}/sprints/"} t.id
+                %tr.selectable{:rel => "/owner/projects/#{@project.pk}/sprints/#{t.pk}/show"}
                   %td= " "
                   %td= " "
                   %td= t.start_date
                   %td= t.duration
                   %td= " "
-          %a.badge{:href  => "/owner/projects/#{@project.pk}/sprint_create"} Create new sprint
+
+        #tab4.pane
+          %a.badge{:href  => "/owner/projects/#{@project.pk}/user_stories/create"} Create new User Story
+          %table.datatable
+            %thead
+              %tr
+                %th Title
+                %th Description
+                %th Priority
+                %th Difficulty
+                %th Finished
+                %th Validated
+                %th.right.nosort Actions
+            %tbody
+              - @user_stories.each do |u|
+                %tr.selectable{:rel => "/owner/user_stories/#{@u.pk}/show"}
+                  %td= u.title
+                  %td= u.description
+                  %td= u.priority
+                  %td= u.diffilculty
+                  %td= u.finished ? "Yes" : "No"
+                  %td= u.valid ? "Yes" : "No"
+                  %td.right.actions
+                    %a{:href => "/owner/user_stories/#{u.pk}/show"}
+                      %img{:src => '/img/icons/view.png', :title => "view #{u.title}"}
+                    %a{:href => "/owner/user_stories/#{u.pk}/edit"}
+                      %img{:src => '/img/icons/edit.png', :title => "edit #{u.title}"}
 
 
 
