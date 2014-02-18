@@ -1,0 +1,24 @@
+!!!
+%h1= "Sprint #{@sprint.id}"
+%p= "Start Date" #{@sprint.start_date}
+%p= "Duration" #{@sprint.duration}
+%p= "Sprint Difficulty"
+%fieldset
+  %legend Sprint details
+  %body
+	%table.datatable
+      %thead
+        %tr
+          %th User Stories
+          %th To Do
+          %th In progress
+          %th Done
+          %th Tests
+      %tbody
+        - @tasks.each do |t|
+          %tr=
+          %td= 
+          %td= 
+          %td=
+                   
+  
