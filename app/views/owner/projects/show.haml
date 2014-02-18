@@ -13,6 +13,8 @@
             %a{:href => '#tab3'} Sprints
           %li.tab
             %a{:href => '#tab4'} Backlog
+          %li.tab
+            %a{:href => '#tab5'} Tests
         .clear
 
         #tab1 
@@ -83,7 +85,7 @@
                 %th.right.nosort Actions
             %tbody
               - @user_stories.each do |u|
-                %tr.selectable{:rel => "/owner/user_stories/#{@u.pk}/show"}
+                %tr.selectable{:rel => "/owner/user_stories/#{u.pk}/show"}
                   %td= u.title
                   %td= u.description
                   %td= u.priority
@@ -95,6 +97,9 @@
                       %img{:src => '/img/icons/view.png', :title => "view #{u.title}"}
                     %a{:href => "/owner/user_stories/#{u.pk}/edit"}
                       %img{:src => '/img/icons/edit.png', :title => "edit #{u.title}"}
+
+        #tab5.pane
+          %a.badge{:href  => "/owner/projects/#{@project.pk}/test/create"} Create new Test
 
 
 
