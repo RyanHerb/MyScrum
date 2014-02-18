@@ -37,9 +37,6 @@ module MyScrum
         end
         a
       end
-      if @public.nil?
-        puts "FUUUUUUUUUUUUUUUCK"
-      end
       haml :index
     end
 

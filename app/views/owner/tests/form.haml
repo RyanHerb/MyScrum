@@ -10,6 +10,7 @@
         = f.textarea :test_case, :input_options => {:rows => 6}, :label => "Test Case"
         = f.textarea :expected, :input_options => {:rows => 6}, :label => "Expected Result"
         = f.textarea :comment, :input_options => {:rows => 6}, :label => "Comment"
+        = f.select :state, :options => [["not_tested", "Not tested"], ["failed", "Failed"], ["success", "Success"]], :label => "State"
         = f.select :owner_id, :options => @owners.inject([]){ |arr, o| arr << [o.pk, o.username]; arr}, :label => "Tester"
         = f.select :user_story_id, :options => @user_stories.inject([]){ |arr, o| arr << [o.pk, o.title]; arr}, :label => "User story"
         = f.submit "Submit"

@@ -13,9 +13,9 @@ module MyScrum
     post '/projects/:id/test/create' do |i|
       @project = Project.find(:id => i)
       @test = Test.new
-      #@test.title = params[:test][:title]
-      #@test.input = params[:test][:input]
-      #params[:test][:owners]=Owner.find(:id => params[:test][:owners])
+      @owners = @project.users
+      @user_stories = @project.user_stories
+
       @test.set(params[:test])
       if @test.valid?
         @test.save
