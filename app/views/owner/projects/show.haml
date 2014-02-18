@@ -83,7 +83,7 @@
                 %th.right.nosort Actions
             %tbody
               - @user_stories.each do |u|
-                %tr.selectable{:rel => "/owner/user_stories/#{@u.pk}/show"}
+                %tr.selectable{:rel => "/owner/user_stories/#{u.pk}/show"}
                   %td= u.title
                   %td= u.description
                   %td= u.priority
