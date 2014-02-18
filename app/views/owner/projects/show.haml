@@ -63,12 +63,16 @@
                 %th Duration (days)
                 %th Actions
             %tbody
-              - @sprint.each do |t|
-                %tr.selectable{:rel => "/owner/projects/#{@project.pk}/sprints/#{t.pk}/show"}
+              - @sprints.each do |s|
+                %tr.selectable{:rel => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/show"}
                   %td= " "
-                  %td= " "
-                  %td= t.start_date
-                  %td= t.duration
+                  %td
+                    %table
+                      - s.user_stories.each do |u|
+                        %tr
+                          %td= u.title
+                  %td= s.start_date
+                  %td= s.duration
                   %td= " "
 
         #tab4.pane
