@@ -59,6 +59,14 @@ module MyScrum
       haml :"/tests/show"
     end
 
+    get '/projects/:pid/tests/:tid/remove' do |pid, tid|
+      @project = Project.find(:id => pid)
+      @test = Test.find(:id => tid)
+      @test.destroy()
+      
+      redirect "/owner/projects/#{@project.pk}/show"
+    end
+
   end
 end
 
