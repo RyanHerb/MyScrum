@@ -17,10 +17,7 @@ module MyScrum
       @project = Project.find(:id => i)
       @user_stories = params[:userstories]
       @sprint = Sprint.new
-      @date = DateTime.new(params[:sprint][:year].to_i, params[:sprint][:month].to_i, params[:sprint][:day].to_i)
-      params[:sprint].delete("day")
-      params[:sprint].delete("month")
-      params[:sprint].delete("year")
+      @date = DateTime.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
       @sprint.set(params[:sprint])
       @sprint.start_date = @date
       if @sprint.valid?
@@ -61,12 +58,8 @@ module MyScrum
       @project = Project.find(:id => i)
       @user_stories = params[:userstories]
       @sprint = Sprint.find(:id => j)
-      @date = DateTime.new(params[:sprint][:year].to_i, params[:sprint][:month].to_i, params[:sprint][:day].to_i)
-      params[:sprint].delete("day")
-      params[:sprint].delete("month")
-      params[:sprint].delete("year")
+      @date = DateTime.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
       @sprint.set(params[:sprint])
-      @sprint.start_date = @date
       if @sprint.valid?
         @sprint.save
         @user_stories.each do |i|

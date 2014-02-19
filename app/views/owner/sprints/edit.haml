@@ -5,10 +5,18 @@
   %body
     = form_for @sprint, :action => "/owner/projects/#{@project.pk}/sprints/#{@sprint.pk}/edit" do |f|
       %fieldset
-        = f.select :day, :options => ("1".."31").to_a
-        = f.select :month, :options => [["1", "january"], ["2", "february"], ["3", "march"], ["4", "april"], ["5", "may"], ["6", "june"], ["7", "july"], ["8", "august"], ["9", "september"], ["10", "october"], ["11", "november"], ["12", "december"]]
-        = f.select :year, :options => ("2010".."2050").to_a
-        = f.select :duration, :options => ("1".."7").to_a 
+        %label{:for => "day"} Select date
+        %select{:name => "day", :required => true}
+          -(1..31).each do |i|
+            %option{:value => i}=i
+        %select{:name => "month"}
+          -["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"].each_with_index do |v, i|
+            %option{:value => i.to_i+1}=v
+        %select{:name => "year"}
+          -("2010".."2050").each do |i|
+            %option{:value => i}=i
+        = f.select :duration, :options => ("1".."7").to_a, :immediate => true
+        %label{:for => "userstories"} User Stories
         %select{:name => "userstories[]", :multiple => true}
           -@user_stories.each do |u|
             %option{:value => u.pk}= u.title
