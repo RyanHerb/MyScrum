@@ -49,8 +49,8 @@
                   - role = @roles.where(:user => t.pk).first
                   %td= role[:position].capitalize rescue '-'
                   %td.right.actions
-                    %a#remove{:href => "/owner/projects/#{@project.pk}/remove_user/#{t.pk}"} 
-                      %img{:src=>"/img/icons/view.png", :title => "Remove "}
+                    %a#remove{:onclick => "return confirm('Are you sure?')", :href => "/owner/projects/#{@project.pk}/remove_user/#{t.pk}"} 
+                      Remove
 
         #tab3.pane
           %a.badge{:href  => "/owner/projects/#{@project.pk}/sprint/create"} Create new Sprint
@@ -137,8 +137,5 @@
                       %img{:src => '/img/icons/view.png', :title => "view #{t.title}"}
                     %a{:href => "/owner/projects/#{@project.pk}/tests/#{t.pk}/edit"}
                       %img{:src => '/img/icons/edit.png', :title => "edit #{t.title}"}
-                    %a{:href => "/owner/projects/#{@project.pk}/tests/#{t.pk}/remove"}
+                    %a{:onclick => "return confirm(\"Are you sure?\\n\\nThis operation is irreversible.\")", :href => "/owner/projects/#{@project.pk}/tests/#{t.pk}/remove"}
                       Remove
-
-
-
