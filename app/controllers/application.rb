@@ -66,6 +66,26 @@ module MyScrum
       end
     end
 
+    # ========
+    # = Bugs =
+    # ========
+
+    get '/bug_reports/form' do
+      @bug_report = BugReport.new
+      haml :"bug_reports/form"
+    end
+
+    post '/bug_reports/form' do
+      @bug_report = BugReport.new
+      @bug_report.set(params[:bug_report])
+      if @bug_report.valid?
+        @bug_report.save
+        redirect "/"
+      else
+        haml :"bug_reports/form"
+      end
+    end
+
     # ===========
     # = The End =
     # ===========
