@@ -120,12 +120,22 @@
                 - @tester = Owner.find(:id => t.owner_id)
                 %tr
                   %td= t.title
-                  %td= ""
+                  - @state = ""
+                  - case t.state
+                  - when "not_tested"
+                    - @state = "Not tested"
+                  - when "failed"
+                    - @state = "Test failed"
+                  - when "success"
+                    - @state = "Test successful"
+                  - else
+                    - @state = "Unknown"
+                  %td= @state
                   %td= @tester.username
                   %td.right.actions
                     %a{:href => "/owner/projects/#{@project.pk}/tests/#{t.pk}/show"}
                       %img{:src => '/img/icons/view.png', :title => "view #{t.title}"}
-                    %a{:href => "/owner/user_stories/#{t.pk}/edit"}
+                    %a{:href => "/owner/projects/#{@project.pk}/tests/#{t.pk}/edit"}
                       %img{:src => '/img/icons/edit.png', :title => "edit #{t.title}"}
 
 
