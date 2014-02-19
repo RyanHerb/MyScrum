@@ -73,7 +73,11 @@
                           %td= u.title
                   %td= s.start_date
                   %td= s.duration
-                  %td= " "
+                  %td.right.actions
+                    %a{:href => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/show"} 
+                      %img{:src=>"/img/icons/view.png", :title => "View sprint #{s.pk}"}
+                    %a{:href => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/edit"}
+                      %img{:src => '/img/icons/edit.png', :title => "edit sprint #{s.pk}"}
 
         #tab4.pane
           %a.badge{:href  => "/owner/projects/#{@project.pk}/user_stories/create"} Create new User Story
