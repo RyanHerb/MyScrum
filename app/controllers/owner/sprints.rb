@@ -2,6 +2,10 @@ require 'date'
 module MyScrum
   class OwnerApp < Sinatra::Application
 
+    # ==========
+    # = Create =
+    # ==========
+
     get '/projects/:id/sprint/create' do |i|
       @project = Project.find(:id => i)
       @sprint = Sprint.new
@@ -31,12 +35,20 @@ module MyScrum
       end
     end
 
+    # ========
+    # = Show =
+    # ========
+
     get '/projects/:pid/sprints/:sid/show' do |i,j|
       @tasks = Task.new
       @sprint = Sprint.find(:id => j)
       @project = Project.find(:id => i)
       haml :"/sprints/show"
     end
+
+    # ========
+    # = Edit =
+    # ========
 
     get '/projects/:pid/sprints/:sid/edit' do |i,j|
       @sprint = Sprint.find(:id => j)
