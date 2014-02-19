@@ -1,9 +1,10 @@
 !!!
-%h1= @test.new? ? "Create a new Test" : "Edit #{@test.title}"
+- @action = @test.new? ? "/owner/projects/#{@project.pk}/tests" : "/owner/projects/#{@project.pk}/tests/#{@test.pk}"
+%h1= @test.new? ? "Create a new Test" : "Edit \"#{@test.title}\""
 %fieldset
   %legend Test details
   %body
-    = form_for @test do |f|
+    = form_for @test, :action => @action do |f|
       %fieldset
         = f.input :title, :label => "Title"
         = f.select :state, :options => [["not_tested", "Not tested"], ["failed", "Failed"], ["success", "Success"]], :label => "State"
