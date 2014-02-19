@@ -19,9 +19,10 @@ module MyScrum
     end
 
     put '/tests/:tid' do |tid|
-      @us = UserStory.find(:id => params[:test][:user_story_id])
-      @project = Project.find(:id => @us.project_id)
+      
       @test = Test.find(:id => tid)
+      @us = @test.user_story
+      @project = @us.project
       @owners = @project.users
       @user_stories = @project.user_stories
 
@@ -36,7 +37,7 @@ module MyScrum
 
     post '/tests' do
       @us = UserStory.find(:id => params[:test][:user_story_id])
-      @project = Project.find(:id => @us.project_id)
+      @project = @us.project
       @test = Test.new
       @owners = @project.users
       @user_stories = @project.user_stories
@@ -53,6 +54,8 @@ module MyScrum
     get '/projects/:pid/tests/:sid/show' do |i,j|
       @test = Test.find(:id => j)
       @project = Project.find(:id => i)
+      @owner = @test.owner.username
+      @us = @test.user_story
       haml :"/tests/show"
     end
 

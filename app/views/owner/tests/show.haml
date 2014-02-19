@@ -1,10 +1,42 @@
 !!!
-/%h1= "Sprint #{@sprint.id}"
+%h1= "Test #{@test.title}"
 /%p= "Start Date: #{@sprint.start_date}"
 /%p= "Duration: #{@sprint.duration}"
 /%p= "Sprint Difficulty: "
 %fieldset
   %legend Test details
   %body
-    Placeholder
-  
+    %table
+      %tr
+        %th Title
+        %td= @test.title
+      %tr
+        %th Status
+        - @state = ""
+        - case @test.state
+        - when "not_tested"
+          - @state = "Not tested"
+        - when "failed"
+          - @state = "Test failed"
+        - when "success"
+          - @state = "Test successful"
+        - else
+          - @state = "Unknown"
+        %td= @state
+      %tr
+        %th Tester
+        %td= @owner
+      %tr
+        %th User Story
+        %td= @us.title
+      %tr
+        %th Input
+        %td= @test.input
+      %tr
+        %th Expected result
+        %td= @test.expected
+      %tr
+        %th Comment
+        %td= @test.comment
+     
+              
