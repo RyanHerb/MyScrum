@@ -6,7 +6,7 @@
     = form_for @bug_report, :action => "/bug_reports/form" do |f|
       %fieldset
         = f.input :title, :label => 'Title'
-        = f.input :title, :label => 'URL'
+        = f.input :url, :label => 'URL'
         = f.textarea  :description, :input_options => {:rows => 6}, :label => 'Description'
         = f.submit "Submit"
 
