@@ -1,6 +1,9 @@
 - user_story = job.user_story
 - project = user_story.project
 .postIt{:class => "id_#{job.user_story.pk}", :"data-action" => "/owner/projects/#{project.pk}/user_stories/#{user_story.pk}/jobs/#{job.pk}"}
+  - unless job.owners.nil?
+    .owners
+      %img{:src => '/img/icons/users.png'}
   .title= job.title
   .clear
   .description= job.description

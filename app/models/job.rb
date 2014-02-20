@@ -6,6 +6,7 @@ class Job < Sequel::Model
   # ================
 
   many_to_one :user_story
+  many_to_many :owners
 
   # ==============
   # = Validation =

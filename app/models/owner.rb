@@ -6,6 +6,7 @@ class Owner < Sequel::Model
   # = Associations =
   # ================
 
+  many_to_many :jobs
   many_to_many :projects, class: :Project , join_table: :user_project, left_key: :user, right_key: :project, :select => [:projects.*, :user_project__position]
   one_to_many :notifications
 
