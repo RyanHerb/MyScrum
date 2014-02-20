@@ -43,9 +43,16 @@ module MyScrum
 
     get '/live' do
       @notif = []
+      @today = Time.new
       if session[:owner]
         @owner = Owner.find(:id => session[:owner])
         @notif = @owner.notifications
+        @notif.each do |n|
+          if n.viewed < 2
+            n.viewed = n.viewed+1
+            n.save
+          end
+        end
       end
       haml :'live'
     end

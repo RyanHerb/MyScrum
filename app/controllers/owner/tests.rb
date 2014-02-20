@@ -47,14 +47,11 @@ module MyScrum
 
       @test.set(params[:test])
       if @test.valid?
-        
-        @notif = Notification.new
-        @notif.action = "affectation"
-        @notif.type = "Test"
-        @notif.owner_id = @test.owner.pk
-        @notif.viewed = 0
-        @notif.save
         @test.save
+        @notif = Notification.new
+        @notif.set({:action => "affectation", :type => "Test", :owner_id => @test.owner.pk, :object_id => @test.id, :viewed => 0, :date => Time.new})
+        @notif.save
+        
         redirect "owner/projects/#{@project.pk}/show"
       else
         haml :"/tests/form"
