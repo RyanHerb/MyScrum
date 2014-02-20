@@ -271,22 +271,6 @@ img.petprofile
   .newsletters &  
     min-height: 345px
 
-     
-img.joepet  
-  margin: 10px 0 0
-
-  
-.video-share
-  height: 50px
-  background: #fff
-  box-shadow: 1px 1px 2px #bbb inset
-  width: 98%
-  margin: -5px auto
-  z-index: 1
-  +roundbottomcorners 
-  
-
-
 
 // ========
 // = TABS =
@@ -310,8 +294,6 @@ img.joepet
     border-right: 2px solid #fff
     padding: 8px 8px 10px
 
-
-
 .promopanel
   +roundcorners
   padding: 10px
@@ -327,215 +309,7 @@ img.joepet
   h2
     line-height: 1.3    
 
-  
-  
-// ============
-// = HOMEPAGE =
-// ============
-
-.media_thumb
-  width: 100%
-  margin: 10px 10px 10px 0
-  border-bottom: 1px dotted #ccc
-  a
-    display: block
-    font-weight: bold
-    color: $vetsk-grey
-    line-height: 1.4
     
-    span
-      font-weight: normal
-      display: block
-      font-size: 0.8em
-      color: #999
-      padding-top: 5px
-  p
-    padding: 0
-    
-  &.video .placeholder, &.pdf .placeholder
-    background: #ececec
-    border: 1px solid #ccc
-    float: left
-    width: 130px
-    height: 80px
-    margin: 0 15px 5px 0
-    background: url(/img/icons/play-btn.png) no-repeat center center #ececec
-  &.pdf .placeholder
-    width: 80px
-    height: 100px
-    margin: 0 15px 5px 0
-    background: url(/img/icons/pdf.png) no-repeat center center #ececec
-.socialmedia
-  padding: 5px 5px 3px
-  border-top: 1px dotted $vetsk-grey
-    
-      
-// ============
-// = Carousel =
-// ============
-
-.carousel
-  padding: 10px 0
-  position: relative
-  overflow: hidden
-  height: 200px
-  .slide
-    position: absolute
-    +roundcorners
-    background: #fff
-    padding: 4px
-    border: 1px solid #ccc
-    width: 95%
-    min-height: 195px
-    p
-
-      color: #999
-      font-size: 1.4em
-      font-family: $seriffont
-      font-style: italic
-      padding: 30px 5px 5px 5px
-      
-    img
-      float: left  
-      margin-right: 15px
-
-.controls
-  // border: 1px solid green
-  overflow: hidden
-  position: relative 
-  height: 30px
-  
-.prev_next
-  margin: 0 10px 0 0
-  a
-    color: $brown
-    // font-weight: bold
-  
-#indicator
-  position: absolute
-  top: 0
-  left: 0
-
-  ul
-    height: 20px
-    display: block
-    // width: 200px
-    overflow: hidden
-    height: 20px
-    padding: 0
-    margin: 0
-  li 
-    background: #ececec
-    list-style: none
-    padding: 0
-    margin: 5px 2px
-    width: 10px
-    height: 10px
-    display: inline
-    float: left
-    +roundcorners
-    &.current
-      background: $lightgreen
-      
-// ================
-// = Twitter feed =
-// ================
-
-h3.tweets
-  padding: 8px 0 0 0
-  border-top: 1px dotted #ccc
-  color: $midgreen
-  font-size: 1rem
-
-.twtr-hd, .twtr-ft div
-  display: none
-  
-#twtr-widget-1 .twtr-bd, #twtr-widget-1 .twtr-timeline i a, #twtr-widget-1 .twtr-bd p
-  font-size: 13px !important
-  line-height: 1.4 !important
-  
-#twtr-widget-1 .twtr-doc, #twtr-widget-1 .twtr-hd a, #twtr-widget-1 h3, #twtr-widget-1 h4
-  background-color:  none !important
-
-.twtr-widget em, .twtr-widget .twtr-new-results
-  font-size: 10px !important
-  
-// =====================
-// = STATIC PAGES TEMP =
-// =====================
-
-/* KLINICS Page */
-.klinics, .klinicstv, .online_store, .pricing
-  .article.mainpanel
-    margin: 0 0 10px
-    .panel
-      img
-        margin: 20px 0 10px 30px
-        border: 8px solid white
-        +boxshadow
-        &.map
-          margin: 0
-          border: 0 
-          box-shadow: none
-          
-        
-.klinics, .pricing, .shop
-  ul.centre
-    li
-      background: url(/img/heart-bullet.png) no-repeat 0 9px
-      padding-left: 25px !important
-      list-style: none  
-      &.price
-        background: none
-        margin: 10px 0
-        color: black
-        font-size: 1em      
-        
-/* ABOUT Page */
-.about
-  .article.mainpanel
-    .panel
-      img
-        margin: 20px 0 10px 10px
-        border: 8px solid white
-        +boxshadow
-      p
-        padding: 20px 0 0 200px
-      ul
-        margin: 20px 0 10px 190px
-        li
-          background: url(/img/heart-bullet.png) no-repeat 0 8px
-          padding-left: 25px
-          list-style: none
-.quick-contact
-  p
-    font-size: 1.1em !important
-
-// ================
-// = PRICING PAGE =
-// ================         
-table.pricing
-  border: 5px solid white
-  margin: 20px 0 0
-  font-size: 0.9em
-  width: 100%
-  +boxshadow
-  td
-    width: 40%
-  thead
-    background: #ccc  
-    color: #000
-    width: 50%
-    th
-      color: $green
-      background: #f4f9d7
-      font-size: 1em
-      font-weight: normal
-      &.title
-        color: $green
-        font-weight: bold
-        font-size: 1.1em 
-        
 // =============
 // = FAQs Page =
 // =============        
@@ -586,241 +360,39 @@ ul.signup
     margin: 0 0 10px
     font-weight: bold
     text-transform: uppercase
-               
 
-// ===================
-// = KLINICS TV Page =
-// ===================
 
-#tv
-  position: relative
-  h1
-    position: absolute
-    top: 0
-    right: 15px
-    margin: 0 0 5px 0
-  .addthis_toolbox
-    position: absolute
-    top: 45px
-    right: 15px
-    padding: 0
-    iframe
-      border: none 
-      padding: 0
-      width: 80px !important
-      height: 50px !important
-    a
-      float: left
-  iframe
-    border: none 
-    padding: 0
+// ========
+// = Wall =
+// ========
+
+.postIt
+  font-size: 12px
+  text-align: center
+  height: 150px
+  width: 200px
+  background: #FCF0AD
+  margin: 5px
+  padding: 10px
+  box-shadow: 0 1px 3px rgba(0,0,0,0.25), 0 0 30px rgba(0,0,0,0.1) inset
+  word-wrap: break-word
+  .difficulty
+    text-align: center
     width: 100%
-  .player
-    width: 640px
-    border: 8px solid white
-    height: 360px
-    margin: 10px auto
-    +roundcorners(8px)
-    +boxshadow
-  .show_title
-    width: 640px
-    margin: 20px auto 0 
-    p
-      color: white
-      font-size: 1.1em 
-      padding: 0
-      span
-        background: #CFC6BD
-        color: $darkbrown
-        font-weight: bold
-        padding: 2px 8px
-        +roundcorners
-        
+    position: absolute
+    left: 0px
+    bottom: 5px
+  .title
+    text-align: center
+    width: 100%
+    top: 5px
+    font-weight: bold
+    font-size: 14px
+  .description
+    text-align: center
+    width: 100%
+    margin-top: 20px
 
-ul.upcoming
-  margin: 0 0 0 5px
-  padding: 0
-  li
-    list-style: none
-    background: #ececec
-    margin: 5px 0
-    p
-      font-size: 1.3em
-      padding: 0 10px
-
-
-// ===============
-// = SHOP Online =
-// ===============
-
-.results
-  border-bottom: 1px dotted $orange
-  border-top: 1px dotted $orange
-  .results_display, .results_pages
-    p
-      font-size: 0.7em
-      color: $orange
-      padding: 5px 0
-      span
-        font-weight: bold
-  .results_pages 
-    width: 140px
-    a.nextpage
-      background: $orange 
-      padding: 0 8px
-      color: white
-      +roundcorners(3px)
-
-.shop
-  .products_wrap
-    margin: 20px 0 0
-  .product  
-    // +lineargradient(#fff, #ececec)
-    background-image: linear-gradient(bottom, rgb(236,236,236) 17%, rgb(255,255,255) 40%)
-    background-image: -o-linear-gradient(bottom, rgb(236,236,236) 17%, rgb(255,255,255) 40%)
-    background-image: -moz-linear-gradient(bottom, rgb(236,236,236) 17%, rgb(255,255,255) 40%)
-    background-image: -webkit-linear-gradient(bottom, rgb(236,236,236) 17%, rgb(255,255,255) 40%)
-    background-image: -ms-linear-gradient(bottom, rgb(236,236,236) 17%, rgb(255,255,255) 40%)
-    background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0.17, rgb(236,236,236)),color-stop(0.4, rgb(255,255,255)))
-    float: left  
-    padding: 10px 1% 5px 1%
-    width: 20%
-    border: 1px dotted #BFAA93
-    margin: 2px 3% 0 0
-    +roundcorners   
-    &.detail
-      width: 100%
-      background-image: none
-      border: none
-      margin: 10px 0 0
-      font-size: 1em
-      ul
-        margin: 0
-        padding: 0
-        li
-      p.image
-        float: left
-        overflow: hidden
-        text-align: center
-        padding: 0
-        // border: 1px solid red
-        a
-          font-weight: normal
-          color: #999
-          font-style: italic
-    &.action
-      float: right
-      padding: 5px 10px
-      margin-right: 1%
-      p, label
-        color: $orange
-        font-weight: bold
-    &.last
-      margin-right: 0
-    a, p.title
-      font-weight: bold
-      color: $orange
-      &:hover
-        color: black
-      &.back
-        font-weight: normal
-        color: $midgreen
-        padding: 0 10px 0 0
-    p
-      font-size: 0.8em
-      // padding: 5px 0
-      &.price
-        font-weight: bold  
-        color: $darkbrown
-        line-height: 1
-        font-size: 1em
-    img
-      display: block
-      margin: 0 auto
-  iframe
-    width: 350px
-    height: 285px
-    margin-left: 25px
-
-  .tabs
-    .pane
-      ul
-        margin: 0
-        padding-left: 15px
-        li
-          font-size: 0.8em
-          font-weight: normal
-      h4
-        color: $green
-      &.reviews
-        padding-top: 0
-
-  .ui-tabs-hide
-    display: none
-        
-  .testimonial
-    border-top: 1px dotted #ccc
-    overflow: hidden
-    p.by, p.date
-      padding: 10px 0 0
-    p.by
-      font-size: 0.8em
-      color: $green
-      float: left
-      font-weight: bold
-    p.date
-      font-size: 0.75em
-      color: $green
-      float: right
-    p.text
-      font-style: italic
-    p.rating
-      color: #999
-      font-size: 0.7em
-      padding: 0 0 10px
-      img      
-        vertical-align: middle
-        margin-bottom: 5px
-          
-          
-a.addproduct
-  font-size: 0.9em
-  font-size: 0.9rem
-  margin: 0
-  // color: $vetsk-grey
-  color: white !important
-  float: right
-  +textshadow
-  background: #8EA01E
-  padding: 3px 10px
-  +roundcorners(5px)
-  border: 1px solid #5A6512
-  &:hover
-    background: #9bae21     
-
-        
-  
-// =============
-// = CARESHEET =
-// =============
-
-.care_sheets
-  margin-top: 1em
-  a
-    color: #999966
-  .care_title
-    border-bottom-width: 1px
-    border-bottom-style: solid
-    border-bottom-color: #7C6A55
-  .sheet
-    background: #FFFFFF
-    padding: 10px
-    border-bottom-width: 1px
-    border-bottom-style: dotted
-    border-bottom-color: #7C6A55
-  .sheet:last-child
-    border-bottom-width: 0px
-    -moz-border-radius-bottomleft: 5px
-    -moz-border-radius-bottomright: 5px
-    border-bottom-left-radius: 5px
-    border-bottom-right-radius: 5px
+               
+.container_highlight
+  background: darken(#FFFFFF, 5%)

@@ -1,0 +1,46 @@
+- user_story = job.user_story
+- project = user_story.project
+.postIt{:class => "id_#{job.user_story.pk}", :"data-action" => "/owner/projects/#{project.pk}/user_stories/#{user_story.pk}/jobs/#{job.pk}"}
+  - unless job.owners.nil?
+    .owners
+      %img{:src => '/img/icons/users.png'}
+  .title= job.title
+  .clear
+  .description= job.description
+  .clear
+  .difficulty= "Difficulty: #{job.difficulty}"
+
+:javascript
+  $(function() {
+    var hash = {};
+    $('.postIt').each(function(){
+      // extract first class from postIt (represents US id)
+      var classId = $(this).attr('class').split(" ")[0];
+      hash[classId] = classId;
+    });
+
+    for(key in hash) {
+      $('.postIt.' + key).draggable({
+        containment: '.container_' + key,
+        revert: 'invalid'
+      });
+    }
+
+    $('.container_droppable').droppable({
+      accept: '.postIt',
+      tolerance: 'pointer',
+      hoverClass: 'container_highlight',
+      drop: function(event, ui) {
+        $(ui.helper).css({
+          'left': 'auto',
+          'top': 'auto'
+        });
+
+        $(this).append($(ui.helper))
+        $.post($(ui.helper).data('action') + '/' + $(this).data('state'), function(res) {
+          if(res == 'OK') {
+          }
+        });
+      }
+    });
+  });
