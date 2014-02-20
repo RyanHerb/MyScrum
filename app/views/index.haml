@@ -24,7 +24,7 @@
         %th Type
     %tbody
       - @notif.each do |n|
-        - @s = "why"
+        - @s = ""
         - if n.action.eql?("affectation")
           - @s = "You have been affected to a new " + n.type
         - else

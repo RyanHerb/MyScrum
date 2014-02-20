@@ -37,7 +37,7 @@ module MyScrum
         end
         a
       end
-
+      @notif = []
       if session[:owner]
         @owner = Owner.find(:id => session[:owner])
         @notif = @owner.notifications
