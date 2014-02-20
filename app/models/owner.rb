@@ -7,7 +7,7 @@ class Owner < Sequel::Model
   # ================
 
   many_to_many :jobs
-  many_to_many :projects, class: :Project , join_table: :users_projects, left_key: :user, right_key: :project, :select => [:projects.*, :user_project__position]
+  many_to_many :projects, class: :Project , join_table: :users_projects, left_key: :user, right_key: :project, :select => [:projects.*, :users_projects__position]
   one_to_many :notifications
 
   # =========
