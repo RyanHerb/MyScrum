@@ -1,11 +1,12 @@
 -@title = ""
 
 %fieldset
-  %legend Task Details
-  =form_for @task do |f|
+  %legend Job Details
+  =form_for @job, :action => "/owner/projects/#{@project.pk}/jobs" do |f|
     = f.input :title, :label => 'Title'
     = f.textarea :description, :label => 'Description'
     = f.select :status, :label => 'Status', :options => [["todo", "To Do"], ["inprogress", "In Progress"], ["done", "Done"]]
     = f.input :difficulty, :label => 'Difficulty', :type => "number", :min => "1"
-    = f.select :user_story, :label => 'User Story', :options => @project.user_stories.inject([]){ |arr, us| arr << [us.pk, us.title]; arr}
+    - if @job.new?
+      = f.select :user_story_id, :label => 'User Story', :options => @project.user_stories.inject([]){ |arr, us| arr << [us.pk, us.title]; arr}
     = f.submit "Submit"
