@@ -37,12 +37,17 @@ module MyScrum
         end
         a
       end
+
+      haml :index
+    end
+
+    get '/live' do
       @notif = []
       if session[:owner]
         @owner = Owner.find(:id => session[:owner])
         @notif = @owner.notifications
       end
-      haml :index
+      haml :'live'
     end
 
     get '/signup' do
