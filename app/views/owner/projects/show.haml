@@ -133,9 +133,9 @@
                   %td= @state
                   %td= @tester.username
                   %td.right.actions
-                    %a{:href => "/owner/projects/#{@project.pk}/tests/#{t.pk}/show"}
+                    %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{t.user_story.pk}/tests/#{t.pk}/show"}
                       %img{:src => '/img/icons/view.png', :title => "view #{t.title}"}
-                    %a{:href => "/owner/projects/#{@project.pk}/tests/#{t.pk}/edit"}
+                    %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{t.user_story.pk}/tests/#{t.pk}/edit"}
                       %img{:src => '/img/icons/edit.png', :title => "edit #{t.title}"}
                     %a{:onclick => "return confirm(\"Are you sure?\\n\\nThis operation is irreversible.\")", :href => "/owner/projects/#{@project.pk}/tests/#{t.pk}/remove"}
                       Remove
