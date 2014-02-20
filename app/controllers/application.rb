@@ -37,7 +37,17 @@ module MyScrum
         end
         a
       end
+
       haml :index
+    end
+
+    get '/live' do
+      @notif = []
+      if session[:owner]
+        @owner = Owner.find(:id => session[:owner])
+        @notif = @owner.notifications
+      end
+      haml :'live'
     end
 
     get '/signup' do
@@ -63,6 +73,26 @@ module MyScrum
         @turing_test = TuringTest.new
         session[:turing_answer] = @turing_test.answer
         haml :signup
+      end
+    end
+
+    # ========
+    # = Bugs =
+    # ========
+
+    get '/bug_reports/form' do
+      @bug_report = BugReport.new
+      haml :"bug_reports/form"
+    end
+
+    post '/bug_reports/form' do
+      @bug_report = BugReport.new
+      @bug_report.set(params[:bug_report])
+      if @bug_report.valid?
+        @bug_report.save
+        redirect "/"
+      else
+        haml :"bug_reports/form"
       end
     end
 

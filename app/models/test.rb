@@ -1,7 +1,7 @@
 class Test < Sequel::Model
 
-  many_to_one :user_stories
-  many_to_one :owners
+  many_to_one :user_story
+  many_to_one :owner
 
    def validate
      validates_presence :title, :message => 'Title must not be blank'

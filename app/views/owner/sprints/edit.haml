@@ -1,9 +1,9 @@
 !!!
-%h1= "Create new sprint"
+%h1= "Edit sprint #{@sprint.pk}"
 %fieldset
   %legend Sprint details
   %body
-    = form_for @sprint, :action => "/owner/projects/#{@project.pk}/sprint/create" do |f|
+    = form_for @sprint, :action => "/owner/projects/#{@project.pk}/sprints/#{@sprint.pk}/edit" do |f|
       %fieldset
         %label{:for => "day"} Select date
         %select{:name => "day", :required => true}
@@ -15,9 +15,9 @@
         %select{:name => "year"}
           -("2010".."2050").each do |i|
             %option{:value => i}=i
-        = f.select :duration, :options => ("1".."7").to_a, :required => true
+        = f.select :duration, :options => ("1".."7").to_a, :immediate => true
         %label{:for => "userstories"} User Stories
-        %select{:id => "userstories", :name => "userstories[]", :multiple => true}
+        %select{:name => "userstories[]", :multiple => true}
           -@user_stories.each do |u|
             %option{:value => u.pk}= u.title
         = f.submit "Submit"

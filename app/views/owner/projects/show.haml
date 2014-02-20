@@ -49,8 +49,8 @@
                   - role = @roles.where(:user => t.pk).first
                   %td= role[:position].capitalize rescue '-'
                   %td.right.actions
-                    %a#remove{:href => "/owner/projects/#{@project.pk}/remove_user/#{t.pk}"} 
-                      %img{:src=>"/img/icons/view.png", :title => "Remove "}
+                    %a#remove{:onclick => "return confirm('Are you sure?')", :href => "/owner/projects/#{@project.pk}/remove_user/#{t.pk}"} 
+                      Remove
 
         #tab3.pane
           %a.badge{:href  => "/owner/projects/#{@project.pk}/sprint/create"} Create new Sprint
@@ -73,7 +73,11 @@
                           %td= u.title
                   %td= s.start_date
                   %td= s.duration
-                  %td= " "
+                  %td.right.actions
+                    %a{:href => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/show"} 
+                      %img{:src=>"/img/icons/view.png", :title => "View sprint #{s.pk}"}
+                    %a{:href => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/edit"}
+                      %img{:src => '/img/icons/edit.png', :title => "edit sprint #{s.pk}"}
 
         #tab4.pane
           %a.badge{:href  => "/owner/projects/#{@project.pk}/user_stories/create"} Create new User Story
@@ -116,13 +120,22 @@
                 - @tester = Owner.find(:id => t.owner_id)
                 %tr
                   %td= t.title
-                  %td= ""
+                  - @state = ""
+                  - case t.state
+                  - when "not_tested"
+                    - @state = "Not tested"
+                  - when "failed"
+                    - @state = "Test failed"
+                  - when "success"
+                    - @state = "Test successful"
+                  - else
+                    - @state = "Unknown"
+                  %td= @state
                   %td= @tester.username
                   %td.right.actions
                     %a{:href => "/owner/projects/#{@project.pk}/tests/#{t.pk}/show"}
                       %img{:src => '/img/icons/view.png', :title => "view #{t.title}"}
-                    %a{:href => "/owner/user_stories/#{t.pk}/edit"}
+                    %a{:href => "/owner/projects/#{@project.pk}/tests/#{t.pk}/edit"}
                       %img{:src => '/img/icons/edit.png', :title => "edit #{t.title}"}
-
-
-
+                    %a{:onclick => "return confirm(\"Are you sure?\\n\\nThis operation is irreversible.\")", :href => "/owner/projects/#{@project.pk}/tests/#{t.pk}/remove"}
+                      Remove
