@@ -17,6 +17,22 @@
         %tr.selectable
           %td= p.title
           %td= p.repo
+  %table.datatable{:style => "width: 100%"}
+    %thead
+      %tr
+        %th Notification
+        %th Type
+    %tbody
+      - @notif.each do |n|
+        - @s = "why"
+        - if n.action.eql?("affectation")
+          - @s = "You have been affected to a new " + n.type
+        - else
+          - @s = n.action
+        %tr.selectable
+          %td= "#{@s}"
+          %td= n.type
+
 
 %footer
   %a{:href => '/bug_reports/form'} Report bug

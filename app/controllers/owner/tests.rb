@@ -60,6 +60,13 @@ module MyScrum
 
       @test.set(params[:test])
       if @test.valid?
+        
+        @notif = Notification.new
+        @notif.action = "affectation"
+        @notif.type = "Test"
+        @notif.owner_id = @test.owner.pk
+        @notif.viewed = 0
+        @notif.save
         @test.save
         redirect "owner/projects/#{@project.pk}/show"
       else

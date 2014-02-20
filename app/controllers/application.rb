@@ -37,6 +37,11 @@ module MyScrum
         end
         a
       end
+
+      if session[:owner]
+        @owner = Owner.find(:id => session[:owner])
+        @notif = @owner.notifications
+      end
       haml :index
     end
 
