@@ -2,38 +2,28 @@ require 'date'
 module MyScrum
   class OwnerApp < Sinatra::Application
 
-    get '/projects/:id/test/create' do |i|
-      @project = Project.find(:id => i)
+    get '/projects/:id/test/create' do |pid|
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @test = Test.new
-      if @project.nil?
-        redirect "/404"
-      end
       @owners = @project.users
       @user_stories = @project.user_stories
       haml :"/tests/form"
     end
 
-    get '/projects/:id/tests/:tid/edit' do |pid, tid|
-      @project = Project.find(:id => pid)
-      @test = Test.find(:id => tid)
-
-      if @project.nil? || @test.nil?
-        redirect "/404"
-      end
+    get '/projects/:pid/user_story/:uid/tests/:tid/edit' do |pid, uid, tid|
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
+      @user_story = @project.user_stories_dataset.where(:id => uid).first || halt(404)
+      @test = @user_story.tests_dataset.where(:id => tid).first || halt(404)
 
       @owners = @project.users
       @user_stories = @project.user_stories
       haml :"/tests/form"
     end
 
-    put '/projects/:id/tests/:tid' do |id, tid|
-      
-      @test = Test.find(:id => tid)
-      @project = Project.find(:id => id)
-
-      if @project.nil? || @test.nil?
-        redirect "/404"
-      end
+    put '/projects/:pid/user_story/:uid/tests/:tid' do |pid, uid, tid|
+      @project = @current_owner.projects_dataset.where(:id => pid).first || halt(404)
+      @user_story = @project.user_stories_dataset.where(:id => uid).first || halt(404)
+      @test = @user_story.tests_dataset.where(:id => tid).first || halt(404)
 
       @owners = @project.users
       @user_stories = @project.user_stories
@@ -48,12 +38,9 @@ module MyScrum
     end
 
     post '/projects/:id/tests' do |id|
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @us = UserStory.find(:id => params[:test][:user_story_id])
 
-      @project = Project.find(:id => id)
-      if @project.nil?
-        redirect "/404"
-      end
       @test = Test.new
       @owners = @project.users
       @user_stories = @project.user_stories
@@ -74,23 +61,18 @@ module MyScrum
       end
     end
 
-    get '/projects/:pid/tests/:sid/show' do |i,j|
-      @test = Test.find(:id => j)
-      @project = Project.find(:id => i)
-      if @project.nil? || @test.nil?
-        redirect "/404"
-      end
+    get '/projects/:pid/user_stories/:uid/tests/:tid/show' do |pid, uid, tid|
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
+      @us = @project.user_stories_dataset.where(:id => uid).first || halt(404)
+      @test = @us.tests_dataset.where(:id => tid).first || halt(404)
       @owner = @test.owner.username
-      @us = @test.user_story
       haml :"/tests/show"
     end
 
-    get '/projects/:pid/tests/:tid/remove' do |pid, tid|
-      @project = Project.find(:id => pid)
-      @test = Test.find(:id => tid)
-      if @project.nil? || @test.nil?
-        redirect "/404"
-      end
+    get '/projects/:pid/user_stories/:uid/tests/:tid/remove' do |pid, tid|
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
+      @user_story = @project.user_stories_dataset.where(:id => uid).first || halt(404)
+      @test = @user_story.tests_dataset.where(:id => tid).first || halt(404)
       @test.destroy()
       
       redirect "/owner/projects/#{@project.pk}/show"
