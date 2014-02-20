@@ -31,10 +31,10 @@ module MyScrum
       end
     end
 
-    get '/projects/:pid/sprints/:sid/show' do |i,j|
-      @tasks = Task.new
-      @sprint = Sprint.find(:id => j)
-      @project = Project.find(:id => i)
+    get '/projects/:pid/sprints/:sid/show' do |pid, sid|
+      @project = Project.find(:id => pid)
+      @sprint = Sprint.find(:id => sid)
+      @user_stories = @sprint.user_stories
       haml :"/sprints/show"
     end
 
