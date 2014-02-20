@@ -38,7 +38,7 @@ module MyScrum
     end
 
     post '/projects/:id/tests' do |id|
-      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
+      @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
       @us = UserStory.find(:id => params[:test][:user_story_id])
 
       @test = Test.new

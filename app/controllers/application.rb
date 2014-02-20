@@ -53,6 +53,13 @@ module MyScrum
             n.save
           end
         end
+        
+        @notif_sort = @notif.sort! { |x, y| y.date <=> x.date }
+        if @notif_sort.count > 30
+          @notif_sort.last(@notif_sort.count-30).each do |n|
+            n.destroy()
+          end
+        end
       end
       haml :'live'
     end

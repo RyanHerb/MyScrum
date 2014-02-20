@@ -1,5 +1,5 @@
 !!!
-
+- @title = "Live"
 %h1.center Notifications
 %p
 %p
@@ -11,15 +11,14 @@
         %tr
           %th Notifications
       %tbody
-        - @notif_sort = @notif.sort! { |x, y| y.date <=> x.date }
         - @notif_sort.each do |n|
-          - @s = ""
+          - @s = " - "
           - @date = n.date
+          - @str_date = ""
           - if Date.parse(@date.strftime("%Y-%m-%d")) < Date.today
-            - @s += @date.strftime("%d/%m")
+            - @str_date = @date.strftime("%d/%m")
           - else
-            - @s += @date.strftime("%H:%M")
-          - @s += " - "
+            - @str_date = @date.strftime("%H:%M")
           - if n.action.eql?("affectation")
             - @s += "You have been assigned to a new " + n.type
           - elsif n.action.eql?("modification")
@@ -28,6 +27,6 @@
             - @s += n.action
           %tr.selectable{:rel => "/"}
             - if n.viewed < 2
-              %td.red= "#{@s}"
+              %td.red #{@str_date}#{@s}
             - else
-              %td= "#{@s}"
+              %td #{@str_date}#{@s}
