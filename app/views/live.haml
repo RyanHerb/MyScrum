@@ -1,0 +1,33 @@
+!!!
+
+%h1.center Notifications
+%p
+%p
+
+.content
+  %fieldset
+    %table.datatable{:style => "width: 100%"}
+      %thead
+        %tr
+          %th Notifications
+      %tbody
+        - @notif_sort = @notif.sort! { |x, y| y.date <=> x.date }
+        - @notif_sort.each do |n|
+          - @s = ""
+          - @date = n.date
+          - if Date.parse(@date.strftime("%Y-%m-%d")) < Date.today
+            - @s += @date.strftime("%d/%m")
+          - else
+            - @s += @date.strftime("%H:%M")
+          - @s += " - "
+          - if n.action.eql?("affectation")
+            - @s += "You have been assigned to a new " + n.type
+          - elsif n.action.eql?("modification")
+            - @s += "A " +n.type + " has been modified."
+          - else
+            - @s += n.action
+          %tr.selectable{:rel => "/"}
+            - if n.viewed < 2
+              %td.red= "#{@s}"
+            - else
+              %td= "#{@s}"
