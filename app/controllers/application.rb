@@ -63,9 +63,12 @@ module MyScrum
           end
           str = date + " - "
           if n.action.eql?("affectation")
-            str += "You have been assigned to a new " + n.type.downcase
+            str += "You have been assigned to a new " + n.type + "."
           elsif n.action.eql?("modification")
-            str += "A " +n.type.downcase + " has been modified."
+            str += "A " +n.type + " has been modified."
+          elsif n.action.eql?("project owner") || n.action.eql?("scrum master") || n.action.eql?("developer")
+            project = Project.find(:id => n.id_object)
+            str += "You have been assigned to the project \"" + project.title + "\" as a " + n.action + "."
           else
             str += n.action
           end

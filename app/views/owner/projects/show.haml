@@ -50,7 +50,7 @@
                   %td= role[:position].capitalize rescue '-'
                   %td.right.actions
                     %a#remove{:onclick => "return confirm('Are you sure?')", :href => "/owner/projects/#{@project.pk}/remove_user/#{t.pk}"} 
-                      Remove
+                      %img{:src=>"/img/icons/delete.png", :title => "Remove"}
 
         #tab3.pane
           %a.badge{:href  => "/owner/projects/#{@project.pk}/sprint/create"} Create new Sprint
@@ -77,7 +77,7 @@
                     %a{:href => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/show"} 
                       %img{:src=>"/img/icons/view.png", :title => "View sprint #{s.pk}"}
                     %a{:href => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/edit"}
-                      %img{:src => '/img/icons/edit.png', :title => "edit sprint #{s.pk}"}
+                      %img{:src => '/img/icons/edit.png', :title => "Edit sprint #{s.pk}"}
 
         #tab4.pane
           %a.badge{:href  => "/owner/projects/#{@project.pk}/user_stories/create"} Create new User Story
@@ -137,5 +137,5 @@
                       %img{:src => '/img/icons/view.png', :title => "view #{t.title}"}
                     %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{t.user_story.pk}/tests/#{t.pk}/edit"}
                       %img{:src => '/img/icons/edit.png', :title => "edit #{t.title}"}
-                    %a{:onclick => "return confirm(\"Are you sure?\\n\\nThis operation is irreversible.\")", :href => "/owner/projects/#{@project.pk}/tests/#{t.pk}/remove"}
-                      Remove
+                    %a{:onclick => "return confirm(\"Are you sure?\\n\\nThis operation is irreversible.\")", :href => "/owner/projects/#{@project.pk}/user_stories/#{t.user_story.pk}/tests/#{t.pk}/remove"}
+                      %img{:src=>"/img/icons/delete.png", :title => "Remove"}
