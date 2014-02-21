@@ -49,7 +49,7 @@ module MyScrum
       if @test.valid?
         @test.save
         @notif = Notification.new
-        @notif.set({:action => "affectation", :type => "Test", :owner_id => @test.owner.pk, :object_id => @test.id, :viewed => 0, :date => Time.new})
+        @notif.set({:action => "affectation", :type => "Test", :owner_id => @test.owner.pk, :object_id => @test.id, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/user_stories/#{@test.user_story.pk}/tests/#{@test.id}/show"})
         @notif.save
         
         redirect "owner/projects/#{@project.pk}/show"
