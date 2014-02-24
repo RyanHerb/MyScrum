@@ -2,17 +2,7 @@
 %html{lang: "en"}
   %head
     %meta{charset: "utf-8"}/
-    %title D3 Test
     %script{src: "http://d3js.org/d3.v3.min.js", type: "text/javascript"}
-    :css
-      body {
-        font: 10px sans-serif;
-      }
-
-      .arc path {
-        stroke: #fff;
-      }
-  %body
     :javascript
       // Your beautiful D3 code will go here
       var width = 860,
@@ -58,3 +48,10 @@
             .text(function(d) { return d.data.age; });
 
       });
+
+  %body
+    %h1= "Sprint #{@sprint.id}"
+    %p= "Start Date: #{@sprint.start_date}"
+    %p= "Duration: #{@sprint.duration}"
+    %p= "Sprint Difficulty: "
+    %p= "User Contributions Chart for Tasks Done"   
