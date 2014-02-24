@@ -2,7 +2,8 @@
 
 %fieldset
   %legend Job Details
-  =form_for @job, :action => "/owner/projects/#{@project.pk}/jobs" do |f|
+  - action = @job.new? ? "/owner/projects/#{@project.pk}/jobs" : "/owner/projects/#{@project.pk}/user_stories/#{@user_story.pk}/jobs/#{@job.pk}/edit"
+  =form_for @job, :action => action, :enctype => 'multipart/form-data' do |f|
     = f.input :title, :label => 'Title'
     = f.textarea :description, :label => 'Description'
     = f.select :status, :label => 'Status', :options => [["todo", "To Do"], ["inprogress", "In Progress"], ["done", "Done"]]
