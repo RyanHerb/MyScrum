@@ -36,7 +36,7 @@ module MyScrum
     # = Show =
     # ========
     get '/projects/:pid/sprints/:sid/show' do |pid, sid|
-      @project = Project.find(:id => pid)
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @sprint = Sprint.find(:id => sid)
       @user_stories = @sprint.user_stories
       haml :"/sprints/show"

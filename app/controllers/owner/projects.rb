@@ -29,8 +29,8 @@ module MyScrum
     # = /projects/:id/show =
     # ======================
 
-    get '/projects/:id/show' do |i|
-      @project = Project.find(:id => i)
+    get '/projects/:pid/show' do |pid|
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @team = @project.users
       @sprints = @project.sprints
       @roles = @project.users_dataset
@@ -47,8 +47,8 @@ module MyScrum
     # = /projects/:id/users/* =
     # =========================
 
-    get '/projects/:id/users/add' do |i|
-      @project = Project.find(:id => i)
+    get '/projects/:id/users/add' do |id|
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @project_owner = @project.users_dataset.where(:position => "project owner").first
       @scrum_master = @project.users_dataset.where(:position => "scrum master").first
       @owners = Owner.all.inject([]) do |arr, o|
@@ -62,8 +62,8 @@ module MyScrum
 
     # =========================
 
-    post '/projects/:id/users/project_owner' do |i|
-      @project = Project.find(:id => i)
+    post '/projects/:id/users/project_owner' do |id|
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @owner = Owner.all.inject([]) do |arr2, o|
         if o.pk == params[:owner].to_i
           arr2 << o
@@ -85,8 +85,8 @@ module MyScrum
 
     # =========================
 
-    post '/projects/:id/users/scrum_master' do |i|
-      @project = Project.find(:id => i)
+    post '/projects/:id/users/scrum_master' do |id|
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @owner = Owner.all.inject([]) do |arr2, o|
         if o.pk == params[:owner].to_i
           arr2 << o
@@ -119,8 +119,8 @@ module MyScrum
 
     # =========================
 
-    post '/projects/:id/users/add' do |i|
-      @project = Project.find(:id => i)
+    post '/projects/:id/users/add' do |id|
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @owner = Owner.all.inject([]) do |arr2, o|
         if o.pk == params[:owner].to_i
           arr2 << o
@@ -144,8 +144,8 @@ module MyScrum
     # = /projects/:id/edit =
     # ======================
 
-    get '/projects/:id/edit' do |i|
-      @project = Project.find(:id => i)
+    get '/projects/:id/edit' do |id|
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       haml :"/projects/form"
     end
 
@@ -160,7 +160,7 @@ module MyScrum
     # =================
 
     put '/projects/:id' do |id|
-      @project = Project.find(:id => id)
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @project.set(params[:project])
       if @project.valid?
         @project.save
@@ -176,7 +176,7 @@ module MyScrum
     # ==========
 
     get '/projects/:pid/remove_user/:oid' do |pid, oid|
-      @project = Project.find(:id => pid)
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @owner = Owner.find(:id => oid)
       @project.remove_user(@owner)
       redirect "/owner/projects/#{@project.pk}/show"

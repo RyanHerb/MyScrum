@@ -2,26 +2,26 @@ module MyScrum
 	class OwnerApp < Sinatra::Application
 
 		get '/projects/:pid/user_stories/all' do |pid|
-      @project = Project.find(:id => pid)
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
   		@user_stories = UserStory.all
   		haml :"/user_stories/index"
   	end
 
 		get '/projects/:pid/user_stories/create' do |pid|
-      @project = Project.find(:id => pid)
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
 			@user_story = UserStory.new
 			haml :"/user_stories/edit"
 		end
 
 		get '/projects/:pid/user_stories/:id/edit' do |pid, id|
-      @project = Project.find(:id => pid)
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
   		@user_story = UserStory.find(:id => id)
   		haml :"/user_stories/edit"
   	end
 
   	put '/projects/:pid/user_stories/:id' do |pid, id|
-      @project = Project.find(:id => pid)
-  		@user_story = Project.find(:id => id)
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
+  		@user_story = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
   		@user_story.set(params[:userstory])
   		if @userstory.valid?
     		@user_story.save
@@ -33,7 +33,7 @@ module MyScrum
   	end
 
 		post '/projects/:pid/user_stories' do |pid|
-      @project = Project.find(:id => pid)
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
 		  @user_story = UserStory.new
       @user_story.set(params[:user_story])
       if @user_story.valid?
@@ -48,7 +48,7 @@ module MyScrum
 		end
 
 		get '/projects/:pid/user_stories/:id/show' do |pid, id|
-      @project = Project.find(:id => pid)
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
   		@user_story = UserStory.find(:id => i)
   		haml :"/user_stories/show"
   	end
