@@ -65,7 +65,9 @@
             %tbody
               - @sprints.each do |s|
                 %tr.selectable{:rel => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/show"}
-                  %td= " "
+                  %td.right.actions
+                    %a{:href => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/burndown_chart/show"} 
+                      %img{:src=>"/img/icons/chart.png", :title => "Burndown Chart"}
                   %td
                     %table
                       - s.user_stories.each do |u|
