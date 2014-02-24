@@ -15,27 +15,7 @@
 
     #tab1 
       %a.badge{:href  => "/owner/projects/#{@project.pk}/jobs/create"} Create Job
-      %table.postItWall
-        %thead
-          %tr
-            %td User Stories
-            %td To Do
-            %td In Progress
-            %td Done
-        %tbody
-          - @user_stories.each do |us|
-            %tr{:class => "container_id_#{us.pk}"}
-              %td
-                %a{:href => "/owner/projects/"}= us.title
-              %td.todo.container_droppable{:"data-state" => "todo"}
-                - us.jobs_dataset.todo.each do |job|
-                  = global_partial :post_it, :locals => {:job => job}
-              %td.inprogress.container_droppable{:"data-state" => "inprogress"}
-                - us.jobs_dataset.in_progress.each do |job|
-                  = global_partial :post_it, :locals => {:job => job}
-              %td.done.container_droppable{:"data-state" => "done"}
-                - us.jobs_dataset.done.each do |job|
-                  = global_partial :post_it, :locals => {:job => job}
+      = global_partial :post_it_wall, :locals => {:user_stories => @user_stories}
     #tab2.pane
       %table.datatable
         %thead

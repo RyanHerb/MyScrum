@@ -249,6 +249,16 @@ function ajax_put(url){
   }).error(function(e){ dialog_alert(e.status + ": " + e.statusText); });
 }
 
+
+function change_postit_state(postit, state) {
+  var container = $("#container_" + postit.data('id') + "_" + state);
+  container.append(postit);
+  $.post(postit.data('action') + '/' + state, function(res) {
+    if(res == 'OK') {
+    }
+  });
+}
+
 $(document).ready(function(){
   show_flash_notification();
   setupDataTables();

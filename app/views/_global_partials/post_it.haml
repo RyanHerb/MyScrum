@@ -1,46 +1,22 @@
 - user_story = job.user_story
 - project = user_story.project
-.postIt{:class => "id_#{job.user_story.pk}", :"data-action" => "/owner/projects/#{project.pk}/user_stories/#{user_story.pk}/jobs/#{job.pk}"}
-  - unless job.owners.nil?
-    .owners
-      %img{:src => '/img/icons/users.png'}
+.postIt{:class => "id_#{job.user_story.pk}", :"data-action" => "/owner/projects/#{project.pk}/user_stories/#{user_story.pk}/jobs/#{job.pk}", :"data-id" => "#{job.user_story.pk}", :"data-jobid" => "#{job.pk}"}
+  - unless job.owners.length == 0
+    .ownerIcon
+      %img{:src => '/img/icons/user.png', :title => job.owners.inject([]){|arr, o| arr << o.username; arr}.join(', ')}
   .title= job.title
   .clear
   .description= job.description
   .clear
   .difficulty= "Difficulty: #{job.difficulty}"
 
-:javascript
-  $(function() {
-    var hash = {};
-    $('.postIt').each(function(){
-      // extract first class from postIt (represents US id)
-      var classId = $(this).attr('class').split(" ")[0];
-      hash[classId] = classId;
-    });
+.dialog.assign_devs.hidden{:"id" => job.pk}
+  .pane
+    %legend= "Assign Developers to #{job.title}"
+    %form{:action => "/owner/projects/#{project.pk}/user_stories/#{user_story.pk}/jobs/#{job.pk}/update_devs", :method => "post", :class => "form_for_#{job.pk}"}
+      %select.dev_list{:name => "dev[]", :multiple => true}
+        - project.users.each do |user|
+          %option{:value => user.pk, :selected => job.owners.include?(user) ? "true" : "false"}= user.username
+      .field.submit
+        %input{:class => "submit_#{job.pk}", :type => "submit", :value => "Submit"}
 
-    for(key in hash) {
-      $('.postIt.' + key).draggable({
-        containment: '.container_' + key,
-        revert: 'invalid'
-      });
-    }
-
-    $('.container_droppable').droppable({
-      accept: '.postIt',
-      tolerance: 'pointer',
-      hoverClass: 'container_highlight',
-      drop: function(event, ui) {
-        $(ui.helper).css({
-          'left': 'auto',
-          'top': 'auto'
-        });
-
-        $(this).append($(ui.helper))
-        $.post($(ui.helper).data('action') + '/' + $(this).data('state'), function(res) {
-          if(res == 'OK') {
-          }
-        });
-      }
-    });
-  });
