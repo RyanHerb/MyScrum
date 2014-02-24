@@ -79,6 +79,9 @@ module MyScrum
         @project.remove_user(@owner)
         @project.add_user(@owner)
         @project.users_dataset.where(:user => @owner.pk).update(:position => "project owner")
+        @notif = Notification.new
+        @notif.set({:action => "project owner", :type => "project", :owner_id => @owner.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{i}/show"})
+        @notif.save
       end
       redirect "/owner/projects/#{@project.pk}/show"
     end
@@ -109,6 +112,9 @@ module MyScrum
           @project.remove_user(@owner)
           @project.add_user(@owner)
           @project.users_dataset.where(:user => @owner.pk).update(:position => "scrum master") 
+          @notif = Notification.new
+          @notif.set({:action => "scrum master", :type => "project", :owner_id => @owner.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{i}/show"})
+          @notif.save
           redirect "/owner/projects/#{@project.pk}/show"
         else
           redirect "/owner/projects/#{@project.pk}/users/add"

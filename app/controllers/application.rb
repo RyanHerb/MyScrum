@@ -53,6 +53,35 @@ module MyScrum
             n.save
           end
         end
+        @full_notif = Array.new
+        @notif_sort = @notif.sort! { |x, y| y.date <=> x.date }
+        @notif_sort.each do |n|
+          if Date.parse(n.date.strftime("%Y-%m-%d")) < Date.today
+            date = n.date.strftime("%d/%m")
+          else
+            date = n.date.strftime("%H:%M")
+          end
+          str = date + " - "
+          if n.action.eql?("affectation")
+            str += "You have been assigned to a new " + n.type + "."
+          elsif n.action.eql?("modification")
+            str += "A " +n.type + " has been modified."
+          elsif n.action.eql?("project owner") || n.action.eql?("scrum master") || n.action.eql?("developer")
+            project = Project.find(:id => n.id_object)
+            str += "You have been assigned to the project \"" + project.title + "\" as a " + n.action + "."
+          else
+            str += n.action
+          end
+
+          @full_notif.push({:viewed => n.viewed, :message => str, :link => n.link})
+        end
+
+        @notif_sort = @notif.sort! { |x, y| y.date <=> x.date }
+        if @notif_sort.count > 30
+          @notif_sort.last(@notif_sort.count-30).each do |n|
+            n.destroy()
+          end
+        end
       end
       haml :'live'
     end
