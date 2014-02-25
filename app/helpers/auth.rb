@@ -11,6 +11,8 @@ helpers do
 
     #TODO make this more DRY on obvious pattern for basic stuff
     case scope
+    when :admin
+      act_on_fail.call unless current_admin
     when :owner
       act_on_fail.call unless current_owner
     else
@@ -21,7 +23,7 @@ helpers do
   def check_access_rights(scope = nil, redir_url = nil)
     case scope
     when :admin
-      halt(403) unless current_owner.admin?
+      halt(403) unless current_admin
     else
       raise "No scope provided"
     end
@@ -29,6 +31,11 @@ helpers do
 
   def authenticate!(scope = nil)
     case scope
+    when :admin
+      if a = Admin.auth_with_password(params)
+        session[:admin] = a.id
+        @current_admin = a
+      end
     when :owner
       if o = Owner.auth_with_password(params)
         session[:owner] = o.id
@@ -63,6 +70,10 @@ helpers do
   #TODO fix these boring defs with some meta-magic
   def current_owner
     @current_owner ||= Owner[session[:owner]]
+  end
+
+  def current_admin
+    @current_admin ||= Admin[session[:admin]]
   end
   
 end

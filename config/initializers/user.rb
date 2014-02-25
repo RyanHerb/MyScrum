@@ -11,8 +11,6 @@ module GeneralUser
   def validate
     validates_password
     validates_presence :email, :message => 'Email address must not be blank'
-    validates_presence :username, :message => 'Username must not be blank'
-    validates_unique :username
     validates_unique :email
     validates_format Regexp.email_pattern, :email, :message => 'Email address is not valid'
     validates_presence :first_name, :message => 'First name cannot be blank'
