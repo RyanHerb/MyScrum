@@ -1,0 +1,15 @@
+.pane
+  .panel
+    %h1= @admin.name
+    %table
+      %thead
+        %tr
+          %th First Name
+          %th Last Name
+          %th Email
+      %tbody
+        %tr
+          %td= @admin.first_name
+          %td= @admin.last_name
+          %td= @admin.email
+    %a.badge{:href => "/admin/owners/#{@admin.pk}/edit"}

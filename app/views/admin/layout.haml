@@ -2,32 +2,17 @@
 %html{ html_attrs("en_us") }
   %head
     %title 
-      Vet's Klinic Admin
+      My Scrum Admin
       = if_not_blank(@title, " | ")
 
     %meta{:content => "text/html; charset=utf-8", "http-equiv" => "content-type"}/
 
-    - %w(jquery-1.7.2.min.js jquery-ui-1.8.21.custom.min.js bootstrap-dropdown.js jquery.dataTables.min.js datatables-uk.js jquery.ui.timepicker.js application.js slimbox2.js video.min.js).each do |j|
+    - %w(jquery-1.7.2.min.js jquery-ui-1.8.21.custom.min.js jquery.dataTables.min.js application.js).each do |j|
       %script{:type => 'text/javascript', :language => 'javascript', :src => "/js/#{j}"}
-    
-    :javascript
-      _V_.options.flash.swf = "/video-js.swf";
 
-    -# %script{:type => 'text/javascript', :src => "http://js.pusher.com/1.11/pusher.min.js"}
-    -# // Enable pusher logging - don't include this in production
-    -# :javascript
-    -#   Pusher.log = function(message) {
-    -#      if (window.console && window.console.log) window.console.log(message);
-    -#    };
-    -#    var pusher = new Pusher('5b1ac940843a1db632f5');
-
-    %link{:rel => "stylesheet", :type => "text/css",  :href => "/stylesheets/jqui-vetsk-admin/vetsk-admin.css"} 
-    %link{:rel => "stylesheet", :type => "text/css", :href => "/stylesheets/ui.timepickr.css"}
     %link{:rel => "stylesheet", :type => "text/css",  :href => "/css/admin.css"}
+    %link{:rel => "stylesheet", :type => "text/css",  :href => "/stylesheets/jqui-vetsk-admin/vetsk-admin.css"}
     %link{:rel => "stylesheet", :href => '/css/admin768.css', :media => "only screen and (min-width: 768px)"}
-    %link{:rel => "stylesheet", :type => "text/css",  :href => "/stylesheets/bootstrap-dropdown.css"}
-    %link{:rel => "stylesheet", :type => "text/css",  :href => "/stylesheets/slimbox/slimbox2.css", :media => "screen"}
-    %link{:rel => "stylesheet", :type => "text/css", :href => "/stylesheets/video-js/video-js.min.css"}
 
     %link{:href => 'http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,700|Waiting+for+the+Sunrise', :rel => 'stylesheet', :type => 'text/css'}
        
@@ -38,118 +23,21 @@
     =styled_flash
     
     #header
-      - if @current_user
+      - if @current_admin
         #loggedinas
-          %strong #{@current_user.name}
+          %strong #{@current_admin.name}
           %a{:href => '/admin/logout'} logout
-        #search-tools
-          .upper
-            .floatleft
-              %input#quicksearch{:type => "text", :name => "q", :placeholder => 'Quickfind pets & user', :autocomplete => "off"}
-
-            .clear
-          .lower
-            #quicksearch_results{:style => "display: none"}
-        
-      #logo
-        %img{:src => '/img/logo_klinic_admin.png'}
     #nav
       #topbar
-        %ul.tabs
-          %li
-            %a{:href => '/admin/'} home
+        %li
+          %a{:href => '/admin/'} home
 
-          %li.dropdown{'data-dropdown'.to_sym => 'dropdown'}
-            %a.dropdown-toggle{:href => '#'} user &amp; pets
-            %ul.dropdown-menu
-              %li
-                %a{:href => '/admin/user'} user
-              %li
-                %a{:href => '/admin/pets'} pets
-
-          %li.dropdown{'data-dropdown'.to_sym => 'dropdown'}
-            %a.dropdown-toggle{:href => '#'} appointments
-            %ul.dropdown-menu
-              %li
-                %a{:href => '/admin/calendar'} calendar
-              %li          
-                %a{:href => '/admin/appointments'} list
-              %li          
-                %a{:href => '/admin/appointments/new'} new appointment
-              %li
-                %a{:href => '/admin/appointments/new?i=1'} new in-patient
-              %li
-                %a{:href => '/admin/appointments/cancelled'} refunds due
-              %li
-                %a{:href => '/admin/labels'} prescription labels
-                
-          - if @current_user.admin?
-            %li.dropdown{'data-dropdown'.to_sym => 'dropdown'}
-              %a.dropdown-toggle{:href => '#'} payments
-              %ul.dropdown-menu
-                -# %li
-                -#                   %a{:href => '/admin/payments'} payments
-                %li
-                  %a{:href => '/admin/payments/appointments'} appointments
-                %li
-                  %a{:href => '/admin/invoices'} invoices
-                %li
-                  %a{:href => '/admin/invoices/pending'} pending invoices
-                -#                %li
-                -#                  %a{:href => '/admin/working_patterns'} working patterns
-               
-          
-          
-          %li.dropdown{'data-dropdown'.to_sym => 'dropdown'}
-            %a.dropdown-toggle{:href => '#'} estimates
-            %ul.dropdown-menu
-              %li
-                %a{:href => '/admin/appointments/new?e=1'} create new
-              %li
-                %a{:href => '/admin/estimates'} client requests
-              %li
-                %a{:href => '/admin/estimates/pending'} issued
-
-
-                
-          %li.dropdown{'data-dropdown'.to_sym => 'dropdown'}
-            %a.dropdown-toggle{:href => '#'} shop
-            %ul.dropdown-menu
-              %li          
-                %a{:href => '/admin/shopping'} shopping
-              %li
-                %a{:href => '/admin/shop/sales'} sales list
-                
-
-          - if @current_user.admin?
-            %li.dropdown{'data-dropdown'.to_sym => 'dropdown'}
-              %a.dropdown-toggle{:href => '#'} staff
-              %ul.dropdown-menu
-                %li
-                  %a{:href => '/admin/users'} all staff
-                %li
-                  %a{:href => '/admin/user_sessions'} staff rota
-                %li
-                  %a{:href => '/admin/working_patterns'} working patterns
-
-          
-          - if @current_user.admin?
-
-            %li.dropdown{'data-dropdown'.to_sym => 'dropdown'}
-              %a.dropdown-toggle{:href => '#'} practice management
-              %ul.dropdown-menu
-                %li 
-                  %a{:href => '/admin/procedures'} procedures
-                %li 
-                  %a{:href => '/admin/products'} products
-                %li
-                  %a{:href => '/admin/wholesalers'} wholesalers
-                %li 
-                  %a{:href => '/admin/pet_types'} pet types
-                %li 
-                  %a{:href => '/admin/procedure_sales'} procedure sales
-                %li 
-                  %a{:href => '/admin/broadcasts'} broadcasts
+        %li
+          %ul.dropdown-menu
+            %li
+              %a{:href => '/admin/profiles'} Admins
+            %li
+              %a{:href => '/admin/owners'} Owners
                 
 
 
@@ -160,52 +48,4 @@
       
 
     #footer
-      %span.floatleft ©#{Date.today.year} Vet's Klinic
-      
-    :javascript
-      $.widget( "custom.catcomplete", $.ui.autocomplete, {
-        _renderMenu: function( ul, items ) {
-          var self = this,
-          currentCategory = "";
-          $.each( items, function( index, item ) {
-            if ( item.category != currentCategory ) {
-              ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
-              currentCategory = item.category;
-            }
-            self._renderItem( ul, item );
-          });
-        }
-      });
-  
-      $(function(){
-        var cache = {}, lastXhr;
-        
-        $('#quicksearch').catcomplete({
-          minLength: 3,          
-          focus: function( event, ui ){
-            $('#quicksearch').val( ui.item.label );
-            return false;
-          },
-          
-          select: function( event, ui ){
-            window.location.href = ui.item.href;
-            return false;
-          },
-          
-          source: function( request, response ) {
-            var term = request.term;
-            if( term in cache ) {
-              response( cache[term] );
-              return;
-            }
-            
-            lastXhr = $.getJSON( "/admin/quicksearch", request, function(data, status, xhr ) {
-              cache[term] = data;
-              if( xhr === lastXhr ) {
-                response(data);
-              }
-            });
-          }
-          
-        });
-      });
+      %span.floatleft ©#{Date.today.year} My Scrum
