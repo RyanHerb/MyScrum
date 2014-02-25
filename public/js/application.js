@@ -268,9 +268,4 @@ $(document).ready(function(){
   //timepicker breaks certain pages
   //setup_timepicker();
   setup_tabs();
-
-  // Textile cheatsheet
-  $('.textile-help-link').live('click', function() {
-    $(this).next('.textile-help').toggle('slow');
-  });
 });
