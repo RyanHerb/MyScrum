@@ -23,5 +23,6 @@ Sequel.migration do
 
   down do
     drop_table(:tasks)
+    drop_table(:users_tasks)
   end
 end
