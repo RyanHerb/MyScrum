@@ -14,7 +14,7 @@ class Job < Sequel::Model
 
   def validate
     super
-    errors.add(:status, 'Invalid status') unless ["todo", "inprogress", "done"].include?(status)
+    errors.add(:status, 'Invalid status') unless ["todo", "in progress", "done"].include?(status)
   end
 
   # ===========
@@ -22,7 +22,7 @@ class Job < Sequel::Model
   # ===========
 
   subset :todo , :status => "todo"
-  subset :in_progress, :status => "inprogress"
+  subset :in_progress, :status => "in progress"
   subset :done, :status => "done"
   
 end
