@@ -2,7 +2,7 @@
 %html{lang: "en"}
   %head
     %meta{charset: "utf-8"}/
-    %script{src: "http://d3js.org/d3.v3.min.js", type: "text/javascript"}
+    %script{src: "/js/d3.v3.min.js", type: "text/javascript"}
     :javascript
       // Your beautiful D3 code will go here
       var width = 860,
@@ -18,7 +18,7 @@
 
       var pie = d3.layout.pie()
           .sort(null)
-          .value(function(d) { return d.population; });
+          .value(function(d) { return d.num_jobs; });
 
       var svg = d3.select("body").append("svg")
           .attr("width", width)
@@ -26,10 +26,10 @@
           .append("g")
           .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-      d3.csv("/img/icons/data.csv", function(error, data) {
+      d3.csv("/data/data.csv", function(error, data) {
 
         data.forEach(function(d) {
-          d.population = +d.population;
+          d.num_jobs = +d.num_jobs;
         });
 
         var g = svg.selectAll(".arc")
@@ -39,13 +39,13 @@
 
           g.append("path")
             .attr("d", arc)
-            .style("fill", function(d) { return color(d.data.age); });
+            .style("fill", function(d) { return color(d.data.name); });
 
           g.append("text")
             .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
             .attr("dy", ".35em")
             .style("text-anchor", "middle")
-            .text(function(d) { return d.data.age; });
+            .text(function(d) { return d.data.name; });
 
       });
 
@@ -54,4 +54,5 @@
     %p= "Start Date: #{@sprint.start_date}"
     %p= "Duration: #{@sprint.duration}"
     %p= "Sprint Difficulty: "
-    %p= "User Contributions Chart for Tasks Done"   
+    %p= "User Contributions Chart for Tasks Done"
+    %p= @data_path
