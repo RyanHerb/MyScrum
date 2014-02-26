@@ -18,13 +18,13 @@
           %td= @user_story.priority
         %tr
           %th Diffilculty
-          %td= @user_story.difficulty
+          %td= @user_story.diffilculty
         %tr
           %th Finished
-          %td= @user_story.finished
+          %td= @user_story.finished ? "Yes" : "No"
         %tr
-          %th Validate
-          %td= @user_story.isvalidate
+          %th Validated
+          %td= @user_story.valid ? "Yes" : "No"
           
       %a.badge{:href  => "/owner/user_stories/#{@user_story.pk}/edit"} Edit
 
