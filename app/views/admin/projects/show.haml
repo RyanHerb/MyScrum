@@ -35,7 +35,7 @@
         #tab2.pane
           %a.addmore#team_edit{:href  => "/admin/projects/#{@project.pk}/users/add"} Edit collaborators
           %h1 Project Team
-          %table.datatable
+          %table.datatable#collaborators
             %thead
               %tr
                 %th Name
@@ -144,7 +144,16 @@
       var form = $('#dev_form');
       $.post(form.attr('action'), form.serialize(), function(res){
         if(res == "OK") {
+          form.children('span').remove();
           $('#assign_devs').dialog('close');
+          // TODO find way to dynamically replace data in table
+          /*form.children('span').each(function() {
+            $('#collaborators').dataTable().fnAddData([
+              $(this).clone().children().remove().end().text(),
+              $(this).children('select').find(':selected').text(),
+              '<a href="/admin/projects/1/remove_user/2" id="remove"><img src="/img/icons/delete.png" title="Remove"></a>'
+            ]);
+          });*/
         }
       });
     });
