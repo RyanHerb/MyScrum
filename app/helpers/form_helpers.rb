@@ -20,7 +20,7 @@ helpers do
     if object.new?
       opts[:action] = request.script_name.gsub(/\/$/, '') + prefix + "/#{object.class.to_s.underscore.pluralize}"
     else
-      opts[:action] = request.script_name.gsub(/\/$/, '') + prefix + "/#{object.class.to_s.underscore}s/#{object.pk}"
+      opts[:action] = request.script_name.gsub(/\/$/, '') + prefix + "/#{object.class.to_s.underscore.pluralize}/#{object.pk}"
       mfield = :input.tag(:type => 'hidden', :name => '_method', :value => 'put')
     end
 
