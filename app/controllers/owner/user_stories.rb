@@ -25,7 +25,7 @@ module MyScrum
   		@user_story.set(params[:userstory])
   		if @userstory.valid?
     		@user_story.save
-    		flash[:notice] = "Userstory updated"
+    		flash[:notice] = "User Story updated"
         redirect "/owner/projects/#{pid}/show#tab4"
   		else
     		haml :"/user_stories/edit"
@@ -39,7 +39,7 @@ module MyScrum
       if @user_story.valid?
   	 		@user_story.save
         @project.add_user_story(@user_story)
-  	 		flash[:notice] = "User Stories created"
+  	 		flash[:notice] = "User Story created"
   	 		redirect "/owner/projects/#{pid}/show#tab4"
 		 	else
         flash[:notice] = "An error occured"
