@@ -1,0 +1,21 @@
+%h1 Job Details
+%table
+  %tr
+    %th Title
+    %td= @job.title
+  %tr
+    %th Description
+    %td= @job.description
+  %tr
+    %th Status
+    %td= @job.status.split.map(&:capitalize).join(' ')
+  %tr
+    %th Difficulty
+    %td= @job.difficulty
+  %tr
+    %th User Story
+    %td
+      %a{:href => "/admin/user_stories/#{@job.user_story.pk}/show"}= @job.user_story.title
+  %tr
+    %th Assigned To
+    %td= @job.owners.inject([]){ |a, o| a << o.username; a}.join(', ')
