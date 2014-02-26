@@ -23,7 +23,7 @@ module MyScrum
     end
 
     put '/profiles/:id' do |id|
-      @admin = Admin.find(:id => id).first || halt(404)
+      @admin = Admin.find(:id => id) || halt(404)
       @admin.set(params[:admin])
       if @admin.valid?
         @admin.save
