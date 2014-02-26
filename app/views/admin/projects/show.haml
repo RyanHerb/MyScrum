@@ -52,7 +52,7 @@
                       %img{:src=>"/img/icons/delete.png", :title => "Remove"}
 
         #tab3.pane
-          %a.addmore{:href  => "/admin/projects/#{@project.pk}/sprint/create"} Create new Sprint
+          %a.addmore{:href  => "/admin/projects/#{@project.pk}/sprint/new"} Create new Sprint
           %h1 Project Sprints
           %table.datatable
             %thead
@@ -78,7 +78,7 @@
                       %img{:src => '/img/icons/edit.png', :title => "Edit sprint #{s.pk}"}
 
         #tab4.pane
-          %a.addmore{:href  => "/admin/projects/#{@project.pk}/user_stories/create"} Create new User Story
+          %a.addmore{:href  => "/admin/projects/#{@project.pk}/user_stories/new"} Create new User Story
           %h1 Project User Stories
           %table.datatable
             %thead
