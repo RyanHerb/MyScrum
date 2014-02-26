@@ -86,6 +86,9 @@ module MyScrum
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @user_story = @project.user_stories_dataset.where(:id => uid).first || halt(404)
       @job = @user_story.jobs_dataset.where(:id => tid).first || halt(404)
+      if state == "inprogress"
+        state = "in progress"
+      end
       @job.set({:status => state})
       if @job.valid?
         @job.save

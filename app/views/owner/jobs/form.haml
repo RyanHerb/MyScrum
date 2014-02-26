@@ -6,7 +6,7 @@
   =form_for @job, :action => action, :enctype => 'multipart/form-data' do |f|
     = f.input :title, :label => 'Title'
     = f.textarea :description, :label => 'Description'
-    = f.select :status, :label => 'Status', :options => [["todo", "To Do"], ["inprogress", "In Progress"], ["done", "Done"]]
+    = f.select :status, :label => 'Status', :options => [["todo", "To Do"], ["in progress", "In Progress"], ["done", "Done"]]
     = f.input :difficulty, :label => 'Difficulty', :type => "number", :min => "1"
     - if @job.new?
       = f.select :user_story_id, :label => 'User Story', :options => @project.user_stories.inject([]){ |arr, us| arr << [us.pk, us.title]; arr}
