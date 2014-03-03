@@ -49,7 +49,7 @@ module MyScrum
       if @test.valid?
         @test.save
         @notif = Notification.new
-        @notif.set({:action => "affectation", :type => "Test", :owner_id => @test.owner.pk, :id_object => @test.id, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/user_stories/#{@test.user_story.pk}/tests/#{@test.id}/show"})
+        @notif.set({:action => "affectation", :type => "test", :owner_id => @test.owner.pk, :id_object => @test.id, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/user_stories/#{@test.user_story.pk}/tests/#{@test.id}/show"})
         @notif.save
         
         redirect "owner/projects/#{@project.pk}/show"
@@ -72,7 +72,7 @@ module MyScrum
       @test = @user_story.tests_dataset.where(:id => tid).first || halt(404)
       @test.destroy()
       @notifs = Notification.all.inject([]) do |arr, n|
-        if n.id_object.to_s.eql?(tid.to_s) and n.type.eql?("Test")
+        if n.id_object.to_s.eql?(tid.to_s) and n.type.eql?("test")
           arr << n
         end
         arr

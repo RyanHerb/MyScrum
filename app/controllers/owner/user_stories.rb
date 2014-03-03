@@ -49,7 +49,7 @@ module MyScrum
 
 		get '/projects/:pid/user_stories/:id/show' do |pid, id|
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
-  		@user_story = UserStory.find(:id => i)
+  		@user_story = UserStory.find(:id => id)
   		haml :"/user_stories/show"
   	end
 	end

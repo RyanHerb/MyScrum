@@ -69,6 +69,9 @@ module MyScrum
           elsif n.action.eql?("project owner") || n.action.eql?("scrum master") || n.action.eql?("developer")
             project = Project.find(:id => n.id_object)
             str += "You have been assigned to the project \"" + project.title + "\" as a " + n.action + "."
+          elsif n.action.eql?("removed")
+            project = Project.find(:id => n.id_object)
+            str += "You have been removed from the project \"" + project.title + "."
           else
             str += n.action
           end
