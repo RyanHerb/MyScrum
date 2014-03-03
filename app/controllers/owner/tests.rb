@@ -71,7 +71,15 @@ module MyScrum
       @user_story = @project.user_stories_dataset.where(:id => uid).first || halt(404)
       @test = @user_story.tests_dataset.where(:id => tid).first || halt(404)
       @test.destroy()
-      
+      @notifs = Notification.all.inject([]) do |arr, n|
+        if n.id_object.to_s.eql?(tid.to_s) and n.type.eql?("Test")
+          arr << n
+        end
+        arr
+      end
+      @notifs.each do |n|
+        n.destroy()
+      end
       redirect "/owner/projects/#{@project.pk}/show"
     end
 
