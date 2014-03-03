@@ -12,8 +12,8 @@ module MyScrum
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @sprint = Sprint.find(:id => sid)
       @Users = Owner.all
-      sortie = Tempfile.new(['data', '.csv'])
-      @data_path = sortie.path
+      sortie = Tempfile.new(['data', '.csv'],ROOT_DIR + '/public/data')
+      @data_name = sortie.path.split("/").last
 
       CSV.open(sortie.path, 'ab') do |csv|
         csv << ["name","num_jobs"]
@@ -22,9 +22,6 @@ module MyScrum
           csv << h.values
         end
       end
-
-      
-
       haml :"/burndown_chart/show"
     end
   end

@@ -26,7 +26,7 @@
           .append("g")
           .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-      d3.csv("/data/data.csv", function(error, data) {
+      d3.csv("/data/#{@data_name}", function(error, data) {
 
         data.forEach(function(d) {
           d.num_jobs = +d.num_jobs;
@@ -55,4 +55,3 @@
     %p= "Duration: #{@sprint.duration}"
     %p= "Sprint Difficulty: "
     %p= "User Contributions Chart for Tasks Done"
-    %p= @data_path
