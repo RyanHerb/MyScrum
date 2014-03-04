@@ -10,7 +10,7 @@ module MyScrum
       haml :"/tests/form"
     end
 
-    get '/projects/:pid/user_story/:uid/tests/:tid/edit' do |pid, uid, tid|
+    get '/projects/:pid/user_stories/:uid/tests/:tid/edit' do |pid, uid, tid|
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @user_story = @project.user_stories_dataset.where(:id => uid).first || halt(404)
       @test = @user_story.tests_dataset.where(:id => tid).first || halt(404)
@@ -20,8 +20,8 @@ module MyScrum
       haml :"/tests/form"
     end
 
-    put '/projects/:pid/user_story/:uid/tests/:tid' do |pid, uid, tid|
-      @project = @current_owner.projects_dataset.where(:id => pid).first || halt(404)
+    put '/projects/:pid/user_stories/:uid/tests/:tid' do |pid, uid, tid|
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @user_story = @project.user_stories_dataset.where(:id => uid).first || halt(404)
       @test = @user_story.tests_dataset.where(:id => tid).first || halt(404)
 
