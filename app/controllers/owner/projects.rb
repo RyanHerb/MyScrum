@@ -134,14 +134,27 @@ module MyScrum
         arr2
       end
       @owner = @owner.first
-
+      isNew = false
       if !@owner.nil? and @owner.valid?
-        @project.remove_user(@owner)
-        @project.add_user(@owner)
+        if @project.users.find{|o| o.pk == @owner.pk}.nil?
+          isNew = true
+          @project.add_user(@owner)
+        end
+
         @project.users_dataset.where(:user => @owner.pk).update(:position => "developer")
         @notif = Notification.new
         @notif.set({:action => "developer", :type => "project", :owner_id => @owner.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/show"})
         @notif.save
+        
+        if isNew
+          @project.users.each do |u|
+            if u.pk != @owner.pk and u.pk != @current_owner.pk
+              notif = Notification.new
+              notif.set({:action => "new", :type => "collaborator", :owner_id => u.pk, :id_object => @owner.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/show"})
+              notif.save
+            end
+          end
+        end
         redirect "/owner/projects/#{@project.pk}/show"
       else
         redirect "/owner/projects/#{@project.pk}/users/add"
@@ -169,10 +182,20 @@ module MyScrum
     # =================
 
     put '/projects/:id' do |id|
-      @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
-      @project.set(params[:project])
-      if @project.valid?
+      @valid_project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
+      
+      if !@valid_project.nil?
+        @project = Project.find(:id => id)
+        @project.set(params[:project])
         @project.save
+        @project.users.each do |o|  
+          unless o.pk == @current_owner.pk
+            notif = Notification.new
+            notif.set({:action => "modified", :type => "project", :owner_id => o.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/show"})
+            notif.save
+          end
+        end
+        
         flash[:notice] = "Project updated"
         redirect '/owner/projects'
       else

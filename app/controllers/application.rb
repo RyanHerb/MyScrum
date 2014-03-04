@@ -72,6 +72,24 @@ module MyScrum
           elsif n.action.eql?("removed")
             project = Project.find(:id => n.id_object)
             str += "You have been removed from the project \"" + project.title + "."
+          elsif n.action.eql?("new")
+            id_project = /\d+/.match(n.link).to_s.to_i
+            project = Project.find(:id => id_project)
+            str_prefix = "A new " + n.type.capitalize
+            if n.type.eql?("collaborator")
+              owner = Owner.find(:id => n.id_object)
+              if !owner.nil?
+                str_prefix = owner.first_name.capitalize + " " + owner.last_name.capitalize
+              end
+            end
+            str += str_prefix + " has been added to the project \"" + project.title + "\"."
+          elsif n.action.eql?("modified")
+            project = Project.find(:id => n.id_object)
+            if n.type.eql?("project")
+              str += "The project \"" + project.title + "\" has been modified."
+            elsif n.type.eql?("project")
+              str += "The project \"" + project.title + "\" has been modified."
+            end
           else
             str += n.action
           end
