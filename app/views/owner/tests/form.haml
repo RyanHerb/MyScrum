@@ -1,5 +1,6 @@
 !!!
 - @action = @test.new? ? "/owner/projects/#{@project.pk}/tests" : "/owner/projects/#{@project.pk}/tests/#{@test.pk}"
+%a{:href => "/owner/projects/#{@project.pk}/show"} Back to project
 %h1= @test.new? ? "Create a new Test" : "Edit \"#{@test.title}\""
 %fieldset
   %legend Test details
