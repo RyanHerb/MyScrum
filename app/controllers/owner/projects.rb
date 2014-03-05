@@ -126,7 +126,7 @@ module MyScrum
     # =========================
 
     post '/projects/:id/users/add' do |id|
-      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
+      @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
       @owner = Owner.all.inject([]) do |arr2, o|
         if o.pk == params[:owner].to_i
           arr2 << o
@@ -151,7 +151,7 @@ module MyScrum
     # ======================
 
     get '/projects/:id/edit' do |id|
-      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
+      @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
       haml :"/projects/form"
     end
 
@@ -166,7 +166,7 @@ module MyScrum
     # =================
 
     put '/projects/:id' do |id|
-      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
+      @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
       @project.set(params[:project])
       if @project.valid?
         @project.save
