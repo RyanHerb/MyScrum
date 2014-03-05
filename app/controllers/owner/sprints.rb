@@ -26,6 +26,14 @@ module MyScrum
           @sprint.add_user_story(i)
         end
         @project.add_sprint(@sprint)
+
+        @project.users.each do |u|
+          if u.pk != -1
+            notif = Notification.new
+            notif.set({:action => "new", :type => "sprint", :owner_id => u.pk, :id_object => @sprint.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{i}/show"})
+            notif.save
+          end
+        end
         redirect "owner/projects/#{@project.pk}/show"
       else
         haml :"/sprints/form"

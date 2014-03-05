@@ -48,7 +48,7 @@ module MyScrum
     # =========================
 
     get '/projects/:id/users/add' do |id|
-      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
+      @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
       @project_owner = @project.users_dataset.where(:position => "project owner").first
       @scrum_master = @project.users_dataset.where(:position => "scrum master").first
       @owners = Owner.all.inject([]) do |arr, o|
@@ -63,7 +63,7 @@ module MyScrum
     # =========================
 
     post '/projects/:id/users/project_owner' do |id|
-      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
+      @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
       @owner = Owner.all.inject([]) do |arr2, o|
         if o.pk == params[:owner].to_i
           arr2 << o
@@ -80,7 +80,7 @@ module MyScrum
         @project.add_user(@owner)
         @project.users_dataset.where(:user => @owner.pk).update(:position => "project owner")
         @notif = Notification.new
-        @notif.set({:action => "project owner", :type => "project", :owner_id => @owner.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{i}/show"})
+        @notif.set({:action => "project owner", :type => "project", :owner_id => @owner.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/show"})
         @notif.save
       end
       redirect "/owner/projects/#{@project.pk}/show"
@@ -89,7 +89,7 @@ module MyScrum
     # =========================
 
     post '/projects/:id/users/scrum_master' do |id|
-      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
+      @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
       @owner = Owner.all.inject([]) do |arr2, o|
         if o.pk == params[:owner].to_i
           arr2 << o
@@ -113,7 +113,7 @@ module MyScrum
           @project.add_user(@owner)
           @project.users_dataset.where(:user => @owner.pk).update(:position => "scrum master") 
           @notif = Notification.new
-          @notif.set({:action => "scrum master", :type => "project", :owner_id => @owner.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{i}/show"})
+          @notif.set({:action => "scrum master", :type => "project", :owner_id => @owner.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/show"})
           @notif.save
           redirect "/owner/projects/#{@project.pk}/show"
         else
@@ -134,12 +134,28 @@ module MyScrum
         arr2
       end
       @owner = @owner.first
-
+      isNew = false
       if !@owner.nil? and @owner.valid?
-        @project.remove_user(@owner)
-        @project.add_user(@owner)
+        if @project.users.find{|o| o.pk == @owner.pk}.nil?
+          isNew = true
+          @project.add_user(@owner)
+        end
+
         @project.users_dataset.where(:user => @owner.pk).update(:position => "developer")
-        redirect "/owner/projects/#{@project.pk}/show"
+        @notif = Notification.new
+        @notif.set({:action => "developer", :type => "project", :owner_id => @owner.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/show"})
+        @notif.save
+        
+        if isNew
+          @project.users.each do |u|
+            if u.pk != @owner.pk and u.pk != @current_owner.pk
+              notif = Notification.new
+              notif.set({:action => "new", :type => "collaborator", :owner_id => u.pk, :id_object => @owner.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/show"})
+              notif.save
+            end
+          end
+        end
+        redirect "/owner/projects/#{@project.pk}/show#tab2"
       else
         redirect "/owner/projects/#{@project.pk}/users/add"
       end
@@ -166,10 +182,20 @@ module MyScrum
     # =================
 
     put '/projects/:id' do |id|
-      @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
-      @project.set(params[:project])
-      if @project.valid?
+      @valid_project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
+      
+      if !@valid_project.nil?
+        @project = Project.find(:id => id)
+        @project.set(params[:project])
         @project.save
+        @project.users.each do |o|  
+          unless o.pk == @current_owner.pk
+            notif = Notification.new
+            notif.set({:action => "modified", :type => "project", :owner_id => o.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/show"})
+            notif.save
+          end
+        end
+        
         flash[:notice] = "Project updated"
         redirect '/owner/projects'
       else
@@ -183,9 +209,36 @@ module MyScrum
 
     get '/projects/:pid/remove_user/:oid' do |pid, oid|
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
-      @owner = Owner.find(:id => oid)
+      @project_owner = @project.users_dataset.where(:position => "project owner").first
+      
+      @owner = Owner.find(:id => oid) || halt(404)
+
+      if @project_owner.pk == @owner.pk
+        flash[:notice] = "The project owner can't be removed."
+        redirect "/owner/projects/#{@project.pk}/show#tab2"
+      end
+      
+      if !UsersProject.all.find{ |u| u.user == @current_owner.pk and (u.position.eql?("project owner") or u.position.eql?("scrum master"))}.nil?
+        @rights = true
+      else
+        @rights = false
+      end
+
+      if !@rights and @current_owner.pk != @owner.pk
+        flash[:notice] = "You do not own the rights to do this."
+        redirect "/owner/projects/#{@project.pk}/show#tab2"
+      end
+
       @project.remove_user(@owner)
-      redirect "/owner/projects/#{@project.pk}/show"
+
+      if @current_owner.pk != @owner.pk
+        @notif = Notification.new
+        @notif.set({:action => "removed", :type => "project", :owner_id => @owner.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => ""})
+        @notif.save
+      else
+        redirect "/"
+      end
+      redirect "/owner/projects/#{@project.pk}/show#tab2"
     end
 
   end

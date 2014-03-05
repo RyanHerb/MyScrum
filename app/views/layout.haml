@@ -30,7 +30,11 @@
           %a.badge{:href  => '/signup'} Sign Up
           %a.badge{:href  => '/owner/login'} Login 
         - else
-          %a.badge{:href => '/live'} Live
+          - number = current_owner.notifications.find_all{ |n| n.viewed == 0}.count
+          - if number > 0
+            %a.badge{:href => '/live'} Live (#{number})
+          - else
+            %a.badge{:href => '/live'} Live
           %a.badge{:href => '/owner/projects'} Projects
           %a.badge{:href => '/owner'} Account Settings
           %a.badge{:href => '/owner/logout'} #{current_owner.username} - Log Out

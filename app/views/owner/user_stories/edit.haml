@@ -1,6 +1,6 @@
 !!!
 - @title = "User Stories"
-
+%a{:href => "/owner/projects/#{@project.pk}/show#tab4"} Back to project
 = form_for @user_story, :action => "/owner/projects/#{@project.pk}/user_stories" do |f|
   %fieldset
     %legend Create New User Story
