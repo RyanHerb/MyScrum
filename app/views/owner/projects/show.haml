@@ -18,7 +18,8 @@
         .clear
 
         #tab1 
-          %a.badge{:href  => "/owner/projects/#{@project.pk}/edit"} Edit Details
+          - if @rights
+            %a.badge{:href  => "/owner/projects/#{@project.pk}/edit"} Edit Details
           %table
             %tr
               %th Title
@@ -35,7 +36,8 @@
           -# if @current_owner.scrumMaster?
 
         #tab2.pane
-          %a.badge{:href  => "/owner/projects/#{@project.pk}/users/add"} Edit collaborators
+          - if @rights
+            %a.badge{:href  => "/owner/projects/#{@project.pk}/users/add"} Edit collaborators
           %table.datatable
             %thead
               %tr
@@ -54,7 +56,8 @@
                         %img{:src=>"/img/icons/delete.png", :title => "Remove"}
 
         #tab3.pane
-          %a.badge{:href  => "/owner/projects/#{@project.pk}/sprint/create"} Create new Sprint
+          - if @rights
+            %a.badge{:href  => "/owner/projects/#{@project.pk}/sprint/create"} Create new Sprint
           %table.datatable
             %thead
               %tr

@@ -53,6 +53,10 @@ module MyScrum
     # =========================
 
     get '/projects/:id/users/add' do |id|
+
+      if UsersProject.all.find{ |u| u.user == @current_owner.pk and (u.position.eql?("project owner") or u.position.eql?("scrum master"))}.nil?
+        halt(404)
+      end
       @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
       @project_owner = @project.users_dataset.where(:position => "project owner").first
       @scrum_master = @project.users_dataset.where(:position => "scrum master").first
@@ -68,6 +72,9 @@ module MyScrum
     # =========================
 
     post '/projects/:id/users/project_owner' do |id|
+      if UsersProject.all.find{ |u| u.user == @current_owner.pk and (u.position.eql?("project owner") or u.position.eql?("scrum master"))}.nil?
+        halt(404)
+      end
       @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
       @owner = Owner.all.inject([]) do |arr2, o|
         if o.pk == params[:owner].to_i
@@ -94,6 +101,9 @@ module MyScrum
     # =========================
 
     post '/projects/:id/users/scrum_master' do |id|
+      if UsersProject.all.find{ |u| u.user == @current_owner.pk and (u.position.eql?("project owner") or u.position.eql?("scrum master"))}.nil?
+        halt(404)
+      end
       @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
       @owner = Owner.all.inject([]) do |arr2, o|
         if o.pk == params[:owner].to_i
@@ -132,6 +142,9 @@ module MyScrum
 
     post '/projects/:id/users/add' do |id|
       @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
+      if UsersProject.all.find{ |u| u.user == @current_owner.pk and (u.position.eql?("project owner") or u.position.eql?("scrum master"))}.nil?
+        halt(404)
+      end
       @owner = Owner.all.inject([]) do |arr2, o|
         if o.pk == params[:owner].to_i
           arr2 << o
@@ -173,6 +186,9 @@ module MyScrum
 
     get '/projects/:id/edit' do |id|
       @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
+      if UsersProject.all.find{ |u| u.user == @current_owner.pk and (u.position.eql?("project owner") or u.position.eql?("scrum master"))}.nil?
+        halt(404)
+      end
       haml :"/projects/form"
     end
 
@@ -188,7 +204,9 @@ module MyScrum
 
     put '/projects/:id' do |id|
       @valid_project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
-      
+      if UsersProject.all.find{ |u| u.user == @current_owner.pk and (u.position.eql?("project owner") or u.position.eql?("scrum master"))}.nil?
+        halt(404)
+      end
       if !@valid_project.nil?
         @project = Project.find(:id => id)
         @project.set(params[:project])
