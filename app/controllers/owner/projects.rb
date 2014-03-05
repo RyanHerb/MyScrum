@@ -155,7 +155,7 @@ module MyScrum
             end
           end
         end
-        redirect "/owner/projects/#{@project.pk}/show"
+        redirect "/owner/projects/#{@project.pk}/show#tab2"
       else
         redirect "/owner/projects/#{@project.pk}/users/add"
       end
@@ -209,12 +209,36 @@ module MyScrum
 
     get '/projects/:pid/remove_user/:oid' do |pid, oid|
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
-      @owner = Owner.find(:id => oid)
+      @project_owner = @project.users_dataset.where(:position => "project owner").first
+      
+      @owner = Owner.find(:id => oid) || halt(404)
+
+      if @project_owner.pk == @owner.pk
+        flash[:notice] = "The project owner can't be removed."
+        redirect "/owner/projects/#{@project.pk}/show#tab2"
+      end
+      
+      if !UsersProject.all.find{ |u| u.user == @current_owner.pk and (u.position.eql?("project owner") or u.position.eql?("scrum master"))}.nil?
+        @rights = true
+      else
+        @rights = false
+      end
+
+      if !@rights and @current_owner.pk != @owner.pk
+        flash[:notice] = "You do not own the rights to do this."
+        redirect "/owner/projects/#{@project.pk}/show#tab2"
+      end
+
       @project.remove_user(@owner)
-      @notif = Notification.new
-      @notif.set({:action => "removed", :type => "project", :owner_id => @owner.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => ""})
-      @notif.save
-      redirect "/owner/projects/#{@project.pk}/show"
+
+      if @current_owner.pk != @owner.pk
+        @notif = Notification.new
+        @notif.set({:action => "removed", :type => "project", :owner_id => @owner.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => ""})
+        @notif.save
+      else
+        redirect "/"
+      end
+      redirect "/owner/projects/#{@project.pk}/show#tab2"
     end
 
   end
