@@ -84,11 +84,17 @@ module MyScrum
             end
             str += str_prefix + " has been added to the project \"" + project.title + "\"."
           elsif n.action.eql?("modified")
-            project = Project.find(:id => n.id_object)
             if n.type.eql?("project")
+              project = Project.find(:id => n.id_object)
               str += "The project \"" + project.title + "\" has been modified."
-            elsif n.type.eql?("project")
-              str += "The project \"" + project.title + "\" has been modified."
+            elsif n.type.eql?("test")
+              test = Test.find(:id => n.id_object)
+              str += "The test \"" + test.title + "\" has been modified."
+            elsif n.type.eql?("user story")
+              us = UserStory.find(:id => n.id_object)
+              str += "The user story \"" + us.title + "\" has been modified."
+            else
+              str += n.action
             end
           else
             str += n.action

@@ -49,8 +49,9 @@
                   - role = @roles.where(:user => t.pk).first
                   %td= role[:position].capitalize rescue '-'
                   %td.right.actions
-                    %a#remove{:onclick => "return confirm('Are you sure?')", :href => "/owner/projects/#{@project.pk}/remove_user/#{t.pk}"} 
-                      %img{:src=>"/img/icons/delete.png", :title => "Remove"}
+                    - if @rights or t.pk == @current_owner.pk
+                      %a#remove{:onclick => "return confirm('Are you sure?')", :href => "/owner/projects/#{@project.pk}/remove_user/#{t.pk}"} 
+                        %img{:src=>"/img/icons/delete.png", :title => "Remove"}
 
         #tab3.pane
           %a.badge{:href  => "/owner/projects/#{@project.pk}/sprint/create"} Create new Sprint

@@ -27,6 +27,6 @@
           %th Validated
           %td= @user_story.valid ? "Yes" : "No"
           
-      %a.badge{:href  => "/owner/user_stories/#{@user_story.pk}/edit"} Edit
+      %a.badge{:href  => "/owner/projects/#{@project.pk}/user_stories/#{@user_story.pk}/edit"} Edit
 
 

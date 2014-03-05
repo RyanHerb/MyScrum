@@ -36,6 +36,11 @@ module MyScrum
       @roles = @project.users_dataset
       @user_stories = @project.user_stories
       @tests = []
+      if !UsersProject.all.find{ |u| u.user == @current_owner.pk and (u.position.eql?("project owner") or u.position.eql?("scrum master"))}.nil?
+        @rights = true
+      else
+        @rights = false
+      end
       @user_stories.each do |u|
         @tests.concat(u.tests)
       end

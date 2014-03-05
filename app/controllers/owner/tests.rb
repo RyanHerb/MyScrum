@@ -31,6 +31,9 @@ module MyScrum
       @test.set(params[:test])
       if @test.valid?
         @test.save
+        @notif = Notification.new
+        @notif.set({:action => "modified", :type => "test", :owner_id => @test.owner.pk, :id_object => @test.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/user_stories/#{uid}/tests/#{tid}/show"})
+        @notif.save
         redirect "owner/projects/#{@project.pk}/show"
       else
         haml :"/tests/form"
@@ -70,16 +73,10 @@ module MyScrum
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @user_story = @project.user_stories_dataset.where(:id => uid).first || halt(404)
       @test = @user_story.tests_dataset.where(:id => tid).first || halt(404)
+      @notif = Notification.new
+      @notif.set({:action => "remove", :type => "test", :owner_id => @test.owner.pk, :id_object => @test.id, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/show"})
+      @notif.save
       @test.destroy()
-      @notifs = Notification.all.inject([]) do |arr, n|
-        if n.id_object.to_s.eql?(tid.to_s) and n.type.eql?("test")
-          arr << n
-        end
-        arr
-      end
-      @notifs.each do |n|
-        n.destroy()
-      end
       redirect "/owner/projects/#{@project.pk}/show"
     end
 
