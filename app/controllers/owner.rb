@@ -54,7 +54,7 @@ module MyScrum
         #if session[:return_to] && session[:return_to] !~ /login/
          # redirect "/owner#{session.delete(:return_to)}"
         #else
-          redirect '/owner'
+          redirect '/owner/projects'
         #end
       else
         @error = "Invalid ownername or password. Please try again."

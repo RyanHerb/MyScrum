@@ -70,8 +70,13 @@ module MyScrum
             project = Project.find(:id => n.id_object)
             str += "You have been assigned to the project \"" + project.title + "\" as a " + n.action + "."
           elsif n.action.eql?("removed")
-            project = Project.find(:id => n.id_object)
-            str += "You have been removed from the project \"" + project.title + "\"."
+            if n.type.eql?("project")
+              project = Project.find(:id => n.id_object)
+              str += "You have been removed from the project \"" + project.title + "\"."
+            elsif n.type.eql?("test")
+              test = Test.find(:id => n.id_object)
+              str += "You are not assigned to the test \"" + test.title + "\" anymore."
+            end
           elsif n.action.eql?("new")
             id_project = /\d+/.match(n.link).to_s.to_i
             project = Project.find(:id => id_project)

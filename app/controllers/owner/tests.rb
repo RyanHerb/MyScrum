@@ -27,13 +27,29 @@ module MyScrum
 
       @owners = @project.users
       @user_stories = @project.user_stories
+      
+      @notif = Notification.new
+      if @test.owner.pk != params[:test][:owner_id]
+        @notif.set({:action => "affectation", :type => "test", :owner_id => params[:test][:owner_id], :id_object => @test.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/user_stories/#{uid}/tests/#{tid}/show"})
+        #@notif.save
+        @notif2 = Notification.new
+        @notif2.set({:action => "removed", :type => "test", :owner_id => @test.owner.pk, :id_object => @test.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/user_stories/#{uid}/tests/#{tid}/show"})
+        #@notif2.save
+      else
+        @notif.set({:action => "modified", :type => "test", :owner_id => @test.owner.pk, :id_object => @test.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/user_stories/#{uid}/tests/#{tid}/show"})
+        #@notif.save
+      end
 
       @test.set(params[:test])
+
       if @test.valid?
         @test.save
-        @notif = Notification.new
-        @notif.set({:action => "modified", :type => "test", :owner_id => @test.owner.pk, :id_object => @test.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/user_stories/#{uid}/tests/#{tid}/show"})
+        
+        if !@notif2.nil?
+          @notif2.save
+        end
         @notif.save
+
         redirect "owner/projects/#{@project.pk}/show"
       else
         haml :"/tests/form"
