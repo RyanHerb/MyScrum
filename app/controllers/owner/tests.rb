@@ -31,13 +31,10 @@ module MyScrum
       @notif = Notification.new
       if @test.owner.pk != params[:test][:owner_id]
         @notif.set({:action => "affectation", :type => "test", :owner_id => params[:test][:owner_id], :id_object => @test.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/user_stories/#{uid}/tests/#{tid}/show"})
-        #@notif.save
         @notif2 = Notification.new
         @notif2.set({:action => "removed", :type => "test", :owner_id => @test.owner.pk, :id_object => @test.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/user_stories/#{uid}/tests/#{tid}/show"})
-        #@notif2.save
       else
         @notif.set({:action => "modified", :type => "test", :owner_id => @test.owner.pk, :id_object => @test.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/user_stories/#{uid}/tests/#{tid}/show"})
-        #@notif.save
       end
 
       @test.set(params[:test])
@@ -50,7 +47,7 @@ module MyScrum
         end
         @notif.save
 
-        redirect "owner/projects/#{@project.pk}/show"
+        redirect "owner/projects/#{@project.pk}/show#tab5"
       else
         haml :"/tests/form"
       end
@@ -71,7 +68,7 @@ module MyScrum
         @notif.set({:action => "affectation", :type => "test", :owner_id => @test.owner.pk, :id_object => @test.id, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/user_stories/#{@test.user_story.pk}/tests/#{@test.id}/show"})
         @notif.save
         
-        redirect "owner/projects/#{@project.pk}/show"
+        redirect "owner/projects/#{@project.pk}/show#tab5"
       else
         haml :"/tests/form"
       end
@@ -93,7 +90,7 @@ module MyScrum
       @notif.set({:action => "remove", :type => "test", :owner_id => @test.owner.pk, :id_object => @test.id, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/show"})
       @notif.save
       @test.destroy()
-      redirect "/owner/projects/#{@project.pk}/show"
+      redirect "/owner/projects/#{@project.pk}/show#tab5"
     end
 
   end
