@@ -120,5 +120,10 @@ module MyScrum
       end
       redirect '/owner/profile'
     end
+
+    get '/generate_api_key' do
+      @current_owner.generate_api_key
+      redirect '/owner'
+    end
   end
 end

@@ -18,7 +18,13 @@
         %tr
           %th Email
           %td= @current_owner.email
+        %tr
+          %th Api Key
+          %td
+            = @current_owner.api_key
+            %a.badge{:href => '/owner/generate_api_key'}= @current_owner.api_key.blank? ? "Generate" : "Update"
 
-      %a.badge{:href  => '/owner/profile'} Edit
+      %a.badge{:href => '/owner/profile'} Edit
+
 
 
