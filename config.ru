@@ -34,3 +34,7 @@ map '/owner' do
   run MyScrum::OwnerApp
 end
 
+map '/api' do
+  run MyScrum::ApiApp
+end
+

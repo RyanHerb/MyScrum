@@ -57,6 +57,10 @@ module GeneralUser
     self.update(:auth_token => Digest::SHA1.hexdigest("#{Time.now.to_f}#{self.email}"))
   end
     
+  def generate_api_key
+    self.update(:api_key => Digest::SHA1.hexdigest("#{self.email}#{self.password}"))
+  end
+
   def name
     "#{first_name} #{last_name}".strip
   end
