@@ -74,7 +74,7 @@ module MyScrum
             unless @job.owners.include? @dev
               @job.add_owner(dev)
               @notif = Notification.new
-              @notif.set({:action => "affectation", :type => "job", :owner_id => @owner.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/show"})
+              @notif.set({:action => "affectation", :type => "job", :owner_id => @dev.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/show"})
               @notif.save
             end
           else
