@@ -28,11 +28,9 @@ module MyScrum
         @project.add_sprint(@sprint)
 
         @project.users.each do |u|
-          if u.pk != -1
-            notif = Notification.new
-            notif.set({:action => "new", :type => "sprint", :owner_id => u.pk, :id_object => @sprint.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{i}/show"})
-            notif.save
-          end
+          notif = Notification.new
+          notif.set({:action => "new", :type => "sprint", :owner_id => u.pk, :id_object => @sprint.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{i}/show"})
+          notif.save
         end
         redirect "owner/projects/#{@project.pk}/show"
       else
@@ -69,6 +67,9 @@ module MyScrum
       @sprint.set(params[:sprint])
       if @sprint.valid?
         @sprint.save
+        notif = Notification.new
+        notif.set({:action => "new", :type => "sprint", :owner_id => u.pk, :id_object => @sprint.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{i}/show"})
+        notif.save
         @user_stories.each do |i|
           @sprint.add_user_story(i)
         end
