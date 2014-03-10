@@ -12,16 +12,16 @@ module MyScrum
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @sprint = Sprint.find(:id => sid)
       @Users = Owner.all
-      sortie = Tempfile.new(['data', '.csv'],ROOT_DIR + '/public/data')
-      @data_name = sortie.path.split("/").last
+      #sortie = Tempfile.new(['data', '.csv'],ROOT_DIR + '/public/data')
+      #@data_name = sortie.path.split("/").last
 
-      CSV.open(sortie.path, 'ab') do |csv|
-        csv << ["name","num_jobs"]
-        @Users.each do |row|   
-          h = {:name => row.username, :num_jobs => row.jobs.length}
-          csv << h.values
-        end
-      end
+      #CSV.open(sortie.path, 'ab') do |csv|
+      #  csv << ["name","num_jobs"]
+      #  @Users.each do |row|   
+      #    h = {:name => row.username, :num_jobs => row.jobs.length}
+      #    csv << h.values
+       # end
+      #end
       haml :"/burndown_chart/show"
     end
   end
