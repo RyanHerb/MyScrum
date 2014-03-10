@@ -32,8 +32,16 @@
         e.preventDefault();
         var form = $('.form_for_' + currentPostIt.data('jobid'));
         $.post(form.attr('action'), form.serialize(), function(res) {
-          if(res == "OK") {
+          if(res != 'NOT_OK') {
             $('.ui-dialog-content').dialog("close");
+            var obj = $.parseJSON(res);
+            if(obj.length > 0) {
+              currentPostIt.find('.ownerIcon').find('img').removeAttr('class');
+              currentPostIt.find('.ownerIcon').find('img').attr('title', obj.join(', '));
+            } else {
+              currentPostIt.find('.ownerIcon').find('img').attr('class', 'hidden');
+              currentPostIt.find('.ownerIcon').find('img').removeAttr('title');
+            }
           }
         });
       });

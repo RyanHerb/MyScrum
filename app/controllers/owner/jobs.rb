@@ -61,17 +61,18 @@ module MyScrum
       # TODO
     end
 
-
     post '/projects/:pid/user_stories/:uid/jobs/:tid/update_devs' do |pid, uid, tid|
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @user_story = @project.user_stories_dataset.where(:id => uid).first || halt(404)
       @job = @user_story.jobs_dataset.where(:id => tid).first || halt(404)
       @job.remove_all_owners
+      response = Array.new
       unless params[:dev].nil?
         params[:dev].each do |dev|
           @dev = @project.users_dataset.where(:user => dev).first || halt(404)
           if @job.valid?
             unless @job.owners.include? @dev
+              response << @dev.username
               @job.add_owner(dev)
               @notif = Notification.new
               @notif.set({:action => "affectation", :type => "job", :owner_id => @dev.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/show"})
@@ -82,7 +83,7 @@ module MyScrum
           end
         end
       end
-      "OK"
+      response.to_json
     end
 
     post '/projects/:pid/user_stories/:uid/jobs/:tid/:state' do |pid, uid, tid, state|
