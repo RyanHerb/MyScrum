@@ -98,6 +98,9 @@ module MyScrum
             elsif n.type.eql?("user story")
               us = UserStory.find(:id => n.id_object)
               str += "The user story \"" + us.title + "\" has been modified."
+            elsif n.type.eql?("sprint")
+              spr = Sprint.find(:id => n.id_object)
+              str += "A sprint has been modified."
             else
               str += n.action
             end
