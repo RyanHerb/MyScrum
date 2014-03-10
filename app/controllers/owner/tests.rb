@@ -30,11 +30,11 @@ module MyScrum
       
       @notif = Notification.new
       if @test.owner.pk != params[:test][:owner_id]
-        @notif.set({:action => "affectation", :type => "test", :owner_id => params[:test][:owner_id], :id_object => @test.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/user_stories/#{uid}/tests/#{tid}/show"})
+        @notif.set({:action => "affectation", :type => "test", :owner_id => params[:test][:owner_id], :id_object => @test.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/user_stories/#{uid}/tests/#{tid}/show", :params => {:name => @test.title}.to_json})
         @notif2 = Notification.new
-        @notif2.set({:action => "removed", :type => "test", :owner_id => @test.owner.pk, :id_object => @test.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/user_stories/#{uid}/tests/#{tid}/show"})
+        @notif2.set({:action => "removed", :type => "test", :owner_id => @test.owner.pk, :id_object => @test.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/user_stories/#{uid}/tests/#{tid}/show", :params => {:name => @test.title, :project => @project.title}.to_json})
       else
-        @notif.set({:action => "modified", :type => "test", :owner_id => @test.owner.pk, :id_object => @test.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/user_stories/#{uid}/tests/#{tid}/show"})
+        @notif.set({:action => "modified", :type => "test", :owner_id => @test.owner.pk, :id_object => @test.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/user_stories/#{uid}/tests/#{tid}/show", :params => {:name => @test.title, :project => @project.title}.to_json})
       end
 
       @test.set(params[:test])
@@ -65,7 +65,7 @@ module MyScrum
       if @test.valid?
         @test.save
         @notif = Notification.new
-        @notif.set({:action => "affectation", :type => "test", :owner_id => @test.owner.pk, :id_object => @test.id, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/user_stories/#{@test.user_story.pk}/tests/#{@test.id}/show"})
+        @notif.set({:action => "affectation", :type => "test", :owner_id => @test.owner.pk, :id_object => @test.id, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/user_stories/#{@test.user_story.pk}/tests/#{@test.id}/show", :params => {:name => @test.title, :project => @project.title}.to_json})
         @notif.save
         
         redirect "owner/projects/#{@project.pk}/show#tab5"
@@ -86,9 +86,13 @@ module MyScrum
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @user_story = @project.user_stories_dataset.where(:id => uid).first || halt(404)
       @test = @user_story.tests_dataset.where(:id => tid).first || halt(404)
-      #@notif = Notification.new
-      #@notif.set({:action => "remove", :type => "test", :owner_id => @test.owner.pk, :id_object => @test.id, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/show"})
-      #@notif.save
+      @project.users.each do |u|
+        unless u.pk == @current_owner.pk
+          @notif = Notification.new
+          @notif.set({:action => "remove", :type => "test", :owner_id => u.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/show#tab5", :params => {:name => @test.title, :project => @project.title}.to_json})
+          @notif.save
+        end
+      end
       @test.destroy()
       redirect "/owner/projects/#{@project.pk}/show#tab5"
     end

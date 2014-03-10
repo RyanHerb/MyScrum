@@ -96,7 +96,7 @@ module MyScrum
         @project.add_user(@owner)
         @project.users_dataset.where(:user => @owner.pk).update(:position => "project owner")
         @notif = Notification.new
-        @notif.set({:action => "project owner", :type => "project", :owner_id => @owner.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/show"})
+        @notif.set({:action => "project owner", :type => "project", :owner_id => @owner.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/show", :params => {:project => @project.title}.to_json})
         @notif.save
       end
       redirect "/owner/projects/#{@project.pk}/show"
@@ -124,7 +124,7 @@ module MyScrum
         unless @scrum_master.nil?
           @project.users_dataset.where(:user => @scrum_master.pk).update(:position => "developer")
           @notif2 = Notification.new
-          @notif2.set({:action => "developer", :type => "project", :owner_id => @scrum_master.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/show"})
+          @notif2.set({:action => "developer", :type => "project", :owner_id => @scrum_master.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/show", :params => {:project => @project.title}.to_json})
           @notif2.save
         end
         redirect "/owner/projects/#{@project.pk}/show#tab2"
@@ -137,7 +137,7 @@ module MyScrum
           @project.add_user(@owner)
           @project.users_dataset.where(:user => @owner.pk).update(:position => "scrum master") 
           @notif = Notification.new
-          @notif.set({:action => "scrum master", :type => "project", :owner_id => @owner.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/show"})
+          @notif.set({:action => "scrum master", :type => "project", :owner_id => @owner.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/show", :params => {:project => @project.title}.to_json})
           @notif.save
           redirect "/owner/projects/#{@project.pk}/show#tab2"
         else
@@ -170,14 +170,14 @@ module MyScrum
 
         @project.users_dataset.where(:user => @owner.pk).update(:position => "developer")
         @notif = Notification.new
-        @notif.set({:action => "developer", :type => "project", :owner_id => @owner.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/show"})
+        @notif.set({:action => "developer", :type => "project", :owner_id => @owner.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/show", :params => {:project => @project.title}.to_json})
         @notif.save
         
         if isNew
           @project.users.each do |u|
             if u.pk != @owner.pk and u.pk != @current_owner.pk
               notif = Notification.new
-              notif.set({:action => "new", :type => "collaborator", :owner_id => u.pk, :id_object => @owner.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/show"})
+              notif.set({:action => "new", :type => "collaborator", :owner_id => u.pk, :id_object => @owner.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/show", :params => {:name => @owner.name, :project => @project.title}.to_json})
               notif.save
             end
           end
@@ -222,7 +222,7 @@ module MyScrum
       @project.users.each do |o|  
         unless o.pk == @current_owner.pk
           notif = Notification.new
-          notif.set({:action => "modified", :type => "project", :owner_id => o.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/show"})
+          notif.set({:action => "modified", :type => "project", :owner_id => o.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/show", :params => {:project => @project.title}.to_json})
           notif.save
         end
       end
@@ -261,7 +261,7 @@ module MyScrum
 
       if @current_owner.pk != @owner.pk
         @notif = Notification.new
-        @notif.set({:action => "removed", :type => "project", :owner_id => @owner.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => ""})
+        @notif.set({:action => "removed", :type => "project", :owner_id => @owner.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "", :params => {:project => @project.title}.to_json})
         @notif.save
       else
         redirect "/"

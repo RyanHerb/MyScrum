@@ -51,6 +51,13 @@ module MyScrum
       @job.update(params[:job])
       if @job.valid?
         @job.save
+        @job.owners.each do |o|
+          unless @current_owner.pk == o.pk
+            @notif = Notification.new
+            @notif.set({:action => "modified", :type => "job", :owner_id => o.pk, :id_object => @job.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/show", :params => {:name => @job.title, :project => @project.title}.to_json})
+            @notif.save
+          end
+        end
         redirect "/owner/projects/#{pid}/show"
       else
         haml :"jobs/form"
@@ -74,7 +81,7 @@ module MyScrum
             unless @job.owners.include? @dev
               @job.add_owner(dev)
               @notif = Notification.new
-              @notif.set({:action => "affectation", :type => "job", :owner_id => @dev.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/show"})
+              @notif.set({:action => "affectation", :type => "job", :owner_id => @dev.pk, :id_object => @job.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/show", :params => {:name => @job.title, :project => @project.title}.to_json})
               @notif.save
             end
           else
@@ -95,6 +102,13 @@ module MyScrum
       @job.set({:status => state})
       if @job.valid?
         @job.save
+        @job.owners.each do |o|
+          unless @current_owner.pk == o.pk
+            @notif = Notification.new
+            @notif.set({:action => "state", :type => "job", :owner_id => o.pk, :id_object => @job.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/show", :params => {:name => @job.title, :project => @project.title}.to_json})
+            @notif.save
+          end
+        end
         "OK"
       else
         halt(404)
