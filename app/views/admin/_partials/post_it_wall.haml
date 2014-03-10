@@ -9,16 +9,16 @@
     - user_stories.each do |us|
       %tr{:class => "container_id_#{us.pk}"}
         %td
-          %a{:href => "/owner/projects/"}= us.title
+          %a{:href => "/admin/projects/"}= us.title
         %td.todo.container_droppable{:id => "container_#{us.pk}_todo", :"data-state" => "todo"}
           - us.jobs_dataset.todo.each do |job|
-            = global_partial :post_it, :locals => {:job => job}
+            = partial :post_it, :locals => {:job => job}
         %td.inprogress.container_droppable{:id => "container_#{us.pk}_inprogress", :"data-state" => "inprogress"}
           - us.jobs_dataset.in_progress.each do |job|
-            = global_partial :post_it, :locals => {:job => job}
+            = partial :post_it, :locals => {:job => job}
         %td.done.container_droppable{:id => "container_#{us.pk}_done", :"data-state" => "done"}
           - us.jobs_dataset.done.each do |job|
-            = global_partial :post_it, :locals => {:job => job}
+            = partial :post_it, :locals => {:job => job}
 
 :javascript
   $(function() {
@@ -32,8 +32,16 @@
         e.preventDefault();
         var form = $('.form_for_' + currentPostIt.data('jobid'));
         $.post(form.attr('action'), form.serialize(), function(res) {
-          if(res == "OK") {
+          if(res != 'NOT_OK') {
             $('.ui-dialog-content').dialog("close");
+            var obj = $.parseJSON(res);
+            if(obj.length > 0) {
+              currentPostIt.find('.ownerIcon').find('img').removeAttr('class');
+              currentPostIt.find('.ownerIcon').find('img').attr('title', obj.join(', '));
+            } else {
+              currentPostIt.find('.ownerIcon').find('img').attr('class', 'hidden');
+              currentPostIt.find('.ownerIcon').find('img').removeAttr('title');
+            }
           }
         });
       });

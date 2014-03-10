@@ -1,0 +1,21 @@
+- user_story = job.user_story
+- project = user_story.project
+.postIt{:class => "id_#{job.user_story.pk}", :"data-action" => "/admin/jobs/#{job.pk}", :"data-id" => "#{job.user_story.pk}", :"data-jobid" => "#{job.pk}"}
+  .ownerIcon
+    %img{:src => '/img/icons/user.png', :class => job.owners.length == 0 ? 'hidden' : '', :title => job.owners.inject([]){|arr, o| arr << o.username; arr}.join(', ')}
+  .title= job.title
+  .clear
+  .description= job.description
+  .clear
+  .difficulty= "Difficulty: #{job.difficulty}"
+
+.dialog.assign_devs.hidden{:"id" => job.pk}
+  .pane
+    %legend= "Assign Developers to #{job.title}"
+    %form{:action => "/admin/jobs/#{job.pk}/update_devs", :method => "post", :class => "form_for_#{job.pk}"}
+      %select.dev_list{:name => "dev[]", :multiple => true}
+        - project.users.each do |user|
+          %option{:value => user.pk, :selected => job.owners.include?(user) ? "true" : "false"}= user.username
+      .field.submit
+        %input{:class => "submit_#{job.pk}", :type => "submit", :value => "Submit"}
+
