@@ -86,9 +86,9 @@ module MyScrum
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @user_story = @project.user_stories_dataset.where(:id => uid).first || halt(404)
       @test = @user_story.tests_dataset.where(:id => tid).first || halt(404)
-      @notif = Notification.new
-      @notif.set({:action => "remove", :type => "test", :owner_id => @test.owner.pk, :id_object => @test.id, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/show"})
-      @notif.save
+      #@notif = Notification.new
+      #@notif.set({:action => "remove", :type => "test", :owner_id => @test.owner.pk, :id_object => @test.id, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/show"})
+      #@notif.save
       @test.destroy()
       redirect "/owner/projects/#{@project.pk}/show#tab5"
     end

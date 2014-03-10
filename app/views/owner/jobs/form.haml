@@ -1,5 +1,5 @@
 - @title = ""
-%a{:href => "/owner/projects/#{@project.pk}/show"} Back to project
+%a{:href => "/owner/projects/#{@project.pk}/show#tab3"} Back to sprints
 %fieldset
   %legend Job Details
   - action = @job.new? ? "/owner/projects/#{@project.pk}/jobs" : "/owner/projects/#{@project.pk}/user_stories/#{@user_story.pk}/jobs/#{@job.pk}/edit"

@@ -41,8 +41,8 @@
                 %td= u.finished ? "Yes" : "No"
                 %td= u.valid ? "Yes" : "No"
                 %td.right.actions
-                  %a{:href => "/owner/user_stories/#{u.pk}/show"}
+                  %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{u.pk}/show"}
                     %img{:src => '/img/icons/view.png', :title => "view #{u.title}"}
-                  %a{:href => "/owner/user_stories/#{u.pk}/edit"}
+                  %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{u.pk}/edit"}
                     %img{:src => '/img/icons/edit.png', :title => "edit #{u.title}"}
       
