@@ -12,13 +12,13 @@
           %a{:href => "/owner/projects/"}= us.title
         %td.todo.container_droppable{:id => "container_#{us.pk}_todo", :"data-state" => "todo"}
           - us.jobs_dataset.todo.each do |job|
-            = global_partial :post_it, :locals => {:job => job}
+            = partial :post_it, :locals => {:job => job}
         %td.inprogress.container_droppable{:id => "container_#{us.pk}_inprogress", :"data-state" => "inprogress"}
           - us.jobs_dataset.in_progress.each do |job|
-            = global_partial :post_it, :locals => {:job => job}
+            = partial :post_it, :locals => {:job => job}
         %td.done.container_droppable{:id => "container_#{us.pk}_done", :"data-state" => "done"}
           - us.jobs_dataset.done.each do |job|
-            = global_partial :post_it, :locals => {:job => job}
+            = partial :post_it, :locals => {:job => job}
 
 :javascript
   $(function() {
