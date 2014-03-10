@@ -47,6 +47,12 @@ module MyScrum
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @sprint = Sprint.find(:id => sid)
       @user_stories = @sprint.user_stories
+      @difficulty = 0
+      @user_stories.each do |u|
+        u.jobs.each do |j|
+          @difficulty += j.difficulty
+        end
+      end
       haml :"/sprints/show"
     end
 
