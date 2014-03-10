@@ -17,7 +17,7 @@
 
       #tab1 
         %a.badge{:href  => "/owner/projects/#{@project.pk}/jobs/create"} Create Job
-        = global_partial :post_it_wall, :locals => {:user_stories => @user_stories}
+        = partial :post_it_wall, :locals => {:user_stories => @user_stories}
       #tab2.pane
         %table.datatable
           %thead
