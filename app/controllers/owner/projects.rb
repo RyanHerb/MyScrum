@@ -230,26 +230,29 @@ module MyScrum
       # = /projects/:id =
       # =================
 
-      put '/projects/:pid' do |pid|
-        @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
-        if UsersProject.all.find{ |u| u.user == @current_owner.pk and u.project == @project.pk and (u.position.eql?("project owner") or u.position.eql?("scrum master"))}.nil?
-          halt(404)
-        end
-        
-        @project.set(params[:project])
-        @project.save
-        @project.users.each do |o|  
-          unless o.pk == @current_owner.pk
-            notif = Notification.new
-            notif.set({:action => "modified", :type => "project", :owner_id => o.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/show", :params => {:project => @project.title}.to_json})
-            notif.save
-          end
-        end
-        
-        flash[:notice] = "Project updated"
-        redirect '/owner/projects'
-      end
+    put '/projects/:pid' do |pid|
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
 
+      @project = Project.find(:id => pid)
+
+      if UsersProject.all.find{ |u| u.user == @current_owner.pk and u.project == @project.pk and (u.position.eql?("project owner") or u.position.eql?("scrum master"))}.nil?
+        halt(404)
+      end
+      
+      @project.set(params[:project])
+      @project.save
+      @project.users.each do |o|  
+        unless o.pk == @current_owner.pk
+          notif = Notification.new
+          notif.set({:action => "modified", :type => "project", :owner_id => o.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/show", :params => {:project => @project.title}.to_json})
+          notif.save
+        end
+      end
+      
+      flash[:notice] = "Project updated"
+      redirect '/owner/projects'
+    end
+    
       # ==========
       # = Remove =
       # ==========
