@@ -92,12 +92,16 @@ module MyScrum
             str += "The state of the job \"" + param_notif["name"].to_s + "\" has been modified."
 
           elsif n.action.eql?("new")
-            str_prefix = "A new " + n.type.capitalize
-            if n.type.eql?("collaborator")
-              str_prefix = param_notif["name"].to_s
+            if n.type.eql?("scrum master") or n.type.eql?("project owner")
+              str += "\"" + param_notif["name"].to_s + "\" is the new " + n.type.capitalize + " of the project \"" + param_notif["project"].to_s + "\"."  
+            elsif
+              str_prefix = "A new " + n.type.capitalize
+              str_suffix = ""
+              if n.type.eql?("collaborator")
+                str_prefix = param_notif["name"].to_s
+              end
+              str += str_prefix + " has been added to the project \"" + param_notif["project"].to_s + "\"."
             end
-            str += str_prefix + " has been added to the project \"" + param_notif["project"].to_s + "\"."
-
           elsif n.action.eql?("modified")
             if n.type.eql?("project")
               str += "The project \"" + param_notif["project"].to_s + "\" has been modified."
