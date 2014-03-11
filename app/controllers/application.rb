@@ -61,46 +61,52 @@ module MyScrum
           else
             date = n.date.strftime("%H:%M")
           end
+          
           str = date + " - "
+          if n.params.nil?
+            param_notif = {}
+          else
+            param_notif = JSON.parse(n.params)
+          end
+
           if n.action.eql?("affectation")
-            str += "You have been assigned to a new " + n.type + "."
+            str += "You have been assigned to a new " + n.type + " \"" + param_notif["name"].to_s + "\"."
+
           elsif n.action.eql?("modification")
-            str += "A " +n.type + " has been modified."
+            str += "The " +n.type + " \""+ param_notif["name"].to_s + "\" has been modified."
+
           elsif n.action.eql?("project owner") || n.action.eql?("scrum master") || n.action.eql?("developer")
-            project = Project.find(:id => n.id_object)
-            str += "You have been assigned to the project \"" + project.title + "\" as a " + n.action + "."
+            str += "You have been assigned to the project \"" + param_notif["project"].to_s + "\" as a " + n.action + "."
+
+          elsif n.action.eql?("remove")
+            str += "The " + n.type  + " \""+ param_notif["name"].to_s + "\" has been removed from the project \"" + param_notif["project"].to_s + "\"."
+
           elsif n.action.eql?("removed")
             if n.type.eql?("project")
-              project = Project.find(:id => n.id_object)
-              str += "You have been removed from the project \"" + project.title + "\"."
+              str += "You have been removed from the project \"" + param_notif["project"].to_s + "\"."
             elsif n.type.eql?("test")
-              test = Test.find(:id => n.id_object)
-              str += "You are not assigned to the test \"" + test.title + "\" anymore."
+              str += "You are not assigned to the test \"" + param_notif["name"].to_s + "\" anymore."
             end
+
+          elsif n.action.eql?("state")
+            str += "The state of the job \"" + param_notif["name"].to_s + "\" has been modified."
+
           elsif n.action.eql?("new")
-            id_project = /\d+/.match(n.link).to_s.to_i
-            project = Project.find(:id => id_project)
             str_prefix = "A new " + n.type.capitalize
             if n.type.eql?("collaborator")
-              owner = Owner.find(:id => n.id_object)
-              if !owner.nil?
-                str_prefix = owner.first_name.capitalize + " " + owner.last_name.capitalize
-              end
+              str_prefix = param_notif["name"].to_s
             end
-            str += str_prefix + " has been added to the project \"" + project.title + "\"."
+            str += str_prefix + " has been added to the project \"" + param_notif["project"].to_s + "\"."
+
           elsif n.action.eql?("modified")
             if n.type.eql?("project")
-              project = Project.find(:id => n.id_object)
-              str += "The project \"" + project.title + "\" has been modified."
-            elsif n.type.eql?("test")
-              test = Test.find(:id => n.id_object)
-              str += "The test \"" + test.title + "\" has been modified."
-            elsif n.type.eql?("user story")
-              us = UserStory.find(:id => n.id_object)
-              str += "The user story \"" + us.title + "\" has been modified."
+              str += "The project \"" + param_notif["project"].to_s + "\" has been modified."
+            elsif n.type.eql?("sprint")
+              str += "The sprint " + param_notif["number"].to_s + " in the project \"" + param_notif["project"].to_s + "\" has been modified."
             else
-              str += n.action
+              str += "The " + n.type + " \"" + param_notif["name"].to_s + "\" has been modified."
             end
+
           else
             str += n.action
           end

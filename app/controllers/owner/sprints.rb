@@ -28,13 +28,13 @@ module MyScrum
         @project.add_sprint(@sprint)
 
         @project.users.each do |u|
-          if u.pk != -1
+          unless u.pk == @current_owner.pk
             notif = Notification.new
-            notif.set({:action => "new", :type => "sprint", :owner_id => u.pk, :id_object => @sprint.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{i}/show"})
+            notif.set({:action => "new", :type => "sprint", :owner_id => u.pk, :id_object => @sprint.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{i}/sprints/#{@sprint.pk}/show", :params => {:project => @project.title}.to_json})
             notif.save
           end
         end
-        redirect "owner/projects/#{@project.pk}/show"
+        redirect "owner/projects/#{@project.pk}/show#tab3"
       else
         haml :"/sprints/form"
       end
@@ -47,6 +47,12 @@ module MyScrum
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @sprint = Sprint.find(:id => sid)
       @user_stories = @sprint.user_stories
+      @difficulty = 0
+      @user_stories.each do |u|
+        u.jobs.each do |j|
+          @difficulty += j.difficulty
+        end
+      end
       haml :"/sprints/show"
     end
 
@@ -58,6 +64,10 @@ module MyScrum
       @sprint = Sprint.find(:id => j)
       @project = Project.find(:id => i)
       @user_stories = @project.user_stories
+      @us = @sprint.user_stories.inject([]) do |arr, o|
+        arr << o.pk
+        arr
+      end
       haml :"/sprints/edit"
     end
 
@@ -69,10 +79,24 @@ module MyScrum
       @sprint.set(params[:sprint])
       if @sprint.valid?
         @sprint.save
-        @user_stories.each do |i|
-          @sprint.add_user_story(i)
+        
+        @project.users.each do |u|
+          unless u.pk == @current_owner.pk
+            notif = Notification.new
+            notif.set({:action => "modified", :type => "sprint", :owner_id => u.pk, :id_object => @sprint.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{i}/sprints/#{@sprint.pk}/show", :params => {:number => @sprint.pk, :project => @project.title}.to_json})
+            notif.save
+          end
         end
-        redirect "owner/projects/#{@project.pk}/show"
+        @us = @sprint.user_stories.inject([]) do |arr, o|
+          arr << o.pk
+          arr
+        end
+        @user_stories.each do |i|
+          unless @us.include?(i.to_i)
+            @sprint.add_user_story(i)
+          end
+        end
+        redirect "owner/projects/#{@project.pk}/show#tab3"
       else
         haml :"/sprints/form"
       end

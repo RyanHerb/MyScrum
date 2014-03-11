@@ -9,16 +9,16 @@
         %label{:for => "day"} Select date
         %select{:name => "day", :required => true}
           -(1..31).each do |i|
-            %option{:value => i}=i
+            %option{:value => i, :selected => @sprint.start_date.day == i}=i
         %select{:name => "month"}
           -["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"].each_with_index do |v, i|
-            %option{:value => i.to_i+1}=v
+            %option{:value => i.to_i+1, :selected => @sprint.start_date.month == i+1}=v
         %select{:name => "year"}
           -("2010".."2050").each do |i|
-            %option{:value => i}=i
-        = f.select :duration, :options => ("1".."7").to_a, :immediate => true
+            %option{:value => i, :selected => @sprint.start_date.year == i.to_i}=i
+        = f.select :duration, :options => ("1".."7").to_a, :immediate => true, :selected => @sprint.duration.to_s
         %label{:for => "userstories"} User Stories
         %select{:name => "userstories[]", :multiple => true}
           -@user_stories.each do |u|
-            %option{:value => u.pk}= u.title
+            %option{:value => u.pk, :selected => @us.include?(u.pk)}= u.title
         = f.submit "Submit"

@@ -87,7 +87,16 @@ module GeneralUser
       else
         false
       end
-    end  
+    end 
+
+    def auth_with_key(params)
+      o = first(["api_key = ?", params[:api_key]])
+      unless o && !o.api_key.blank?
+        false
+      else
+        o
+      end
+    end 
   
   end
     

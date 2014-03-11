@@ -28,7 +28,7 @@ module MyScrum
         @project.users.each do |u|
           unless u.pk == @current_owner.pk
             @notif = Notification.new
-            @notif.set({:action => "modified", :type => "user story", :owner_id => u.pk, :id_object => @user_story.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/user_stories/#{id}/show"})
+            @notif.set({:action => "modified", :type => "user story", :owner_id => u.pk, :id_object => @user_story.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/user_stories/#{id}/show", :params => {:name => @user_story.title, :project => @project.title}.to_json})
             @notif.save
           end
         end
@@ -49,7 +49,7 @@ module MyScrum
         @project.users.each do |u|
           unless u.pk == @current_owner.pk
             @notif = Notification.new
-            @notif.set({:action => "new", :type => "user story", :owner_id => u.pk, :id_object => @user_story.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/user_stories/#{@user_story.pk}/show"})
+            @notif.set({:action => "new", :type => "user story", :owner_id => u.pk, :id_object => @user_story.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/user_stories/#{@user_story.pk}/show", :params => {:name => @user_story.title, :project => @project.title}.to_json})
             @notif.save
           end
         end

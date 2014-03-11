@@ -46,5 +46,39 @@ module MyScrum
       haml :"jobs/form"
     end
 
+    post '/jobs/:tid/update_devs' do |tid|
+      @job = Job.find(:id => tid) || halt(404)
+      @job.remove_all_owners
+      response = Array.new
+      unless params[:dev].nil?
+        params[:dev].each do |dev|
+          @dev = Owner.find(:id => dev) || halt(404)
+          if @job.valid?
+            unless @job.owners.include? @dev
+              response << @dev.username
+              @job.add_owner(dev)
+            end
+          else
+            return "NOT OK"
+          end
+        end
+      end
+      response.to_json
+    end
+
+    post '/jobs/:tid/:state' do |tid, state|
+      @job = Job.find(:id => tid) || halt(404)
+      if state == "inprogress"
+        state = "in progress"
+      end
+      @job.set({:status => state})
+      if @job.valid?
+        @job.save
+        "OK"
+      else
+        halt(404)
+      end
+    end
+
   end
 end

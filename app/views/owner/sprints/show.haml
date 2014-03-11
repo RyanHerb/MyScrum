@@ -4,7 +4,7 @@
   %h1= "Sprint #{@sprint.id}"
   %p= "Start Date: #{@sprint.start_date}"
   %p= "Duration: #{@sprint.duration}"
-  %p= "Sprint Difficulty: "
+  %p= "Sprint Difficulty: #{@difficulty}"
   %fieldset
     %legend Sprint details
     .tabs
@@ -17,7 +17,7 @@
 
       #tab1 
         %a.badge{:href  => "/owner/projects/#{@project.pk}/jobs/create"} Create Job
-        = global_partial :post_it_wall, :locals => {:user_stories => @user_stories}
+        = partial :post_it_wall, :locals => {:user_stories => @user_stories}
       #tab2.pane
         %table.datatable
           %thead
@@ -41,8 +41,8 @@
                 %td= u.finished ? "Yes" : "No"
                 %td= u.valid ? "Yes" : "No"
                 %td.right.actions
-                  %a{:href => "/owner/user_stories/#{u.pk}/show"}
+                  %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{u.pk}/show"}
                     %img{:src => '/img/icons/view.png', :title => "view #{u.title}"}
-                  %a{:href => "/owner/user_stories/#{u.pk}/edit"}
+                  %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{u.pk}/edit"}
                     %img{:src => '/img/icons/edit.png', :title => "edit #{u.title}"}
       
