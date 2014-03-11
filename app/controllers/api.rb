@@ -48,9 +48,9 @@ module MyScrum
     end
 
 
-    get '/owner/:id/projects/:pid/users' do |id, pid|
+    get '/owner/projects/:pid/users' do |pid|
       @project = Project.find(:id => pid)
-      @users = Project.users
+      @users = @project.users
       @u = @users.inject([]) do |arr, o|
         arr << o.to_json 
       end
@@ -58,8 +58,8 @@ module MyScrum
       response = "[" << tmp << "]"
     end
 
-    get '/owner/:id/projects/:pid/users/add' do |id, pid|
-      @users = UsersProjects.all
+    get '/owner/projects/:pid/users/add' do |pid|
+      @users = Owner.all
       @u = @users.inject([]) do |arr, o|
         arr << o.to_json 
       end
@@ -68,18 +68,19 @@ module MyScrum
     end
 
 
-    get '/owner/:id/projects/:pid/tasks' do |id, pid|
-      @user_stories = UserStory.all
-      @us = @users.inject([]) do |arr, o|
+    get '/owner/projects/:pid/user_stories' do |pid|
+      @project = Project.find(:id => pid)
+      @user_stories = @project.user_stories
+      @us = @user_stories.inject([]) do |arr, o|
         arr << o.to_json 
       end
       tmp = @us.join(",")
       response = "[" << tmp << "]"
     end
 
-    get '/owner/:id/projects/:pid/tests' do |id, pid|
-      @tests = Tests.all
-      @t = @users.inject([]) do |arr, o|
+    get '/owner/projects/:pid/tests' do |pid|
+      @tests = Test.all
+      @t = @tests.inject([]) do |arr, o|
         arr << o.to_json 
       end
       tmp = @t.join(",")
@@ -91,10 +92,6 @@ module MyScrum
       @description = @current_project.description
       response = @description.to_json
       response
-    end
-
-    get '/owner/projects' do
-      @owner = Owner.find(:api_key => params['key'])
     end
     
   end
