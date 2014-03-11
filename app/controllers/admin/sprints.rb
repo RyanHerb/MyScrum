@@ -13,7 +13,7 @@ module MyScrum
       @sprint_difficulty = 0
       @user_stories.each do |u|
         u.jobs.each do |j|
-          @sprint_difficulty = @sprint_difficulty + j.difficulty
+          @sprint_difficulty += j.difficulty
         end
       end
       haml :"/sprints/show"
