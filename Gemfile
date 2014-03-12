@@ -4,6 +4,7 @@ gem "sinatra"
 gem 'rack'
 gem 'rack-cache', :require => 'rack/cache'
 gem 'rack-contrib', :require => 'rack/contrib'
+gem 'rack-offline'
 gem 'redis-rack'
 
 gem 'sinatra-flash', :require => 'sinatra/flash'
