@@ -93,6 +93,27 @@ module MyScrum
       response = @description.to_json
       response
     end
+
+    get '/owner/projects/:pid/sprints' do |pid|
+      @current_project = Project.find(:id => pid)
+      @sprints = @current_project.sprints
+      @s = @sprints.inject([]) do |arr, o|
+        arr << o.to_json 
+      end
+      tmp = @s.join(",")
+      response = "[" << tmp << "]"
+    end
+
+    get '/owner/projects/:pid/sprints/:sid/user_stories' do |pid, sid|
+      @current_project = Project.find(:id => pid)
+      @sprint = Sprint.find(:id => sid)
+      @user_stories = @sprint.user_stories
+      @us = @user_stories.inject([]) do |arr, o|
+        arr << o.to_json 
+      end
+      tmp = @us.join(",")
+      response = "[" << tmp << "]"
+    end
     
   end
 end
