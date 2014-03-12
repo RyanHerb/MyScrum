@@ -11,33 +11,43 @@ module MyScrum
     end
 
     before do
-      show_me params.inspect
-      unless params[:api_key].nil?
-        if o = Owner.auth_with_key(params)
-          @current_owner = o
+      unless @current_owner
+        show_me params.inspect
+        unless params[:api_key].nil?
+          if o = Owner.auth_with_key(params)
+            @current_owner = o
+          end
+        else
+          halt(401)
         end
-      else
-        halt(401)
       end
     end
     
     get '/' do
-      "Hello"
     end
 
+    # ===========
+    # = Profile =
+    # ===========
+
     get '/owner/profile' do
-      @owner = Owner.find(:api_key => params['api_key'])
-      unless (@owner.nil?)
+      unless (@current_owner.nil?)
         response = @owner.to_json
       else
         halt 401
       end
       response
     end
-    
+
+    put '/owner/profile' do
+
+    end
+
+    # ============
+    # = Projects =
+    # ============
 
     get '/owner/projects' do
-      @current_owner = Owner.find(:api_key => params['api_key'])
       @projects = @current_owner.projects
 
       @p = @projects.inject([]) do |arr, o|
@@ -47,9 +57,17 @@ module MyScrum
       response = "[" << tmp << "]"
     end
 
+    get '/owner/projects/:pid/description' do |pid|
+      @project = @current_owner.projects_dataset.where(:project__id => pid) || halt(404)
+      @project.description.to_json
+    end
+
+    # =========
+    # = Users =
+    # =========
 
     get '/owner/projects/:pid/users' do |pid|
-      @project = Project.find(:id => pid)
+      @project = @current_owner.projects_dataset.where(:project__id => pid) || halt(404)
       @users = @project.users
       @u = @users.inject([]) do |arr, o|
         arr << o.to_json 
@@ -58,18 +76,15 @@ module MyScrum
       response = "[" << tmp << "]"
     end
 
-    get '/owner/projects/:pid/users/add' do |pid|
-      @users = Owner.all
-      @u = @users.inject([]) do |arr, o|
-        arr << o.to_json 
-      end
-      tmp = @u.join(",")
-      response = "[" << tmp << "]"
+    post '/owner/projects/:pid/users/add' do |pid|
     end
 
+    # ================
+    # = User Stories =
+    # ================
 
     get '/owner/projects/:pid/user_stories' do |pid|
-      @project = Project.find(:id => pid)
+      @project = @current_owner.projects_dataset.where(:project__id => pid) || halt(404)
       @user_stories = @project.user_stories
       @us = @user_stories.inject([]) do |arr, o|
         arr << o.to_json 
@@ -78,8 +93,13 @@ module MyScrum
       response = "[" << tmp << "]"
     end
 
+    # =========
+    # = Tests =
+    # =========
+
     get '/owner/projects/:pid/tests' do |pid|
-      @tests = Test.all
+      @project = @current_owner.projects_dataset.where(:project__id => pid) || halt(404)
+      @tests = @project.tests
       @t = @tests.inject([]) do |arr, o|
         arr << o.to_json 
       end
@@ -87,12 +107,18 @@ module MyScrum
       response = "[" << tmp << "]"
     end
 
-    get '/owner/projects/:pid/description' do |pid|
-      @current_project = Project.find(:id => pid)
-      @description = @current_project.description
-      response = @description.to_json
-      response
+    # ===========
+    # = Sprints =
+    # ===========
+
+    get '/owner/projects/:pid/sprints' do |pid|
+      @project = @current_owner.projects_dataset.where(:project__id => pid) || halt(404)
+      @sprints = @project.sprints
+      sp = @sprints.inject([]) do |arr, s|
+        arr << s.to_json
+      end
+      "[" << sp << "]"
     end
-    
+
   end
 end
