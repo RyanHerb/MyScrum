@@ -2,6 +2,7 @@ require 'tempfile'
 require 'fileutils'
 require 'csv'
 require 'json'
+require 'date'
 
 module MyScrum
   class OwnerApp < Sinatra::Application
@@ -21,15 +22,40 @@ module MyScrum
       end
       @Users = Owner.all
       sortie = Tempfile.new(['data', '.csv'],ROOT_DIR + '/public/data')
+      #jsondata = Tempfile.new(['data', '.json'],ROOT_DIR + '/public/data')
       @data_name = sortie.path.split("/").last
 
       CSV.open(sortie.path, 'ab') do |csv|
         csv << ["name","num_jobs"]
-        @Users.each do |row|   
-          h = {:name => row.username, :num_jobs => row.jobs.length}
+        @Users.each do |row|
+          number_of_job_done = 0
+          row.jobs_dataset.done.each do |j|
+            number_of_job_done += j.difficulty
+          end
+          h = {:name => row.username, :num_jobs => number_of_job_done}
           csv << h.values
         end
       end
+
+      # sprint_end = @sprint.start_date.to_date + @sprint.duration
+
+      # timeDomain = []
+
+      # timeDomain << @sprint.start_date.to_date.to_s
+
+      # tab = ["start","end","sprint_difficulty","timeDomain"]
+     
+      # @sprint.duration.times do |i|
+      #   add = @sprint.start_date.to_date + (i+1)
+      #   timeDomain << add.to_s
+      # end
+
+      # hashmap = {:start => @sprint.start_date.to_date, :end => sprint_end, :sprint_difficulty => @sprint_difficulty, :timeDomain => timeDomain}
+      
+      # File.open(jsondata.path, 'w') do |f|
+        
+      #   f.puts JSON.pretty_generate(hashmap)
+      # end
       haml :"/burndown_chart/show"
     end
   end

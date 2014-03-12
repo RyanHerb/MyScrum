@@ -3,9 +3,9 @@ global: &mysql
   database: myscrum
   encoding: utf8
   host: localhost
-  password: Scrummi3
-  username: scrum
-  
+  password: abdoulaye
+  username: root
+
 local:
   <<: *mysql  
   logfile: 'log/db.local'
@@ -16,8 +16,8 @@ development:
   database: myscrum
   encoding: utf8
   host: localhost
-  password: Scrummi3
-  username: scrum
+  password: abdoulaye
+  username: root
 
 production:
   <<: *mysql
