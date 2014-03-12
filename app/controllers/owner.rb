@@ -115,10 +115,11 @@ module MyScrum
       if @current_owner.valid?
         @current_owner.save
         flash[:notice] = "Account Updated"
+        redirect '/owner'
       else
         flash[:notice] = "Error updating profile"
+        haml :form
       end
-      redirect '/owner/profile'
     end
 
     get '/generate_api_key' do
