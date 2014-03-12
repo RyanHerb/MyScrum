@@ -249,7 +249,6 @@ function ajax_put(url){
   }).error(function(e){ dialog_alert(e.status + ": " + e.statusText); });
 }
 
-
 function change_postit_state(postit, state) {
   var container = $("#container_" + postit.data('id') + "_" + state);
   container.append(postit);
@@ -259,13 +258,79 @@ function change_postit_state(postit, state) {
   });
 }
 
+function storeData(form) {
+  var serializedFormArray = form.serialize();
+  var method;
+  if(serializedFormArray[0]['name'] == "_method") {
+    method = serializedFormArray[0]['value'];
+    serializedFormArray.shift();
+  } else {
+    method = 'post';
+  }
+  var hash = new Object();
+  hash['action'] = form.attr('action');
+  hash['method'] = method;
+  hash['data'] =  serializedFormArray;
+  localStorage.setItem(localStorage.length, JSON.stringify(hash));
+}
+
+function uploadLocalStorage() {
+  var storageElement;
+  $.each(localStorage, function(index, value) {
+    storageElement = JSON.parse(value);
+    $.post(storageElement['action'], storageElement['data'], function(res) {
+    }).done(function (res) {
+      localStorage.removeItem(index);
+    }).fail(function (res) {
+      var r = confirm("An error occured while uploading some of your local changes, try again later?")
+      if(r != true) {
+        localStorage.removeItem(index);
+      }
+    });
+  });
+}
+
+function disableForms() {
+  $('.form').submit(function(event) {
+    event.preventDefault();
+    storeData($(this));
+    alert("Unfortunately the server seems to be inaccessible right now, you data has been saved locally and will be uploaded as soon as possible!");
+  });
+}
+
+function pingAndDisable() {
+  $.ajax({url: "/ping",
+    type: "HEAD",
+    timeout:1000,
+    statusCode: {
+      200: function (res) {
+        console.log("server is online, reenable forms");
+        $('.form').off('submit');
+        uploadLocalStorage();
+      },
+      400: function (res) {
+        console.log("server is offline, switching to local storage");
+        disableForms();
+      },
+      0: function (res) {
+        console.log("server is offline, switching to local storage");
+        disableForms();
+      }              
+    }
+  });
+}
+
+
 $(document).ready(function(){
   show_flash_notification();
   setupDataTables();
   setup_delete_links();
   setup_form_dialogs();
   setup_datepicker();
-  //timepicker breaks certain pages
-  //setup_timepicker();
+
   setup_tabs();
+  pingAndDisable();
+
 });
+
+  

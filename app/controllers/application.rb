@@ -174,6 +174,14 @@ module MyScrum
       end
     end
 
+    # ========
+    # = Ping =
+    # ========
+
+    get '/ping' do
+      "OK"
+    end
+
     # ===========
     # = The End =
     # ===========

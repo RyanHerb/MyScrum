@@ -22,6 +22,29 @@ end
 
 use RewriteContentType, {"js" => "text/javascript", "htc" => "text/x-component", "manifest" => "application/manifest"}
 
+map "/application.manifest" do
+  offline = Rack::Offline.new :cache => false, :root => "public", :cache_interval => 20 do
+    # Cache all files under the directory public
+    Dir[File.join(settings.public_folder, "**/*.*")].each do |file|
+      cache file.sub(File.join(settings.public_folder, ""), "")
+    end
+
+    Dir[File.join("#{ROOT_DIR}/app/views/css/", "*.sass")].each do |file|
+      tmp = file.split('/').last
+      tmp = tmp.split('.')
+      tmp.pop
+      tmp = tmp.join(".")
+      tmp << ".css"
+      tmp = "css/" << tmp
+      cache tmp
+    end
+
+    # All other files should be downloaded
+    network '/'
+  end
+  run offline
+end
+
 map '/' do
   run MyScrum::Main
 end

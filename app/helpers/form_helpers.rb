@@ -15,7 +15,7 @@ helpers do
       prefix = ""
     end
 
-    opts = { :method => :post }
+    opts = { :method => :post, :class => 'form' }
     mfield = ""
     if object.new?
       opts[:action] = request.script_name.gsub(/\/$/, '') + prefix + "/#{object.class.to_s.underscore.pluralize}"
