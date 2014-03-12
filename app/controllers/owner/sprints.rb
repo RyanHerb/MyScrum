@@ -56,6 +56,23 @@ module MyScrum
       haml :"/sprints/show"
     end
 
+    post '/projects/:pid/sprints/:sid/close' do |pid, sid|
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
+      @sprint = Sprint.find(:id => sid)
+      
+      if params[:commit].start_with?("http://") or params[:commit].start_with?("https://")
+        @sprint.commit = params[:commit]
+      elsif params[:commit].eql?("None")
+        @sprint.commit = "none"
+      else
+        @sprint.commit = "http://" + params[:commit]
+      end
+      
+      @sprint.save
+
+      redirect "owner/projects/#{@project.pk}/show#tab3"
+    end
+
     # ========
     # = Edit =
     # ========

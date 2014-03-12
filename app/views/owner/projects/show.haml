@@ -101,8 +101,8 @@
                     - if editable
                       %a{:href => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/edit"}
                         %img{:src => '/img/icons/edit.png', :title => "Edit sprint #{s.pk}"}
-                    - if !validated
-                      %a{:href => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/show"} Close
+                    
+                    %a{:onclick => "return commitPrompt(#{s.pk})", :href => "?#tab3"} Close
 
         #tab4.pane
           %a.badge{:href  => "/owner/projects/#{@project.pk}/user_stories/create"} Create new User Story
@@ -164,3 +164,16 @@
                       %img{:src => '/img/icons/edit.png', :title => "edit #{t.title}"}
                     %a{:onclick => "return confirm(\"Are you sure?\\n\\nThis operation is irreversible.\")", :href => "/owner/projects/#{@project.pk}/user_stories/#{t.user_story.pk}/tests/#{t.pk}/remove"}
                       %img{:src=>"/img/icons/delete.png", :title => "Remove"}
+
+
+:javascript
+  function commitPrompt(sid) {
+  var vcommit=prompt("Last commit","None");
+  
+  if (!vcommit){
+  return false;
+  }
+  else{
+  $.post("/owner/projects/#{@project.pk}/sprints/" + sid + "/close", { commit: vcommit} );
+  }
+  }

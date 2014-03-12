@@ -5,6 +5,12 @@
   %p= "Start Date: #{@sprint.start_date}"
   %p= "Duration: #{@sprint.duration}"
   %p= "Sprint Difficulty: #{@difficulty}"
+  %p<
+    = "Last commit: "
+    - if @sprint.commit.eql?("none")
+      = @sprint.commit.capitalize
+    - else
+      %a{:href => "#{@sprint.commit}"}= @sprint.commit
   %fieldset
     %legend Sprint details
     .tabs
