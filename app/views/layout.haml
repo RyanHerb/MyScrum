@@ -1,5 +1,5 @@
 !!! 5
-%html{:lang => 'en'}
+%html{:lang => 'en', :manifest => "/application.manifest"}
   %head
     %title
       MyScrum #{@title.blank? ? '' : "– #{@title}"}
@@ -8,13 +8,10 @@
     %meta{:content => "text/html; charset=utf-8", "http-equiv" => "content-type"}/
     %meta{:name => "viewport", :content => "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"}/
 
-    - %w(jquery-1.7.2.min.js front_end.js jquery-ui-1.8.21.custom.min.js bootstrap-dropdown.js application.js slimbox2.js jquery.jqplot.min.js jqplot.pieRenderer.min.js).each do |j|
+    - %w(jquery-1.7.2.min.js front_end.js jquery-ui-1.8.21.custom.min.js bootstrap-dropdown.js jquery.dataTables.min.js application.js slimbox2.js jquery.jqplot.min.js jqplot.pieRenderer.min.js).each do |j|
       %script{:type => 'text/javascript', :language => 'javascript', :src => "/js/#{j}"}             
 
     %link{:rel => "stylesheet", :type => "text/css",  :href => "/css/site.css"}
-    
-
-    %link{:href => 'http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,700|Waiting+for+the+Sunrise', :rel => 'stylesheet', :type => 'text/css'}
     
     /[if lte IE 8] 
       %link{:rel => "stylesheet", :type => "text/css",  :href => "/css/site-ie.css"} 
