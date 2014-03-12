@@ -61,7 +61,7 @@
           %table.datatable
             %thead
               %tr
-                %th Charts
+                %th Info
                 %th User Stories
                 %th Start Date
                 %th Duration (days)
@@ -69,21 +69,42 @@
             %tbody
               - @sprints.each do |s|
                 %tr.selectable{:rel => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/show"}
-                  %td.right.actions
+                  %td.center.actions
+                    - str = ""
+                    - fulltime = s.start_date + s.duration * 24 * 60 * 60
+                    - if fulltime < Time.now
+                      - str = "Expired"
+                    - elsif s.start_date > Time.now
+                      - str = "Not started yet"
+                    - elsif s.start_date <= Time.now and fulltime >= Time.now
+                      - str = "Ongoing"
+                    - if !s.commit.nil?
+                      - str = "Validated"
+                      - validated = true
+                    - editable = true
+                    - if str.eql?("Expired") or str.eql?("Validated")
+                      - editable = false
+
+                    = str
+                    %br
+                    %br
                     %a{:href => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/burndown_chart/show"} 
                       %img{:src=>"/img/icons/chart.png", :title => "Burndown Chart"}
                   %td
                     %table
                       - s.user_stories.each do |u|
                         %tr
-                          %td= u.title
-                  %td= s.start_date
-                  %td= s.duration
+                          %td.center= u.title
+                  %td.center= s.start_date
+                  %td.center= s.duration
                   %td.right.actions
                     %a{:href => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/show"} 
                       %img{:src=>"/img/icons/view.png", :title => "View sprint #{s.pk}"}
-                    %a{:href => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/edit"}
-                      %img{:src => '/img/icons/edit.png', :title => "Edit sprint #{s.pk}"}
+                    - if editable
+                      %a{:href => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/edit"}
+                        %img{:src => '/img/icons/edit.png', :title => "Edit sprint #{s.pk}"}
+                    
+                    %a{:onclick => "return commitPrompt(#{s.pk})", :href => "?#tab3"} Close
 
         #tab4.pane
           %a.badge{:href  => "/owner/projects/#{@project.pk}/user_stories/create"} Create new User Story
@@ -145,3 +166,16 @@
                       %img{:src => '/img/icons/edit.png', :title => "edit #{t.title}"}
                     %a{:onclick => "return confirm(\"Are you sure?\\n\\nThis operation is irreversible.\")", :href => "/owner/projects/#{@project.pk}/user_stories/#{t.user_story.pk}/tests/#{t.pk}/remove"}
                       %img{:src=>"/img/icons/delete.png", :title => "Remove"}
+
+
+:javascript
+  function commitPrompt(sid) {
+  var vcommit=prompt("Last commit","None");
+  
+  if (!vcommit){
+  return false;
+  }
+  else{
+  $.post("/owner/projects/#{@project.pk}/sprints/" + sid + "/close", { commit: vcommit} );
+  }
+  }

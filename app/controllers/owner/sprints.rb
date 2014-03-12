@@ -50,10 +50,27 @@ module MyScrum
       @difficulty = 0
       @user_stories.each do |u|
         u.jobs.each do |j|
-          @difficulty += j.difficulty
+          @difficulty += j.difficulty.to_i
         end
       end
       haml :"/sprints/show"
+    end
+
+    post '/projects/:pid/sprints/:sid/close' do |pid, sid|
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
+      @sprint = Sprint.find(:id => sid)
+      
+      if params[:commit].start_with?("http://") or params[:commit].start_with?("https://")
+        @sprint.commit = params[:commit]
+      elsif params[:commit].eql?("None")
+        @sprint.commit = "none"
+      else
+        @sprint.commit = "http://" + params[:commit]
+      end
+      
+      @sprint.save
+
+      redirect "owner/projects/#{@project.pk}/show#tab3"
     end
 
     # ========
@@ -77,6 +94,7 @@ module MyScrum
       @sprint = Sprint.find(:id => j)
       @date = DateTime.new(params[:year].to_i, params[:month].to_i, params[:day].to_i)
       @sprint.set(params[:sprint])
+      @sprint.start_date = @date
       if @sprint.valid?
         @sprint.save
         

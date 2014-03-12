@@ -120,5 +120,16 @@ module MyScrum
       "[" << sp << "]"
     end
 
+    get '/owner/projects/:pid/sprints/:sid/user_stories' do |pid, sid|
+      @current_project = Project.find(:id => pid)
+      @sprint = Sprint.find(:id => sid)
+      @user_stories = @sprint.user_stories
+      @us = @user_stories.inject([]) do |arr, o|
+        arr << o.to_json 
+      end
+      tmp = @us.join(",")
+      response = "[" << tmp << "]"
+    end
+    
   end
 end
