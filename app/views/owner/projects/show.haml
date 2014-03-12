@@ -69,7 +69,7 @@
             %tbody
               - @sprints.each do |s|
                 %tr.selectable{:rel => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/show"}
-                  %td.right.actions
+                  %td.center.actions
                     - str = ""
                     - fulltime = s.start_date + s.duration * 24 * 60 * 60
                     - if fulltime < Time.now
@@ -86,15 +86,17 @@
                       - editable = false
 
                     = str
+                    %br
+                    %br
                     %a{:href => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/burndown_chart/show"} 
                       %img{:src=>"/img/icons/chart.png", :title => "Burndown Chart"}
                   %td
                     %table
                       - s.user_stories.each do |u|
                         %tr
-                          %td= u.title
-                  %td= s.start_date
-                  %td= s.duration
+                          %td.center= u.title
+                  %td.center= s.start_date
+                  %td.center= s.duration
                   %td.right.actions
                     %a{:href => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/show"} 
                       %img{:src=>"/img/icons/view.png", :title => "View sprint #{s.pk}"}
