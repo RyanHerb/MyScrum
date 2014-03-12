@@ -86,10 +86,16 @@
                       - editable = false
 
                     = str
-                    %br
-                    %br
-                    %a{:href => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/burndown_chart/show"} 
-                      %img{:src=>"/img/icons/chart.png", :title => "Burndown Chart"}
+                    - jobs_done = []
+                    - s.user_stories.each do |u|
+                      - u.jobs.each do |j|
+                        - if j.status == "done"
+                          - jobs_done << j
+                    - if jobs_done.length > 0
+                      %br
+                      %br
+                      %a{:href => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/burndown_chart/show"} 
+                        %img{:src=>"/img/icons/chart.png", :title => "Burndown Chart"}
                   %td
                     %table
                       - s.user_stories.each do |u|
