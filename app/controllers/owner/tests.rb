@@ -27,14 +27,20 @@ module MyScrum
 
       @owners = @project.users
       @user_stories = @project.user_stories
+
+      @project.users.each do |u|
+        unless u.pk == @current_owner.pk
+          @notif = Notification.new
+          @notif.set({:action => "modified", :type => "test", :owner_id => u.pk, :id_object => @test.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/user_stories/#{uid}/tests/#{tid}/show", :params => {:name => @test.title, :project => @project.title}.to_json})
+          @notif.save
+        end
+      end
       
       @notif = Notification.new
-      if @test.owner.pk != params[:test][:owner_id]
+      if @test.owner.pk != params[:test][:owner_id].to_i
         @notif.set({:action => "affectation", :type => "test", :owner_id => params[:test][:owner_id], :id_object => @test.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/user_stories/#{uid}/tests/#{tid}/show", :params => {:name => @test.title}.to_json})
         @notif2 = Notification.new
         @notif2.set({:action => "removed", :type => "test", :owner_id => @test.owner.pk, :id_object => @test.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/user_stories/#{uid}/tests/#{tid}/show", :params => {:name => @test.title, :project => @project.title}.to_json})
-      else
-        @notif.set({:action => "modified", :type => "test", :owner_id => @test.owner.pk, :id_object => @test.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/user_stories/#{uid}/tests/#{tid}/show", :params => {:name => @test.title, :project => @project.title}.to_json})
       end
 
       @test.set(params[:test])
@@ -64,6 +70,15 @@ module MyScrum
       @test.set(params[:test])
       if @test.valid?
         @test.save
+
+        @project.users.each do |u|
+          unless u.pk == @current_owner.pk
+            @notif2 = Notification.new
+            @notif2.set({:action => "new", :type => "test", :owner_id => u.pk, :id_object => @test.id, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/user_stories/#{@test.user_story.pk}/tests/#{@test.id}/show", :params => {:name => @test.title, :project => @project.title}.to_json})
+            @notif2.save
+          end
+        end
+
         @notif = Notification.new
         @notif.set({:action => "affectation", :type => "test", :owner_id => @test.owner.pk, :id_object => @test.id, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/user_stories/#{@test.user_story.pk}/tests/#{@test.id}/show", :params => {:name => @test.title, :project => @project.title}.to_json})
         @notif.save
