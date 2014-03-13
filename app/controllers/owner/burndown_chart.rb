@@ -21,21 +21,20 @@ module MyScrum
         end
       end
       @Users = Owner.all
-      sortie = Tempfile.new(['data', '.csv'],ROOT_DIR + '/public/data')
+      sortie = Tempfile.new(['data', '.csv'], ROOT_DIR + '/public/data')
       #jsondata = Tempfile.new(['data', '.json'],ROOT_DIR + '/public/data')
       @data_name = sortie.path.split("/").last
 
-      CSV.open(sortie.path, 'ab') do |csv|
-        csv << ["name","num_jobs"]
-        @Users.each do |row|
-          number_of_job_done = 0
-          row.jobs_dataset.done.each do |j|
-            number_of_job_done += j.difficulty
-          end
-          h = {:name => row.username, :num_jobs => number_of_job_done}
-          csv << h.values
+      @csv = Array.new
+      @Users.each do |row|
+        number_of_job_done = 0
+        row.jobs_dataset.done.each do |j|
+          number_of_job_done += j.difficulty
         end
+        h = {:name => row.username, :num_jobs => number_of_job_done}
+        @csv << h
       end
+      @csv = @csv.to_json
 
       # sprint_end = @sprint.start_date.to_date + @sprint.duration
 

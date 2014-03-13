@@ -3,6 +3,7 @@
   %head
     %meta{charset: "utf-8"}/
     %script{src: "/js/d3.v3.min.js", type: "text/javascript"}
+    #data{:"data-bdc" => @csv}
     :javascript
       var width = 800,
       height = 400,
@@ -25,67 +26,65 @@
           .append("g")
           .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-      d3.csv("/data/#{@data_name}", function(error, data) {
+      var data = JSON.parse($('#data').attr('data-bdc'));
+      data.forEach(function(d) {
+        d.num_jobs = +d.num_jobs;
+      });
 
-        data.forEach(function(d) {
-          d.num_jobs = +d.num_jobs;
+      var g = svg.selectAll(".arc")
+          .data(pie(data))
+          .enter().append("g")
+          .attr("class", "arc");
+
+      var count = 0;
+      
+      g.append("path")
+        .attr("d", arc)
+        .attr("id", function(d) { return "arc-" + (count++); })
+        .style("fill", function(d) {
+            return color(d.data.name);
         });
 
-        var g = svg.selectAll(".arc")
-            .data(pie(data))
-            .enter().append("g")
-            .attr("class", "arc");
+      g.append("text").attr("transform", function(d) {
+          return "translate(" + arc.centroid(d) + ")";
+      }).attr("dy", ".35em").style("text-anchor", "middle")
+      .text(function(d) {
+          return d.data.name;
+      })
 
-        var count = 0;
-        
-        g.append("path")
-          .attr("d", arc)
-          .attr("id", function(d) { return "arc-" + (count++); })
+      count = 0;
+
+      var legend = svg.selectAll(".legend")
+          .data(data).enter()
+          .append("g").attr("class", "legend")
+          .attr("legend-id", function(d) {
+              return count++;
+          })
+          .attr("transform", function(d, i) {
+              return "translate(-60," + (-70 + i * 20) + ")";
+          })
+          .on("click", function() {
+              console.log("#arc-" + $(this).attr("legend-id"));
+              var arc = d3.select("#arc-" + $(this).attr("legend-id"));
+              arc.style("opacity", 0.3);
+              setTimeout(function() {
+                  arc.style("opacity", 1);
+              }, 1000);
+          });
+      
+      legend.append("rect")
+          .attr("x", width / 2)
+          .attr("width", 18).attr("height", 18)
           .style("fill", function(d) {
-              return color(d.data.name);
+              return color(d.name);
           });
 
-        g.append("text").attr("transform", function(d) {
-            return "translate(" + arc.centroid(d) + ")";
-        }).attr("dy", ".35em").style("text-anchor", "middle")
-        .text(function(d) {
-            return d.data.name;
-        })
+      legend.append("text").attr("x", width / 2)
+          .attr("y", 9).attr("dy", ".35em")
+          .style("text-anchor", "end").text(function(d) {
+              return d.name;
+          });
 
-        count = 0;
-
-        var legend = svg.selectAll(".legend")
-            .data(data).enter()
-            .append("g").attr("class", "legend")
-            .attr("legend-id", function(d) {
-                return count++;
-            })
-            .attr("transform", function(d, i) {
-                return "translate(-60," + (-70 + i * 20) + ")";
-            })
-            .on("click", function() {
-                console.log("#arc-" + $(this).attr("legend-id"));
-                var arc = d3.select("#arc-" + $(this).attr("legend-id"));
-                arc.style("opacity", 0.3);
-                setTimeout(function() {
-                    arc.style("opacity", 1);
-                }, 1000);
-            });
-        
-        legend.append("rect")
-            .attr("x", width / 2)
-            .attr("width", 18).attr("height", 18)
-            .style("fill", function(d) {
-                return color(d.name);
-            });
-
-        legend.append("text").attr("x", width / 2)
-            .attr("y", 9).attr("dy", ".35em")
-            .style("text-anchor", "end").text(function(d) {
-                return d.name;
-            });
-
-      });
   %body
     %h1= "Sprint #{@sprint.id}"
     %p= "Start Date: #{@sprint.start_date}"
