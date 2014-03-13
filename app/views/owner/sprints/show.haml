@@ -45,8 +45,18 @@
                 %td= u.description
                 %td= u.priority
                 %td= u.difficulty
-                %td= u.finished ? "Yes" : "No"
-                %td= u.valid ? "Yes" : "No"
+                - if u.finished
+                  %td
+                    %img{:src => '/img/icons/yes.png'}
+                - else
+                  %td
+                    %img{:src => '/img/icons/no.png'}
+                - if u.valid
+                  %td
+                    %img{:src => '/img/icons/yes.png'}
+                - else
+                  %td
+                    %img{:src => '/img/icons/no.png'}
                 %td.right.actions
                   %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{u.pk}/show"}
                     %img{:src => '/img/icons/view.png', :title => "View #{u.title}"}
