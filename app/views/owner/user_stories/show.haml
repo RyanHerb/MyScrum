@@ -3,40 +3,129 @@
 .wrapsections
   .panel
     %fieldset
-      %legend User Story 
-      %table
-        %tr
-          %th Id
-          %td= @user_story.id
-        %tr
-          %th Title
-          %td= @user_story.title
-        %tr
-          %th Description
-          %td= @user_story.description
-        %tr
-          %th Priority
-          %td= @user_story.priority
-        %tr
-          %th Diffilculty
-          %td= @user_story.difficulty
-        %tr
-          %th Finished
-          - if @user_story.finished
-            %td
-              %img{:src => '/img/icons/yes.png'}
-          - else
-            %td
-              %img{:src => '/img/icons/no.png'}
-        %tr
-          %th Validated
-          - if @user_story.valid
-            %td
-              %img{:src => '/img/icons/yes.png'}
-          - else
-            %td
-              %img{:src => '/img/icons/no.png'}
-          
-      %a.badge{:href  => "/owner/projects/#{@project.pk}/user_stories/#{@user_story.pk}/edit"} Edit
+      %legend= @user_story.title
+      .tabs
+        %ul
+          %li.tab
+            %a.nolink{:href => '#tab1'} Details
+          %li.tab
+            %a{:href => '#tab2'} Jobs
+          %li.tab
+            %a{:href => '#tab3'} Sprints
+        .clear
 
+        #tab1
+          %table
+            %tr
+              %th Id
+              %td= @user_story.id
+            %tr
+              %th Title
+              %td= @user_story.title
+            %tr
+              %th Description
+              %td= @user_story.description
+            %tr
+              %th Priority
+              %td= @user_story.priority
+            %tr
+              %th Difficulty
+              %td= @user_story.difficulty
+            %tr
+              %th Finished
+              - if @user_story.finished
+                %td
+                  %img{:src => '/img/icons/yes.png'}
+              - else
+                %td
+                  %img{:src => '/img/icons/no.png'}
+            %tr
+              %th Validated
+              - if @user_story.valid
+                %td
+                  %img{:src => '/img/icons/yes.png'}
+              - else
+                %td
+                  %img{:src => '/img/icons/no.png'}
 
+          %a.badge{:href  => "/owner/projects/#{@project.pk}/user_stories/#{@user_story.pk}/edit"} Edit
+
+        #tab2
+          %table.datatable
+            %thead
+              %tr
+                %th Title
+                %th Description
+                %th Difficulty
+                %th Status
+            %tbody
+              - @user_story.jobs.each do |j|
+                %tr
+                  %td= j.title
+                  %td= j.description
+                  %td.center= j.difficulty
+                  %td.center
+                    - case j.status
+                    - when "todo"
+                      %img{:src => '/img/icons/no.png', :title => "To do"}
+                    - when "in progress"
+                      %img{:src => '/img/icons/progress.png', :title => "In progress"}
+                    - when "done"
+                      %img{:src => '/img/icons/yes.png', :title => "Done"}
+        #tab3
+          %table.datatable#sprint
+            %thead
+              %tr
+                %th Info
+                %th Start Date
+                %th Duration (days)
+                %th Actions
+            %tbody
+              - @user_story.sprints.each do |s|
+                %tr
+                  %td.center.actions
+                    - str = ""
+                    - img = ""
+                    - fulltime = s.start_date + s.duration * 24 * 60 * 60
+                    - closed = false
+
+                    - if !s.commit.nil?
+                      - str = "Closed"
+                      - closed = true
+                      %img{:src => "/img/icons/check.png", :title => "Closed"}
+                    - elsif fulltime < Time.now
+                      - str = "Expired"
+                      %img{:src => "/img/icons/time.png", :title => "Expired"}
+                    - elsif s.start_date > Time.now
+                      - str = "Not started yet"
+             
+                    - elsif s.start_date <= Time.now and fulltime >= Time.now
+                      - str = "Ongoing"
+                      %img{:src => "/img/icons/arrow.png", :title => "Ongoing"}
+                    - editable = true
+                    - if str.eql?("Expired") or str.eql?("Closed")
+                      - editable = false
+
+                    - jobs_done = []
+                    - s.user_stories.each do |u|
+                      - u.jobs.each do |j|
+                        - if j.status == "done"
+                          - jobs_done << j
+                    - if jobs_done.length > 0
+                      %br
+                      %br
+                      %a{:href => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/burndown_chart/show"} 
+                        %img{:src=>"/img/icons/chart.png", :title => "Burndown Chart"}
+                  %td.center= s.start_date
+                  %td.center= s.duration
+                  %td.right.actions
+                    %a{:href => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/show"} 
+                      %img{:src=>"/img/icons/view.png", :title => "View sprint"}
+
+:javascript
+  $(document).ready(function() {
+  var oTable = $('#sprint').dataTable();
+  
+  oTable.fnSort( [ [1,'asc'] ] );
+
+  });

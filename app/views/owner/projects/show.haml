@@ -2,7 +2,7 @@
 .wrapsections
   .panel
     %fieldset
-      %legend Project
+      %legend= @project.title
       .tabs
         %ul
           %li.tab
@@ -29,7 +29,8 @@
               %td= @project.description
             %tr
               %th Repository
-              %td= @project.repo
+              %td
+                %a{:href => "#{@project.repo}"}= @project.repo
             %tr
               %th Public
               %td= @project.public ? "Yes" : "No"
@@ -68,7 +69,7 @@
                 %th Actions
             %tbody
               - @sprints.each do |s|
-                %tr.selectable{:rel => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/show"}
+                %tr
                   %td.center.actions
                     - str = ""
                     - img = ""
@@ -132,7 +133,7 @@
                 %th.right.nosort Actions
             %tbody
               - @user_stories.each do |u|
-                %tr.selectable{:rel => "/owner/projects/#{@project.pk}/user_stories/#{u.pk}/show"}
+                %tr
                   %td= u.title
                   %td= u.description
                   %td= u.priority

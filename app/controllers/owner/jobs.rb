@@ -106,7 +106,7 @@ module MyScrum
         @job.owners.each do |o|
           unless @current_owner.pk == o.pk
             @notif = Notification.new
-            @notif.set({:action => "state", :type => "job", :owner_id => o.pk, :id_object => @job.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/show", :params => {:name => @job.title, :project => @project.title}.to_json})
+            @notif.set({:action => "state", :type => "job", :owner_id => o.pk, :id_object => @job.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/show", :params => {:name => @job.title, :project => @project.title, :status => @job.status}.to_json})
             @notif.save
           end
         end
