@@ -73,6 +73,14 @@ module MyScrum
       end
       
       @sprint.save
+      @project = Project.find(:id => pid)
+      @project.users.each do |u|
+        unless u.pk == @current_owner.pk
+          notif = Notification.new
+          notif.set({:action => "closed", :type => "sprint", :owner_id => u.pk, :id_object => @sprint.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/sprints/#{@sprint.pk}/show", :params => {:date => @sprint.start_date, :project => @project.title}.to_json})
+          notif.save
+        end
+      end
 
       redirect "owner/projects/#{@project.pk}/show#tab3"
     end
@@ -105,7 +113,7 @@ module MyScrum
         @project.users.each do |u|
           unless u.pk == @current_owner.pk
             notif = Notification.new
-            notif.set({:action => "modified", :type => "sprint", :owner_id => u.pk, :id_object => @sprint.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{i}/sprints/#{@sprint.pk}/show", :params => {:number => @sprint.pk, :project => @project.title}.to_json})
+            notif.set({:action => "modified", :type => "sprint", :owner_id => u.pk, :id_object => @sprint.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{i}/sprints/#{@sprint.pk}/show", :params => {:date => @sprint.start_date, :project => @project.title}.to_json})
             notif.save
           end
         end

@@ -111,13 +111,13 @@
                   %td.center= s.duration
                   %td.right.actions
                     %a{:href => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/show"} 
-                      %img{:src=>"/img/icons/view.png", :title => "View sprint #{s.pk}"}
+                      %img{:src=>"/img/icons/view.png", :title => "View sprint"}
                     - if editable
                       %a{:href => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/edit"}
-                        %img{:src => '/img/icons/edit.png', :title => "Edit sprint #{s.pk}"}
+                        %img{:src => '/img/icons/edit.png', :title => "Edit sprint"}
                     - if !closed
                       %a{:onclick => "return commitPrompt(#{s.pk})", :href => "?#tab3"}
-                        %img{:src => '/img/icons/cross.png', :title => "Close sprint #{s.pk}"}
+                        %img{:src => '/img/icons/cross.png', :title => "Close sprint"}
         #tab4.pane
           %a.badge{:href  => "/owner/projects/#{@project.pk}/user_stories/create"} Create new User Story
           %table.datatable

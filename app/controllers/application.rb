@@ -91,6 +91,9 @@ module MyScrum
           elsif n.action.eql?("state")
             str += "The state of the job \"" + param_notif["name"].to_s + "\" has been modified."
 
+          elsif n.action.eql?("closed")
+            str += "The sprint started the " + Date.parse(param_notif["date"]).strftime("%Y-%m-%d") + " in the project \"" + param_notif["project"] + "\" has been closed."
+
           elsif n.action.eql?("new")
             if n.type.eql?("scrum master") or n.type.eql?("project owner")
               str += "\"" + param_notif["name"].to_s + "\" is the new " + n.type.capitalize + " of the project \"" + param_notif["project"].to_s + "\"."  
@@ -106,7 +109,7 @@ module MyScrum
             if n.type.eql?("project")
               str += "The project \"" + param_notif["project"].to_s + "\" has been modified."
             elsif n.type.eql?("sprint")
-              str += "The sprint " + param_notif["number"].to_s + " in the project \"" + param_notif["project"].to_s + "\" has been modified."
+              str += "The sprint started the " + Date.parse(param_notif["date"]).strftime("%Y-%m-%d") + " in the project \"" + param_notif["project"].to_s + "\" has been modified."
             else
               str += "The " + n.type + " \"" + param_notif["name"].to_s + "\" has been modified."
             end
