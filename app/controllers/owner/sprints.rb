@@ -59,7 +59,11 @@ module MyScrum
     post '/projects/:pid/sprints/:sid/close' do |pid, sid|
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @sprint = Sprint.find(:id => sid)
-      
+
+      unless @sprint.commit.nil?
+        redirect "owner/projects/#{@project.pk}/show#tab3"
+      end
+
       if params[:commit].start_with?("http://") or params[:commit].start_with?("https://")
         @sprint.commit = params[:commit]
       elsif params[:commit].eql?("None")

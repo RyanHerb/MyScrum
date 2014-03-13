@@ -53,12 +53,12 @@
                   %td.right.actions
                     - if @rights or t.pk == @current_owner.pk
                       %a#remove{:onclick => "return confirm('Are you sure?')", :href => "/owner/projects/#{@project.pk}/remove_user/#{t.pk}"} 
-                        %img{:src=>"/img/icons/delete.png", :title => "Remove"}
+                        %img{:src=>"/img/icons/cross.png", :title => "Remove"}
 
         #tab3.pane
           - if @rights
             %a.badge{:href  => "/owner/projects/#{@project.pk}/sprint/create"} Create new Sprint
-          %table.datatable
+          %table.datatable#sprint
             %thead
               %tr
                 %th Info
@@ -71,21 +71,27 @@
                 %tr.selectable{:rel => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/show"}
                   %td.center.actions
                     - str = ""
+                    - img = ""
                     - fulltime = s.start_date + s.duration * 24 * 60 * 60
-                    - if fulltime < Time.now
+                    - closed = false
+
+                    - if !s.commit.nil?
+                      - str = "Closed"
+                      - closed = true
+                      %img{:src => "/img/icons/check.png", :title => "Closed"}
+                    - elsif fulltime < Time.now
                       - str = "Expired"
+                      %img{:src => "/img/icons/time.png", :title => "Expired"}
                     - elsif s.start_date > Time.now
                       - str = "Not started yet"
+             
                     - elsif s.start_date <= Time.now and fulltime >= Time.now
                       - str = "Ongoing"
-                    - if !s.commit.nil?
-                      - str = "Validated"
-                      - validated = true
+                      %img{:src => "/img/icons/arrow.png", :title => "Ongoing"}
                     - editable = true
-                    - if str.eql?("Expired") or str.eql?("Validated")
+                    - if str.eql?("Expired") or str.eql?("Closed")
                       - editable = false
 
-                    = str
                     - jobs_done = []
                     - s.user_stories.each do |u|
                       - u.jobs.each do |j|
@@ -109,9 +115,9 @@
                     - if editable
                       %a{:href => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/edit"}
                         %img{:src => '/img/icons/edit.png', :title => "Edit sprint #{s.pk}"}
-                    
-                    %a{:onclick => "return commitPrompt(#{s.pk})", :href => "?#tab3"} Close
-
+                    - if !closed
+                      %a{:onclick => "return commitPrompt(#{s.pk})", :href => "?#tab3"}
+                        %img{:src => '/img/icons/cross.png', :title => "Close sprint #{s.pk}"}
         #tab4.pane
           %a.badge{:href  => "/owner/projects/#{@project.pk}/user_stories/create"} Create new User Story
           %table.datatable
@@ -131,13 +137,23 @@
                   %td= u.description
                   %td= u.priority
                   %td= u.difficulty
-                  %td= u.finished ? "Yes" : "No"
-                  %td= u.valid ? "Yes" : "No"
+                  - if u.finished
+                    %td
+                      %img{:src => '/img/icons/yes.png'}
+                  - else
+                    %td
+                      %img{:src => '/img/icons/no.png'}
+                  - if u.valid
+                    %td
+                      %img{:src => '/img/icons/yes.png'}
+                  - else
+                    %td
+                      %img{:src => '/img/icons/no.png'}
                   %td.right.actions
                     %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{u.pk}/show"}
-                      %img{:src => '/img/icons/view.png', :title => "view #{u.title}"}
+                      %img{:src => '/img/icons/view.png', :title => "View #{u.title}"}
                     %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{u.pk}/edit"}
-                      %img{:src => '/img/icons/edit.png', :title => "edit #{u.title}"}
+                      %img{:src => '/img/icons/edit.png', :title => "Edit #{u.title}"}
 
         #tab5.pane
           %a.badge{:href  => "/owner/projects/#{@project.pk}/test/create"} Create new Test
@@ -153,30 +169,34 @@
                 - @tester = Owner.find(:id => t.owner_id)
                 %tr
                   %td= t.title
-                  - @state = ""
-                  - case t.state
-                  - when "not_tested"
-                    - @state = "Not tested"
-                  - when "failed"
-                    - @state = "Test failed"
-                  - when "success"
-                    - @state = "Test successful"
-                  - else
-                    - @state = "Unknown"
-                  %td= @state
+                  %td
+                    - case t.state
+                    - when "not_tested"
+                      %img{:src => '/img/icons/question.png', :title => "Not tested"}
+                    - when "failed"
+                      %img{:src => '/img/icons/no.png', :title => "Test failed"}
+                    - when "success"
+                      %img{:src => '/img/icons/yes.png', :title => "Test successful"}
                   %td= @tester.username
                   %td.right.actions
                     %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{t.user_story.pk}/tests/#{t.pk}/show"}
-                      %img{:src => '/img/icons/view.png', :title => "view #{t.title}"}
+                      %img{:src => '/img/icons/view.png', :title => "View #{t.title}"}
                     %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{t.user_story.pk}/tests/#{t.pk}/edit"}
-                      %img{:src => '/img/icons/edit.png', :title => "edit #{t.title}"}
+                      %img{:src => '/img/icons/edit.png', :title => "Edit #{t.title}"}
                     %a{:onclick => "return confirm(\"Are you sure?\\n\\nThis operation is irreversible.\")", :href => "/owner/projects/#{@project.pk}/user_stories/#{t.user_story.pk}/tests/#{t.pk}/remove"}
-                      %img{:src=>"/img/icons/delete.png", :title => "Remove"}
+                      %img{:src=>"/img/icons/cross.png", :title => "Remove"}
 
 
 :javascript
+  $(document).ready(function() {
+  var oTable = $('#sprint').dataTable();
+  
+  oTable.fnSort( [ [2,'asc'] ] );
+
+  });
+
   function commitPrompt(sid) {
-  var vcommit=prompt("Last commit","None");
+  var vcommit=prompt("Enter the URL of the Sprint's last commit (optional)","None");
   
   if (!vcommit){
   return false;

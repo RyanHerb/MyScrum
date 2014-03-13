@@ -22,10 +22,20 @@
           %td= @user_story.difficulty
         %tr
           %th Finished
-          %td= @user_story.finished ? "Yes" : "No"
+          - if @user_story.finished
+            %td
+              %img{:src => '/img/icons/yes.png'}
+          - else
+            %td
+              %img{:src => '/img/icons/no.png'}
         %tr
           %th Validated
-          %td= @user_story.valid ? "Yes" : "No"
+          - if @user_story.valid
+            %td
+              %img{:src => '/img/icons/yes.png'}
+          - else
+            %td
+              %img{:src => '/img/icons/no.png'}
           
       %a.badge{:href  => "/owner/projects/#{@project.pk}/user_stories/#{@user_story.pk}/edit"} Edit
 

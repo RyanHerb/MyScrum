@@ -10,17 +10,14 @@
         %td= @test.title
       %tr
         %th Status
-        - @state = ""
-        - case @test.state
-        - when "not_tested"
-          - @state = "Not tested"
-        - when "failed"
-          - @state = "Test failed"
-        - when "success"
-          - @state = "Test successful"
-        - else
-          - @state = "Unknown"
-        %td= @state
+        %td
+          - case @test.state
+          - when "not_tested"
+            %img{:src => '/img/icons/question.png', :title => "Not tested"}
+          - when "failed"
+            %img{:src => '/img/icons/no.png', :title => "Test failed"}
+          - when "success"
+            %img{:src => '/img/icons/yes.png', :title => "Test successful"}
       %tr
         %th Tester
         %td= @owner
