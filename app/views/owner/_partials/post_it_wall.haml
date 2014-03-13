@@ -43,6 +43,8 @@
               currentPostIt.find('.ownerIcon').find('img').removeAttr('title');
             }
           }
+        }).fail(function (res) {
+          storeData(form.attr('action'), 'post', form.serialize());
         });
       });
     });

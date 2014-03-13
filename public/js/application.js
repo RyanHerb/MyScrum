@@ -249,17 +249,26 @@ function ajax_put(url){
   }).error(function(e){ dialog_alert(e.status + ": " + e.statusText); });
 }
 
+function storeData(action, method, data) {
+  var hash = new Object();
+  hash['action'] = action;
+  hash['method'] = method;
+  hash['data'] =  data;
+  localStorage.setItem(localStorage.length, JSON.stringify(hash));
+}
+
 function change_postit_state(postit, state) {
   var container = $("#container_" + postit.data('id') + "_" + state);
   container.append(postit);
   $.post(postit.data('action') + '/' + state, function(res) {
-    if(res == 'OK') {
-    }
+  }).fail(function (res) {
+    // no need for data, the simple posting suffices to change the state
+    storeData(postit.data('action') + '/' + state, "post", "");
   });
 }
 
-function storeData(form) {
-  var serializedFormArray = form.serialize();
+function storeFormData(form) {
+  var serializedFormArray = form.serializeArray();
   var method;
   if(serializedFormArray[0]['name'] == "_method") {
     method = serializedFormArray[0]['value'];
@@ -267,11 +276,7 @@ function storeData(form) {
   } else {
     method = 'post';
   }
-  var hash = new Object();
-  hash['action'] = form.attr('action');
-  hash['method'] = method;
-  hash['data'] =  serializedFormArray;
-  localStorage.setItem(localStorage.length, JSON.stringify(hash));
+  storeData(form.attr('action'), method, form.serialize());
 }
 
 function uploadLocalStorage() {
@@ -290,31 +295,35 @@ function uploadLocalStorage() {
   });
 }
 
-function disableForms() {
-  $('.form').submit(function(event) {
-    event.preventDefault();
-    storeData($(this));
-    alert("Unfortunately the server seems to be inaccessible right now, you data has been saved locally and will be uploaded as soon as possible!");
-  });
+function formsDisabled(form) {
+  storeFormData(form);
+  alert("Unfortunately the server seems to be inaccessible right now, you data has been saved locally and will be uploaded as soon as possible!");
 }
 
-function pingAndDisable() {
+function pingAndDisable(form) {
   $.ajax({url: "/ping",
     type: "HEAD",
     timeout:1000,
     statusCode: {
       200: function (res) {
         console.log("server is online, reenable forms");
-        $('.form').off('submit');
         uploadLocalStorage();
+        if(form != undefined) {
+          form.off('submit');
+          form.submit();
+        }
       },
       400: function (res) {
         console.log("server is offline, switching to local storage");
-        disableForms();
+        if(form != undefined) {
+          formsDisabled(form);
+        }
       },
       0: function (res) {
         console.log("server is offline, switching to local storage");
-        disableForms();
+        if(form != undefined) {
+          formsDisabled(form);
+        }
       }              
     }
   });
@@ -329,7 +338,17 @@ $(document).ready(function(){
   setup_datepicker();
 
   setup_tabs();
+
   pingAndDisable();
+  $('.form').submit(function (event) {
+    event.preventDefault();
+    pingAndDisable($(this));
+  });
+
+  var appCache = window.applicationCache;
+  $(appCache).bind('updateready', function() {
+    //location.reload(true);
+  })
 
 });
 
