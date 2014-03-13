@@ -3,6 +3,7 @@ class UserStory < Sequel::Model
   one_to_many :jobs
   one_to_many :tests
   many_to_one :project
+  many_to_many :sprints
 
 
     def validate
