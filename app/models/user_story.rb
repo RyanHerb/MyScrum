@@ -32,7 +32,7 @@ class UserStory < Sequel::Model
   # = Insatance Methods =
   # =====================
 
-  def after_initialize
+  def after_create
     self.finished = false
     self.valid = false
   end
