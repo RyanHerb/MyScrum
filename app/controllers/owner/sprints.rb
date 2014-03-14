@@ -9,7 +9,7 @@ module MyScrum
     get '/projects/:id/sprint/create' do |i|
       @project = Project.find(:id => i)
       @sprint = Sprint.new
-      @user_stories = @project.user_stories
+      @user_stories = @project.user_stories_dataset.not_finished.all
       haml :"/sprints/form"
     end
 
