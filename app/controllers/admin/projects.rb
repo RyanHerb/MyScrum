@@ -38,6 +38,9 @@ module MyScrum
       @user_stories = @project.user_stories
       @sprints = @project.sprints
       @team = @project.users
+      @tests = @project.user_stories.inject([]) do |arr, us|
+        arr << us.tests
+      end.flatten
       haml :"projects/show"
     end
 
