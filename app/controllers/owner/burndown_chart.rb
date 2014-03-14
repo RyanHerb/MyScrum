@@ -33,25 +33,20 @@ module MyScrum
       end
       @json_data = @json_data.to_json
 
-      # sprint_end = @sprint.start_date.to_date + @sprint.duration
+      @burndown_chart_data = []
 
-      # timeDomain = []
+      @day_date = Date.today
 
-      # timeDomain << @sprint.start_date.to_date.to_s
+      @sprint.duration.times do |i|
+        tab = []
+        tab << i
+        tab << @sprint_difficulty
+        @burndown_chart_data  << tab
+      end
 
-      # tab = ["start","end","sprint_difficulty","timeDomain"]
-     
-      # @sprint.duration.times do |i|
-      #   add = @sprint.start_date.to_date + (i+1)
-      #   timeDomain << add.to_s
-      # end
+      @burndown_chart_data = [[0, 13], [1, 10], [2, 8], [3, 4], [4, 3], [5, 0]]     
 
-      # hashmap = {:start => @sprint.start_date.to_date, :end => sprint_end, :sprint_difficulty => @sprint_difficulty, :timeDomain => timeDomain}
       
-      # File.open(jsondata.path, 'w') do |f|
-        
-      #   f.puts JSON.pretty_generate(hashmap)
-      # end
       haml :"/burndown_chart/show"
     end
   end
