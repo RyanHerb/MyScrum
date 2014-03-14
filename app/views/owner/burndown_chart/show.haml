@@ -207,7 +207,7 @@
   %body
     #chart
       %h1= "Sprint #{@sprint.id}"
-      %p= "Start Date: #{@sprint.start_date}"
+      %p= "Start Date: #{@sprint.start_date.to_date}"
       %p= "Duration: #{@sprint.duration}"
       %p= "Sprint Difficulty: #{@sprint_difficulty}"
       #userContributions
