@@ -19,9 +19,23 @@ class UserStory < Sequel::Model
     validates_includes 1 .. 99999999, :priority, :message => 'Priority must be > 0'
   end
 
+  # ===========
+  # = Subsets =
+  # ===========
+
+  subset :finished, :finished => true
+  subset :not_finished, :finished => false
+  subset :valid, :valid => true
+  subset :not_valid, :valid => false
+
   # =====================
   # = Insatance Methods =
   # =====================
+
+  def after_initialize
+    self.finished = false
+    self.valid = false
+  end
 
   def update_status
     if self.jobs_dataset.todo.all.length + self.jobs_dataset.in_progress.all.length == 0
