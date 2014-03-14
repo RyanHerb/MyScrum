@@ -8,8 +8,16 @@ module MyScrum
     #  haml :"jobs/index"
     #end
 
-    get '/projects/:pid/jobs/create' do |pid|
+    get '/projects/:pid/jobs/create/:sid' do |pid, sid|
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
+      @sprint = @project.sprints_dataset.where(:id => sid).first || halt(404)
+      @job = Job.new
+      haml :"jobs/form"
+    end
+
+    get '/projects/:pid/jobs/create/:uid' do |pid, uid|
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
+      @user_story = @project.user_stories_dataset.where(:id => uid).first || halt(404)
       @job = Job.new
       haml :"jobs/form"
     end
@@ -32,11 +40,12 @@ module MyScrum
 
     post '/projects/:pid/jobs' do |pid| 
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
-      @user_story = @project.user_stories_dataset.where(:id => params[:job][:user_story_id]).first || halt(404)
+      params[:job]["difficulty"] = params[:job]["difficulty"].to_i
       @job = Job.new
       @job.set(params[:job])
       if @job.valid?
         @job.save
+        @user_story = @project.user_stories_dataset.where(:id => params[:job][:user_story_id]).first || halt(404)
         @user_story.add_job(@job)
 
         # if this was the last job to be finished update the status of the user story
