@@ -5,7 +5,7 @@ require 'json'
 require 'date'
 
 module MyScrum
-  class OwnerApp < Sinatra::Application
+  class OwnerApp
     
     # ========
     # = Show =

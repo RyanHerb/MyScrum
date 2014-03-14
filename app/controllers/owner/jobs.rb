@@ -1,5 +1,5 @@
 module MyScrum
-  class OwnerApp < Sinatra::Application
+  class OwnerApp
 
     #get '/projects/:pid/user_stories/:uid/jobs' do |pid, uid|
     #  @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
