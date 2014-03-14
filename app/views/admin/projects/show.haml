@@ -49,7 +49,7 @@
                   %td= role[:position].split.map(&:capitalize)*' ' rescue '-'
                   %td.right.actions
                     %a#remove{:onclick => "return confirm('Are you sure?')", :href => "/admin/projects/#{@project.pk}/remove_user/#{t.pk}"} 
-                      %img{:src=>"/img/icons/delete.png", :title => "Remove"}
+                      %img{:src=>"/img/icons/cross.png", :title => "Remove"}
 
         #tab3.pane
           %a.addmore{:href  => "/admin/projects/#{@project.pk}/sprint/new"} Create new Sprint
@@ -129,7 +129,7 @@
                                 <option value="product owner">Product Owner</option>\
                                 <option value="scrum master">Scrum Master</option>\
                               </select>\
-                              <img class="delete" src="/img/icons/delete.png" data-id="' + selected.attr('value') + '"/>\
+                              <img class="delete" src="/img/icons/cross.png" data-id="' + selected.attr('value') + '"/>\
                               </span><div class="clear"></div>');
       selected.attr('disabled', 'disabled');
 
@@ -151,7 +151,7 @@
             $('#collaborators').dataTable().fnAddData([
               $(this).clone().children().remove().end().text(),
               $(this).children('select').find(':selected').text(),
-              '<a href="/admin/projects/1/remove_user/2" id="remove"><img src="/img/icons/delete.png" title="Remove"></a>'
+              '<a href="/admin/projects/1/remove_user/2" id="remove"><img src="/img/icons/cross.png" title="Remove"></a>'
             ]);
           });*/
         }
