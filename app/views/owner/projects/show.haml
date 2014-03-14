@@ -138,17 +138,15 @@
                   %td= u.description
                   %td= u.priority
                   %td= u.difficulty
-                  - if u.finished
-                    %td
+                  %td.center
+                    - if u.finished
                       %img{:src => '/img/icons/yes.png'}
-                  - else
-                    %td
+                    - else
                       %img{:src => '/img/icons/no.png'}
-                  - if u.valid
-                    %td
+                  %td.center
+                    - if u.valid
                       %img{:src => '/img/icons/yes.png'}
-                  - else
-                    %td
+                    - else
                       %img{:src => '/img/icons/no.png'}
                   %td.right.actions
                     %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{u.pk}/show"}
@@ -170,7 +168,7 @@
                 - @tester = Owner.find(:id => t.owner_id)
                 %tr
                   %td= t.title
-                  %td
+                  %td.center
                     - case t.state
                     - when "not_tested"
                       %img{:src => '/img/icons/question.png', :title => "Not tested"}
@@ -178,7 +176,7 @@
                       %img{:src => '/img/icons/no.png', :title => "Test failed"}
                     - when "success"
                       %img{:src => '/img/icons/yes.png', :title => "Test successful"}
-                  %td= @tester.username
+                  %td.center= @tester.username
                   %td.right.actions
                     %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{t.user_story.pk}/tests/#{t.pk}/show"}
                       %img{:src => '/img/icons/view.png', :title => "View #{t.title}"}
