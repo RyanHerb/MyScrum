@@ -31,4 +31,12 @@ class UserStory < Sequel::Model
     end
   end
 
+  def update_testing_state
+    if self.tests_dataset.not_tested.all.length + self.tests_dataset.failed.all.length == 0
+      self.update({:valid => true})
+    else
+      self.update({:valid => false})
+    end
+  end
+
 end
