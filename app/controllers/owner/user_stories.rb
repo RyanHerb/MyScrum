@@ -22,6 +22,10 @@ module MyScrum
     put '/projects/:pid/user_stories/:id' do |pid, id|
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @user_story = UserStory.find(:id => id) || halt(404)
+
+      params[:user_story]["difficulty"] = params[:user_story]["difficulty"].to_i
+      params[:user_story]["priority"] = params[:user_story]["priority"].to_i
+
       @user_story.set(params[:user_story])
       if @user_story.valid?
         @user_story.save
@@ -42,6 +46,10 @@ module MyScrum
     post '/projects/:pid/user_stories/' do |pid|
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @user_story = UserStory.new
+
+      params[:user_story]["difficulty"] = params[:user_story]["difficulty"].to_i
+      params[:user_story]["priority"] = params[:user_story]["priority"].to_i
+
       @user_story.set(params[:user_story])
       if @user_story.valid?
         @user_story.save
