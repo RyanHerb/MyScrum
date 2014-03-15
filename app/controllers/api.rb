@@ -11,19 +11,20 @@ module MyScrum
     end
 
     before do
-      unless @current_owner
-        show_me params.inspect
-        unless params[:api_key].nil?
-          if o = Owner.auth_with_key(params)
-            @current_owner = o
-          end
+      show_me params.inspect
+      unless params[:api_key].nil?
+        if o = Owner.auth_with_key(params)
+          @current_owner = o
         else
           halt(401)
         end
+      else
+        halt(401)
       end
     end
     
     get '/' do
+      "You successfully queried our api, this means authentication was successful"
     end
 
     # ===========
@@ -31,16 +32,17 @@ module MyScrum
     # ===========
 
     get '/owner/profile' do
-      unless (@current_owner.nil?)
-        response = @owner.to_json
-      else
-        halt 401
-      end
-      response
+      response = @owner.to_json
     end
 
-    put '/owner/profile' do
-
+    post '/owner/profile' do
+      params[:owner] = JSON.parse(params[:owner])
+      @current_owner.set(params[:owner])
+      if @current_owner.valid?
+        @current_owner.save
+      else
+        "An error occured while updating account"
+      end
     end
 
     # ============
@@ -60,6 +62,18 @@ module MyScrum
     get '/owner/projects/:pid/description' do |pid|
       @project = @current_owner.projects_dataset.where(:project__id => pid) || halt(404)
       @project.description.to_json
+    end
+
+    post '/owner/projects/create' do
+      project = Project.new
+      decoded_params = JSON.parse(params[:project])
+      project.set(decoded_params)
+      if project.valid?
+        project.save
+        "OK"
+      else
+        "An error occured"
+      end
     end
 
     # =========
