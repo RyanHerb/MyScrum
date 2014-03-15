@@ -347,7 +347,7 @@ $(document).ready(function(){
 
   var appCache = window.applicationCache;
   $(appCache).bind('updateready', function() {
-    //location.reload(true);
+    location.reload(true);
   })
 
 });

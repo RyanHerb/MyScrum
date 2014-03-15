@@ -6,15 +6,62 @@
 %fieldset
   %legend Test details
   %body
-    = form_for @test, :action => @action do |f|
+    = form_for @test do |f|
       %fieldset
         = f.input :title, :label => "Title"
         = f.select :state, :options => [["not_tested", "Not tested"], ["failed", "Failed"], ["success", "Success"]], :label => "State"
-        = f.select :owner_id, :options => @owners.inject([]){ |arr, o| arr << [o.pk, o.username]; arr}, :label => "Tester"
-        /= f.select :user_story_id, :options => @user_stories.inject([]){ |arr, o| arr << [o.pk, o.title]; arr}, :label => "User story"
+        
+        #project_list_div
+          %label{:for => 'project_list'} Project
+          %select#project_list{:name => 'project'}
+            %option{:value => ''} Choose
+            -@projects.each do |p|
+              %option{:value => p.pk}= p.title
+
+        #owner_list_div.hidden
+          %label{:for => 'owner_list'} Owner
+          %select#owner_list{:name => 'test[owner_id]'}
+
+        #user_story_list_div.hidden
+          %label{:for => 'test_user_story'} User Story
+          %select#user_story_list{:name => 'test[user_story_id]'}
+
         = f.input :input, :label => "Input"
         = f.textarea :test_case, :input_options => {:rows => 6}, :label => "Test Case"
         = f.textarea :expected, :input_options => {:rows => 6}, :label => "Expected Result"
         = f.textarea :comment, :input_options => {:rows => 6}, :label => "Comment"
        
         = f.submit "Submit"
+
+:javascript
+  $(document).ready(function() {
+    $('#project_list').change(function() {
+      var owner_list = $('#owner_list');
+      var user_story_list = $('#user_story_list');
+      var projectList = $(this);
+      var owners, user_stories;
+      $('#owner_list_div').slideUp('fast');
+      $('#user_story_list_div').slideUp('fast');
+      var project_id = projectList.find(':selected').attr('value');
+
+      if(project_id != '') {
+        var owners_json = $.post('/admin/project_owners', {'project_id': project_id}, function(res) {
+          owner_list.children().remove();
+          owners = JSON.parse(res);
+          $.each(owners, function(index, value) {
+            owner_list.append($('<option></option>').attr('value', value['id']).attr('name', 'owner_id').text(value['username']));
+          });
+          $('#owner_list_div').slideDown('fast');
+        });
+
+        var user_stories_json = $.post('/admin/project_user_stories', {'project_id': project_id}, function(res) {
+          user_story_list.children().remove();
+          user_stories = JSON.parse(res);
+          $.each(user_stories, function(index, value) {
+            user_story_list.append($('<option></option>').attr('value', value['id']).attr('name', 'user_story_id').text(value['title']));
+          });
+          $('#user_story_list_div').slideDown('fast');
+        });
+      }
+    });
+  });
