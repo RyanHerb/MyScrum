@@ -15,6 +15,10 @@ class Job < Sequel::Model
   def validate
     super
     errors.add(:status, 'Invalid status') unless ["todo", "in progress", "done"].include?(status)
+    validates_presence :title, :message => 'Title is required.'
+    validates_presence :user_story_id, :message => 'An user story is required.'
+    validates_presence :difficulty, :message => 'Difficulty is required.'
+    validates_includes 1 .. 99999999, :difficulty, :message => 'Difficulty must be > 0'
   end
 
   # ===========

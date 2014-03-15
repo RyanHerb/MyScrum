@@ -23,7 +23,7 @@
       .clear
 
       #tab1 
-        %a.badge{:href  => "/owner/projects/#{@project.pk}/jobs/create"} Create Job
+        %a.badge{:href  => "/owner/projects/#{@project.pk}/jobs/create/#{@sprint.pk}"} Create Job
         = partial :post_it_wall, :locals => {:user_stories => @user_stories}
       #tab2.pane
         %table.datatable

@@ -126,16 +126,19 @@
               %tr
                 %th Title
                 %th Description
+                %th Jobs
                 %th Priority
                 %th Difficulty
                 %th Finished
                 %th Validated
                 %th.right.nosort Actions
             %tbody
+              - puts "HEUHEUHEEUHEHUEE"
               - @user_stories.each do |u|
                 %tr
                   %td= u.title
                   %td= u.description
+                  %td= u.jobs.count
                   %td= u.priority
                   %td= u.difficulty
                   %td.center
