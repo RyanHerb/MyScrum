@@ -12,6 +12,8 @@
             %a{:href => '#tab3'} Sprints
           %li.tab
             %a{:href => '#tab4'} Backlog
+          %li.tab
+            %a{:href => '#tab5'} Tests
         .clear
 
         #tab1 
@@ -33,7 +35,7 @@
           -# if @current_owner.scrumMaster?
 
         #tab2.pane
-          %a.addmore#team_edit{:href  => "/admin/projects/#{@project.pk}/users/add"} Edit collaborators
+          %a.addmore#team_edit{:href => "/admin/projects/#{@project.pk}/users/add"} Edit collaborators
           %h1 Project Team
           %table.datatable#collaborators
             %thead
@@ -52,7 +54,7 @@
                       %img{:src=>"/img/icons/cross.png", :title => "Remove"}
 
         #tab3.pane
-          %a.addmore{:href  => "/admin/projects/#{@project.pk}/sprint/new"} Create new Sprint
+          %a.addmore{:href => "/admin/projects/#{@project.pk}/sprint/new"} Create new Sprint
           %h1 Project Sprints
           %table.datatable
             %thead
@@ -104,6 +106,36 @@
                       %img{:src => '/img/icons/view.png', :title => "view #{u.title}"}
                     %a{:href => "/admin/user_stories/#{u.pk}/edit"}
                       %img{:src => '/img/icons/edit.png', :title => "edit #{u.title}"}
+        #tab5.pane
+          %a.addmore{:href  => "/admin/projects/#{@project.pk}/test/create"} Create new Test
+          %table.datatable
+            %thead
+              %tr
+                %th Title
+                %th State
+                %th Tester
+                %th.right.nosort Actions
+            %tbody
+              - @tests.each do |t|
+                - @tester = Owner.find(:id => t.owner_id)
+                %tr
+                  %td= t.title
+                  %td.center
+                    - case t.state
+                    - when "not_tested"
+                      %img{:src => '/img/icons/question.png', :title => "Not tested"}
+                    - when "failed"
+                      %img{:src => '/img/icons/no.png', :title => "Test failed"}
+                    - when "success"
+                      %img{:src => '/img/icons/yes.png', :title => "Test successful"}
+                  %td.center= @tester.username
+                  %td.right.actions
+                    %a{:href => "/admin/tests/#{t.pk}/show"}
+                      %img{:src => '/img/icons/view.png', :title => "View #{t.title}"}
+                    %a{:href => "/admin/tests/#{t.pk}/edit"}
+                      %img{:src => '/img/icons/edit.png', :title => "Edit #{t.title}"}
+                    %a{:onclick => "return confirm(\"Are you sure?\\n\\nThis operation is irreversible.\")", :href => "/admin/tests/#{t.pk}/remove"}
+                      %img{:src=>"/img/icons/cross.png", :title => "Remove"}
 
     .dialog.hidden#assign_devs
       %label Select a Project Member

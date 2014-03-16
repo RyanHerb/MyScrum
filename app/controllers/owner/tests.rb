@@ -1,6 +1,6 @@
 require 'date'
 module MyScrum
-  class OwnerApp < Sinatra::Application
+  class OwnerApp
 
     get '/projects/:id/test/create' do |pid|
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)

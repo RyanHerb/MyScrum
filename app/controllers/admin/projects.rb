@@ -38,6 +38,9 @@ module MyScrum
       @user_stories = @project.user_stories
       @sprints = @project.sprints
       @team = @project.users
+      @tests = @project.user_stories.inject([]) do |arr, us|
+        arr << us.tests
+      end.flatten
       haml :"projects/show"
     end
 
@@ -55,6 +58,20 @@ module MyScrum
         @project.users_dataset.where(:user => @owner.pk).update(:position => r[1])
       end
       "OK"
+    end
+
+    post '/project_owners' do
+      project = Project.find(:id => params[:project_id]) || halt(404)
+      owners = project.users
+      response = owners.inject([]){ |arr, o| arr << o.to_json; arr}.join(', ')
+      '[' << response << ']'
+    end
+
+    post '/project_user_stories' do
+      project = Project.find(:id => params[:project_id]) || halt(404)
+      user_stories = project.user_stories
+      response = user_stories.inject([]){ |arr, us| arr << us.to_json; arr}.join(', ')
+      '[' << response << ']'
     end
 
   end

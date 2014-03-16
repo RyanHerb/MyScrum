@@ -1,5 +1,6 @@
 !!!
-%a{:href => "/owner/projects/#{@project.pk}/show#tab5"} Back to project
+%a{:href => "/admin/projects/#{@project.pk}/show#tab5"} Back to project
+%a.addmore{:href  => "/admin/tests/#{@test.pk}/edit"} Edit Test
 %h1= "Test \"#{@test.title}\""
 %fieldset
   %legend Test details
