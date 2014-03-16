@@ -210,8 +210,8 @@
       %p= "Start Date: #{@sprint.start_date.to_date}"
       %p= "Duration: #{@sprint.duration}"
       %p= "Sprint Difficulty: #{@sprint_difficulty}"
-      #userContributions
-        %h3 User Contributions Chart for Tasks Done
-      %br
       #burndownChart
         %h3 Burndown Chart (Sum of Task Estimates)
+      %br
+      #userContributions
+        %h3 User Contributions Chart for Tasks Done
