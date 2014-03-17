@@ -1,6 +1,3 @@
-require 'tempfile'
-require 'fileutils'
-require 'csv'
 require 'json'
 require 'date'
 
@@ -20,6 +17,7 @@ module MyScrum
           @sprint_difficulty += j.difficulty
         end
       end
+      @remaining_difficulty = @sprint_difficulty
       @users = Owner.all
 
       @json_data = Array.new
@@ -33,20 +31,33 @@ module MyScrum
       end
       @json_data = @json_data.to_json
 
-      @burndown_chart_data = []
 
-      @day_date = Date.today
-
-      @sprint.duration.times do |i|
-        tab = []
-        tab << i
-        tab << @sprint_difficulty
-        @burndown_chart_data  << tab
-      end
-
-      @burndown_chart_data = [[0, 13], [1, 10], [2, 8], [3, 4], [4, 3], [5, 0]]     
-
+      #get BurnDownChart Data
+      @burndown_chart_data = Array.new
+      @burndown_chart_data << [0,@sprint_difficulty]
+      @today_date = Date.today
+      @date = @sprint.start_date.to_date
       
+      @sprint.duration.times do |i|
+        if @date > @today_date
+          break
+        end
+        @jobs_done = Array.new
+        @user_stories.each do |u|
+          u.jobs_dataset.done.each do |j|
+            @jobs_done << j
+          end
+        end
+        @tab = Array.new
+        @tab = @jobs_done.select { |obj| obj.updated_at.to_date.to_s == @date.to_s }        
+        sum_difficulty = 0
+        @tab.each do |row|
+          sum_difficulty += row.difficulty
+        end
+        @remaining_difficulty -= sum_difficulty
+        @burndown_chart_data << [i+1, @remaining_difficulty]
+        @date += 1
+      end
       haml :"/burndown_chart/show"
     end
   end
