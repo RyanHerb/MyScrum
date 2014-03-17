@@ -21,6 +21,7 @@ class Sprint < Sequel::Model
           end
         end
       end
+    end
 
     # ===========
     # = Subsets =
