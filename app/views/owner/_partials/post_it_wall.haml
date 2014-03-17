@@ -67,6 +67,9 @@
         });
 
         change_postit_state($(ui.helper), $(this).data('state'));
+        if($(this).data('state') == "done") {
+          $(ui.helper).attr('class', 'postItDone');
+        }
       }
     });
 
