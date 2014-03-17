@@ -122,6 +122,7 @@ module MyScrum
 
       @job.set({:status => state})
       if @job.valid?
+        @job.set({:state_changed_at => DateTime.now})
         @job.save
 
         # if this was the last job to be finished update the status of the user story

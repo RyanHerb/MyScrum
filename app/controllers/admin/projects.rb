@@ -52,7 +52,7 @@ module MyScrum
     post '/projects/:id/add_developers' do |id|
       @project = Project.find(:id => id) || halt(404)
       params[:role].each do |r|
-        @owner = Owner.find(:username => r[0])
+        @owner = Owner.find(:username => r[0]) || halt(404)
         @project.remove_user(@owner)
         @project.add_user(@owner)
         @project.users_dataset.where(:user => @owner.pk).update(:position => r[1])

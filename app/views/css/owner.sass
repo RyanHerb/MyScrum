@@ -479,7 +479,7 @@ img.pet-profile-photo
       margin: -4px 5px 0 -8px
       float: left
   .procedure
-    //background: url(/img/bgds/grey-grd-bgd.png) repeat-x center top white
+    background: url(/img/bgds/grey-grd-bgd.png) repeat-x center top white
     border: 2px solid white
     +roundcorners(5px)
     float: left
@@ -528,6 +528,30 @@ img.pet-profile-photo
     right: 5px
   a.addmore
     font-size: 0.9em
+ 
+#appt-procedures, #appt-add-procedures, #myappointments .appointment
+  +roundcorners(0)
+  +boxshadow 
+  background: url(/img/bgds/grey-grd-bgd.png) repeat-x center top white
+  
+  border: 4px solid white
+  padding: 10px
+  
+#appt-add-procedures
+  padding: 20px 5px 5px 5px
+      
+.removePetProcedure
+  background: url(/img/icons/close.png) no-repeat center top transparent
+  height: 15px
+  width: 25px
+  float: right
+  display: block
+
+.removeAppointmentPet
+  background: url(/img/icons/close-green.png) no-repeat center top transparent
+  height: 16px
+  width: 16px
+
 
 .bigaddmore
   width: 90%
@@ -544,4 +568,436 @@ img.pet-profile-photo
   border: 2px solid white
   &:hover
     +lineargradient($vetsk-green, $vetsk-green-mid)
+
+.appointment, .reminder
+  border: 1px solid white
+  background: lighten($vetsk-grey, 50%)
+  font-size: 0.9em
+  +roundcorners
+  +boxshadow
+  margin: 12px -3px 1em
+  padding: 5px
+  &.historic dt
+    color: #666
+  &.historic dd
+    color: #999
+  dt  
+    width: 20%  
+    float: left
+    font-weight: bold
+  dd
+    width: 70%
+    float: right
+    margin: 0 0 5px 
+    color: $pink
+    .historic &
+      color: #999  
+
+.addAppointmentPet.disabled
+  opacity: 0.4
+
+table#pet_fullprofile
+  th, td
+    padding: 5px 10px
+    vertical-align: top
+  th
+    width: 30%
+
+dl#pet_fullprofile
+  font-size:  0.8em
+  margin-left: 10px
+  
+  dt
+    float: left
+    width: 40%
+    margin: 3px 0
+    padding: 4px 1%
+    font-weight: bold
+    background: #f6f6f6
+  dd
+    float:  left
+    width:  50%
+    margin: 3px 1%
+    padding: 3px
+    border-bottom:  1px dotted #ccc
+
+.overlay
+  background-color: #aaa
+  img
+    text-align: center
+
+// Step 2 - Appointment calendar
+
+.customise
+  .staffmember
+    float: left
+    padding: 5px 10px
+    margin-right: 5px
+    border: 1px solid $brown
+    min-height: 40px
+    +boxshadow
+    background: #fff
+    min-width: 120px
+    vertical-align: middle
+    +roundcorners
+    label, input, img
+      color: black
+      display: block
+      float: left
+      line-height: 1
+      margin-right: 10px
+      font-weight: normal
+    img
+      border: 1px solid $vetsk-grey
+      margin-right: 4px
+  p
+    padding: 5px 0
+    
+#time_filter, #date_filter, #staff_filter
+  margin: 0 0 15px
+  #staff_filter
+    background: #fff
+  #time_filter
+    background: #fff
+    .hour
+      font-size: 0.8em
+  #date_filter
+    background: #fff
+  #time_scale
+    background: white
+    padding: 10px
+    margin: 10px 0
+    +roundcorners
+    +boxshadow
+    border: 1px solid $brown
+    .hour
+      font-weight: bold
+  #time_chooser
+    margin: 12px 0 0
+    background: lighten($vetsk-grey, 50%)   
+  
+#appointment_calendar
+  margin: 0 0 20px 
+  #calendar_title
+    +roundcorners
+    width: 94%
+    margin: 0 auto
+    text-align: center  
+    padding: 15px 1% 10px
+    background: lighten($vetsk-grey, 45%)
+    .month_name
+      font-size: 1.3em
+      font-weight: bold
+      color: $darkbrown
+      text-shadow: 0 1px 0 #fff
+      
+  .prev_next a
+    color: $vetsk-grey
+    font-size: 0.9em
+    +lineargradient($midbrown, $brown)
+    color: #fff
+    padding: 5px 10px
+    +roundcorners
+    &:hover
+      background: $brown
+  .prev_next#prev
+    float: left
+  .prev_next#next
+    float: right
+    
+
+  #day_names
+    border: none 
+    // margin: 0 0 0 25px 
+    font-size: 1em
+    +roundcorners
+    .dayname
+      font-weight: bold
+      font-size: 0.8em
+      padding: 5px 1%
+      float: left
+      margin: 10px 3px 5px
+      width: 11%
+      text-align: center
+
+  #days
+    clear: both
+    +roundcorners
+    padding: 10px
+    overflow: hidden
+    margin: -10px 0 0 50px
+    .day
+      +lineargradient(#fff, #ececec)
+      float: left  
+      padding: 25px 1% 5px 1%
+      text-align: center
+      width: 11%
+      height: 95px
+      border: 1px solid #BFAA93
+      position: relative
+      margin: 2px
+      +roundcorners
+    
+      &.past
+        +lineargradient(#fff, #f1f1f1)
+        border: 1px dotted $midbrown
+        .date_number
+          color: lighten($brown, 50%)
+      
+      .date_number
+        position: absolute
+        top: 3px
+        right: 5px
+        font-size: 0.9em
+        color: $brown
+
+  .rrp
+    font-size: 1em
+    color: #999
+    text-decoration: line-through
+  .best_price
+    font-size: 1.2em
+    font-weight: bold
+    img
+      margin-top: -8px
+            
+.appointment_slot
+  border: 1px solid $vetsk-grey
+  background: lighten($vetsk-grey, 50%)
+  padding: 10px
+  margin: 0 0 8px
+  min-height: 75px
+  text-align: left
+  line-height: 1.5
+  +roundcorners
+  img
+    border: 1px solid $vetsk-grey
+    float: left
+    margin-right: 5px
+    background: white
+    height: 50px
+  a.badge
+    font-size: 16px
+    font-weight: normal
+    padding: 4px 35px
+    +roundcorners
+    text-shadow: 0 -1px 0 darken($vetsk-green, 20%)
+    float: right
+    font-weight: bold
+    line-height: 1
+
+  .slot_vet, .slot_start_time
+    font-size: 0.9em
+    padding: 0 0 0 80px
+  .slot_vet
+    background: url(/img/icons/app-vet-2.png) no-repeat 60px 4px
+  .slot_start_time
+    background: url(/img/icons/app-time-2.png) no-repeat 60px 4px
+  .slot_price   
+    background: #ffffff
+    padding: 8px
+    margin-bottom: 8px
+    
+  .price_book
+    position: relative
+    // width: 220px
+    float: right
+    
+// Step 3 - Appointment summary  and homepage appointment, and appointment list    
+
+#appt-procedures, #appt-products, #appt-add-procedures  
+  margin-bottom: 15px
+  +roundcorners
+.appt-procedure, .appt-product, .appt-product-total, .procsummary-proc, .procsummary-title, .products-title
+  clear: both      
+  border-bottom: 1px dotted $vetsk-grey
+  padding: 7px 5px
+  font-size: 0.9em
+  &:last-child
+    border-bottom: none
+.appt-product, .appt-product-total
+  border-bottom: none
+  border-top:  1px dotted $vetsk-grey
+  input
+    font-size: 0.8em
+  a.badge
+    font-size: 0.8em
+    font-weight: normal
+    padding: 3px 10px
+    +roundcorners(3px)
+    text-shadow: 0 -1px 0 darken($vetsk-green, 20%)
+.appt-product-total
+  background: lighten($vetsk-green, 45%)
+  border-top: 1px solid $vetsk-green
+  &.grand-total
+    border-top: 3px solid $vetsk-green
+    background: lighten($vetsk-green, 30%)
+  
+#appt-keyinfo, .appt-keyinfo
+  margin: 0 0 15px
+  .datum
+    float: left
+    width: 31%
+    padding: 0 1%
+    text-shadow: 0 1px 0 #fff
+    border-right: 1px dotted $vetsk-grey 
+    line-height: 1.2
+    &.last
+      border-right: none
+    img, span
+      float: left
+      margin-right: 10px
+    img.border
+      border: 1px solid #000
+    strong
+      color: #000
+      text-shadow: none
+
+  .title
+    a
+      float: right
+      color: #fff
+      // border-bottom: 1px dotted #fff
+      font-size: 0.7em
+    span
+      color: $lightgreen
+    a.change-appt
+      background: #7B6854
+      border: 1px solid #4C4032
+      padding: 5px 10px 
+      font-size: 0.7em 
+      +roundcorners
+      
+
+.appt-keyinfo
+  &.historic
+    .title
+      +lineargradient(lighten($brown, 30%), lighten($darkbrown, 30%))
+  .title
+    img
+      float: none
+      margin: 0 5px 0 0  
+      vertical-align: middle 
+  .appt
+    padding: 0 0 5px
+    margin: 0 20px 5px 0
+    border-bottom: 1px dotted #fff
+    float: left
+  a.cancel-appt
+    background: white
+    padding: 5px 15px
+    +roundcorners(5px)
+
+
+.procs
+  h3
+    padding: 5px
+    margin: 10px 0 0
+    border-bottom: 1px solid $vetsk-grey
+    border-top: 3px solid $vetsk-grey
+    font-weight: bold
+    color: darken($vetsk-grey, 20%)
+  .petprocs, .closeoutnotes
+    background: #fff
+    padding: 10px
+    border-bottom: 1px dotted $vetsk-grey
+    &:last-child
+      border-bottom: none
+      +roundbottomcorners(5px)
+
+    h4
+      margin: 0 0 5px
+      font-weight: bold
+   
+.procsummary-title, .products-title
+  background: url(/img/icons/stethoscope-green.png) right 0 no-repeat lighten($vetsk-green, 45%)
+  color: $vetsk-green-mid
+  border-top: 3px solid $vetsk-green
+  font-size: 1em
+  padding: 10px 25px 5px 5px
+  span
+    color: $darkbrown
+    font-weight: bold
+  a
+    color: $vetsk-grey
+    border-bottom: 1px dotted $vetsk-grey
+       
+       
+         
+// Payment fields
+
+#ccv
+  width: 5%
+
+.expm
+  float: left
+  width: 40px
+  margin-right: 5px
+
+.expy
+  float: left
+  width: 40px
+
+#expm, #expy
+  width: 25px
+
+form
+  .field
+    background: #f6f6f6
+    padding: 10px
+    margin: 5px 0  
+    +roundcorners
+    &.submit
+      background: none
+
+.owner .petprocs h4
+  color: #666
+
+
+
+    
+// ====================
+// = APPOINTMENT SHOW =
+// ====================
+
+.appointment_progress 
+  h2
+    img
+      vertical-align: middle
+      border: 3px solid #fff
+  .pet_appointment
+    border-top: 1px dotted #333
+    padding-top: 5px
+    margin-bottom: 5px
+    
+  .pseudotable
+    > .title
+      background: #ccc
+      margin: 0 0 2px
+    .proc_step
+      background: #f1f1f1
+      margin: 0 0 2px
+      padding: 5px
+      .title
+        background: transparent
+        font-weight: bold
+        margin: 0 0 2px
+        padding: 0 0 2px
+        border-bottom: 1px dotted #ccc
+      
+// ===============================
+// = Thank you notification page =
+// ===============================
+
+.thankyou
+  max-width: 600px
+  margin: 10px auto
+  h2
+    text-align: center
+    margin: 30px 0
+    font-weight:  400
+    line-height:  1.3
+    
+// Newsletters list page
+
 

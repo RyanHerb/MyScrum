@@ -32,7 +32,9 @@ module MyScrum
       @breadcrumbs = []
     end
     
-
+    get '/' do
+      redirect '/admin/owners'
+    end
 
 
     get '/login' do
