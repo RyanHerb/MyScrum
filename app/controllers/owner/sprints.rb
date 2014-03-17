@@ -10,6 +10,9 @@ module MyScrum
       @project = Project.find(:id => i)
       @sprint = Sprint.new
       @user_stories = @project.user_stories_dataset.not_finished.all
+      @user_stories.each do |u|
+        puts u.title
+      end
       haml :"/sprints/form"
     end
 
@@ -21,23 +24,9 @@ module MyScrum
       @sprint.set(params[:sprint])
       @sprint.start_date = @date
       @sprints = @project.sprints
+      @sprint.project_id = @project.pk
 
-      valid_date = true
-
-      if @sprint.duration.nil?
-        duration = 0
-      else
-        duration = @sprint.duration
-      end
-
-      @sprints.each do |s|
-        if (@sprint.start_date <= s.start_date + s.duration * 24 * 60 * 60 and @sprint.start_date >= s.start_date) or (@sprint.start_date + duration * 24 * 60 * 60 >= s.start_date and @sprint.start_date + duration * 24 * 60 * 60  <= s.start_date + s.duration * 24 * 60 * 60)
-          valid_date = false
-          flash[:notice] = "This date is already taken"
-        end
-      end
-      
-      if @sprint.valid? and valid_date
+      if @sprint.valid?
         @sprint.save
         @user_stories.each do |i|
           @sprint.add_user_story(i)

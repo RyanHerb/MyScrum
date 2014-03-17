@@ -6,7 +6,7 @@
   %body
     = form_for @sprint, :action => "/owner/projects/#{@project.pk}/sprint/create" do |f|
       %fieldset
-        %label{:for => "day"} Select date
+        %label{:for => :start_date} Select date
         %select{:name => "day", :required => true}
           -(1..31).each do |i|
             %option{:value => i}=i
@@ -16,6 +16,9 @@
         %select{:name => "year"}
           -("2010".."2050").each do |i|
             %option{:value => i}=i
+        - if !@sprint.errors.on(:start_date).nil?
+          .field_with_errors
+            .red= @sprint.errors.on(:start_date).first
         = f.select :duration, :options => ("1".."7").to_a, :required => true
         %label{:for => "userstories"} User Stories
         %select{:id => "userstories", :name => "userstories[]", :multiple => true}
