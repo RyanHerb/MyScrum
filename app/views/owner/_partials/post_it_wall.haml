@@ -9,7 +9,7 @@
     - user_stories.each do |us|
       %tr{:class => "container_id_#{us.pk}"}
         %td
-          %a{:href => "/owner/projects/"}= us.title
+          %a{:href => "/owner/projects/#{us.project.pk}/user_stories/#{us.pk}/show"}= us.title
         %td.todo.container_droppable{:id => "container_#{us.pk}_todo", :"data-state" => "todo"}
           - us.jobs_dataset.todo.each do |job|
             = partial :post_it, :locals => {:job => job}
