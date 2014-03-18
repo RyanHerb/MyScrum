@@ -10,9 +10,6 @@ module MyScrum
       @project = Project.find(:id => i)
       @sprint = Sprint.new
       @user_stories = @project.user_stories_dataset.not_finished.all
-      @user_stories.each do |u|
-        puts u.title
-      end
       haml :"/sprints/form"
     end
 
@@ -26,7 +23,13 @@ module MyScrum
       @sprints = @project.sprints
       @sprint.project_id = @project.pk
 
-      if @sprint.valid?
+      valid_us = true
+      
+      if @user_stories.nil?
+        valid_us = false
+      end
+
+      if @sprint.valid? and valid_us
         @sprint.save
         @user_stories.each do |i|
           @sprint.add_user_story(i)
@@ -42,6 +45,9 @@ module MyScrum
         end
         redirect "owner/projects/#{@project.pk}/show#tab3"
       else
+        if !valid_us
+          @sprint.errors.add(:user_story, "You need to choose at least one User Story.")
+        end
         @user_stories = @project.user_stories_dataset.not_finished.all
         haml :"/sprints/form"
       end
@@ -99,7 +105,7 @@ module MyScrum
     get '/projects/:pid/sprints/:sid/edit' do |i,j|
       @sprint = Sprint.find(:id => j)
       @project = Project.find(:id => i)
-      @user_stories = @project.user_stories
+      @user_stories = @project.user_stories_dataset.not_finished.all
       @us = @sprint.user_stories.inject([]) do |arr, o|
         arr << o.pk
         arr
@@ -135,7 +141,12 @@ module MyScrum
         end
         redirect "owner/projects/#{@project.pk}/show#tab3"
       else
-        haml :"/sprints/form"
+        @user_stories = @project.user_stories_dataset.not_finished.all
+        @us = @sprint.user_stories.inject([]) do |arr, o|
+          arr << o.pk
+          arr
+        end
+        haml :"/sprints/edit"
       end
     end
 

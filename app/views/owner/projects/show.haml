@@ -103,7 +103,8 @@
                     %table
                       - s.user_stories.each do |u|
                         %tr
-                          %td.center= u.title
+                          %td.center
+                            %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{u.pk}/show" }= u.title
                   %td.center= s.start_date
                   %td.center= s.duration
                   %td.right.actions
