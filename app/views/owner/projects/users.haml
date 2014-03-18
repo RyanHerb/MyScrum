@@ -4,22 +4,22 @@
 %fieldset
   %legend Add a collaborator
   %body
-    %form{:action => "/owner/projects/#{@project.pk}/users/project_owner", :method => :post}
-      .field
-        %label{:for => :owner} Project Owner
-        %select#project_owner{:name => :owner}
-          - unless @project_owner.nil?
-            - @id_owner = @project_owner.pk
-          - else
-            - @id_owner = -1
-            %option
-          - Owner.all.each do |i|
-            - if i.id == @id_owner
-              %option{:value => i.id, :selected => "selected"}= i.username
+    - if !@project_owner.nil? and (@project_owner.pk == @current_owner.pk)
+      %form{:action => "/owner/projects/#{@project.pk}/users/project_owner", :method => :post}
+        .field
+          %label{:for => :owner} Project Owner
+          %select#project_owner{:name => :owner}
+            - if !@project_owner.nil?
+              - @id_owner = @project_owner.pk
             - else
-              %option{:value => i.id}= i.username
-      .field.submit
-        %input{:type => :submit, :name => '', :value => "Update"}
+              - @id_owner = -1
+            - Owner.all.each do |i|
+              - if i.id == @id_owner
+                %option{:value => i.id, :selected => "selected"}= i.username
+              - else
+                %option{:value => i.id}= i.username
+        .field.submit
+          %input{:type => :submit, :name => '', :value => "Update"}
     %form{:action => "/owner/projects/#{@project.pk}/users/scrum_master", :method => :post}
       .field
         %label{:for => :owner} Scrum Master
@@ -41,7 +41,6 @@
       .field
         %label{:for => :owner} Select a new collaborator
         %select#owner{:name => :owner}
-          %option
           - @owners.each do |i|
             %option{:value => i.id}= i.username
       .field.submit
