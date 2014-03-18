@@ -73,10 +73,10 @@
                   %td.center.actions
                     - str = ""
                     - img = ""
-                    - fulltime = s.start_date.to_date + s.duration
+                    - fulltime = s.start_date + (s.duration * 60 * 60 * 24)
                     - closed = false
 
-                    - unless s.commit.nil?
+                    - if !s.commit.nil?
                       - str = "Closed"
                       - closed = true
                       %img{:src => "/img/icons/check.png", :title => str}
