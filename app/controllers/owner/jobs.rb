@@ -75,7 +75,7 @@ module MyScrum
             @notif.save
           end
         end
-        redirect "/owner/projects/#{pid}/show"
+        redirect "/owner/projects/#{pid}/user_stories/#{uid}/show#tab2"
       else
         haml :"jobs/form"
       end

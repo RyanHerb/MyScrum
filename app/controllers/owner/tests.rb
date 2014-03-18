@@ -62,7 +62,7 @@ module MyScrum
 
     post '/projects/:id/tests' do |id|
       @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
-      @user_story = UserStory.find(:id => params[:test][:user_story_id]) || halt(404)
+      
 
       @test = Test.new
       @owners = @project.users
@@ -70,8 +70,9 @@ module MyScrum
 
       @test.set(params[:test])
       if @test.valid?
+        @user_story = UserStory.find(:id => params[:test][:user_story_id]) || halt(404)
         @test.save
-
+        
         @user_story.update_testing_state
 
         @project.users.each do |u|
