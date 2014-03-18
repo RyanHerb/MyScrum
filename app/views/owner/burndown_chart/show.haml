@@ -3,30 +3,147 @@
   %head
     %meta{charset: "utf-8"}/
     %script{src: "/js/d3.v3.min.js", type: "text/javascript"}
+    %link{:rel => "stylesheet", :type => "text/css",  :href => "/stylesheets/burndown-chart.css"}
+    #data{:"data-bdc" => @json_data}
     :javascript
-      var width = 800,
-      height = 400,
-      radius = Math.min(width, height) / 2;
+      $(document).ready(function(){
 
-      var color = d3.scale.ordinal()
-          .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+        //Burndown Chart
+        var data = #{ @burndown_chart_data }
 
-      var arc = d3.svg.arc()
-          .outerRadius(radius - 10)
-          .innerRadius(0);
+        var margin = {top: 30, right: 30, bottom: 50, left: 50},
+            width = 600 - margin.left - margin.right,
+            height = 400 - margin.top - margin.bottom;
 
-      var pie = d3.layout.pie()
-          .sort(null)
-          .value(function(d) { return d.num_jobs; });
 
-      var svg = d3.select("body").append("svg")
-          .attr("width", width)
-          .attr("height", height)
-          .append("g")
-          .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+        var x = d3.scale.linear().domain([0, #{ @sprint.duration }]).range([0, width]),
+            y = d3.scale.linear().domain([0, #{ @sprint_difficulty }]).range([height, 0]);
+            xAxis = d3.svg.axis().scale(x).ticks(10)
+                      .tickFormat(d3.format("d"))
+                        .tickSubdivide(0),
+            yAxis = d3.svg.axis().scale(y).ticks(10).orient("left")
+                      .tickFormat(d3.format("d"))
+                        .tickSubdivide(0);
 
-      d3.csv("/data/#{@data_name}", function(error, data) {
 
+        var svg = d3.select("#burndownChart").append("svg")
+              .attr("width", width + margin.left + margin.right)
+              .attr("height", height + margin.top + margin.bottom);
+
+
+        // horizontal lines
+        svg.selectAll(".hline").data(d3.range(#{ @sprint_difficulty })).enter()
+            .append("line")
+            .attr("y1", function (d) {
+            return d * (height / #{ @sprint_difficulty });
+        })
+            .attr("y2", function (d) {
+            return d * (height / #{ @sprint_difficulty });
+        })
+            .attr("x1", function (d) {
+            return 0;
+        })
+            .attr("x2", function (d) {
+            return width;
+        })
+        .style("stroke", "#eee")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+        //vertical lines
+        svg.selectAll(".vline").data(d3.range(#{ @sprint.duration }+1)).enter()
+            .append("line")
+            .attr("x1", function (d) {
+            return d * (width / #{ @sprint.duration });
+        })
+            .attr("x2", function (d) {
+            return d * (width / #{ @sprint.duration });
+        })
+            .attr("y1", function (d) {
+            return 0;
+        })
+            .attr("y2", function (d) {
+            return height;
+        })
+        .style("stroke", "#eee")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+        var line = d3.svg.line()
+            .x(function (d, i) {
+            return x(d[0]);
+        })
+            .y(function (d) {
+            return y(d[1]);
+        });
+
+        // Add the x-axis.
+        svg.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(" + margin.left + "," + (height + margin.top) + ")")
+          .call(xAxis);
+
+        // Label y-axis
+        svg.append("text")
+          .attr("class", "x label")
+          .attr("text-anchor", "end")
+          .attr("x", width + margin.left)
+          .attr("y", height + margin.top + 40)
+          .text("Iteration Timeline (days)");
+
+        // Add the y-axis.
+        svg.append("g")
+          .attr("class", "y axis")
+          .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+          .call(yAxis);
+
+        // Label x-axis
+        svg.append("text")
+          .attr("class", "y label")
+          .attr("text-anchor", "end")
+          .attr("y", 15)
+          .attr("x", -margin.top )
+          
+          .attr("transform", "rotate(-90)")
+          .text("Sum of Task Estimates (difficulty)");
+
+        svg.append("svg:path")
+          .attr("d", line(data))
+          .attr("class", "data1")
+          .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+
+
+        //User Contributions Chart for Tasks Done
+        var width = 600,
+        height = 400,
+        radius = Math.min(width, height) / 2;
+
+        var color = d3.scale.ordinal()
+            .range(["#98abc5", "#8a89a6", "#7b6888", 
+                    "#6b486b", "#a05d56", "#d0743c", 
+                    "#ff8c00", "#88cb9d", "#55b473",
+                    "#3b7e50", "#84c8d4", "#4fb0c1", 
+                    "#377b87", "#7696d4", "#3b69c1", 
+                    "#294987", "#b28ad4", "#9157c1",
+                    "#653d87", "#cb83ae", "#b44d8b", 
+                    "#7e3661", "#d4767f", "#c13b48",
+                    "#872932", "#d6b678", "#c4963e"]);
+
+        var arc = d3.svg.arc()
+            .outerRadius(radius - 10)
+            .innerRadius(0);
+
+        var pie = d3.layout.pie()
+            .sort(null)
+            .value(function(d) { return d.num_jobs; });
+
+        var svg = d3.select("#userContributions").append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .append("g")
+            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+        var data = JSON.parse($('#data').attr('data-bdc'));
         data.forEach(function(d) {
           d.num_jobs = +d.num_jobs;
         });
@@ -79,16 +196,22 @@
                 return color(d.name);
             });
 
-        legend.append("text").attr("x", width / 2)
-            .attr("y", 9).attr("dy", ".35em")
-            .style("text-anchor", "end").text(function(d) {
-                return d.name;
-            });
+        legend.append("text")
+            .attr("x", width / 2)
+            .attr("y", 9)
+            .attr("dy", ".35em")
+            .style("text-anchor", "end")
+            .text(function(d) { return d.name; });
+        });
 
-      });
   %body
-    %h1= "Sprint #{@sprint.id}"
-    %p= "Start Date: #{@sprint.start_date}"
-    %p= "Duration: #{@sprint.duration}"
-    %p= "Sprint Difficulty: #{@sprint_difficulty}"
-    %p= "User Contributions Chart for Tasks Done"
+    #chart
+      %h1= "Sprint #{@sprint.id}"
+      %p= "Start Date: #{@sprint.start_date.to_date}"
+      %p= "Duration: #{@sprint.duration}"
+      %p= "Sprint Difficulty: #{@sprint_difficulty}"
+      #burndownChart
+        %h3 Burndown Chart (Sum of Task Estimates)
+      %br
+      #userContributions
+        %h3 User Contributions Chart for Tasks Done

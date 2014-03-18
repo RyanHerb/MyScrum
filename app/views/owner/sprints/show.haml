@@ -5,12 +5,13 @@
   %p= "Start Date: #{@sprint.start_date}"
   %p= "Duration: #{@sprint.duration}"
   %p= "Sprint Difficulty: #{@difficulty}"
-  %p<
-    = "Last commit: "
-    - if @sprint.commit.eql?("none")
-      = @sprint.commit.capitalize
-    - else
-      %a{:href => "#{@sprint.commit}"}= @sprint.commit
+  - if !@sprint.commit.nil?
+    %p<
+      = "Last commit: "
+      - if @sprint.commit.eql?("none")
+        = @sprint.commit.capitalize
+      - else
+        %a{:href => "#{@sprint.commit}"}= @sprint.commit
   %fieldset
     %legend Sprint details
     .tabs
@@ -22,7 +23,7 @@
       .clear
 
       #tab1 
-        %a.badge{:href  => "/owner/projects/#{@project.pk}/jobs/create"} Create Job
+        %a.badge{:href  => "/owner/projects/#{@project.pk}/jobs/create/#{@sprint.pk}"} Create Job
         = partial :post_it_wall, :locals => {:user_stories => @user_stories}
       #tab2.pane
         %table.datatable
@@ -44,11 +45,21 @@
                 %td= u.description
                 %td= u.priority
                 %td= u.difficulty
-                %td= u.finished ? "Yes" : "No"
-                %td= u.valid ? "Yes" : "No"
+                - if u.finished
+                  %td
+                    %img{:src => '/img/icons/yes.png'}
+                - else
+                  %td
+                    %img{:src => '/img/icons/no.png'}
+                - if u.valid
+                  %td
+                    %img{:src => '/img/icons/yes.png'}
+                - else
+                  %td
+                    %img{:src => '/img/icons/no.png'}
                 %td.right.actions
                   %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{u.pk}/show"}
-                    %img{:src => '/img/icons/view.png', :title => "view #{u.title}"}
+                    %img{:src => '/img/icons/view.png', :title => "View #{u.title}"}
                   %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{u.pk}/edit"}
-                    %img{:src => '/img/icons/edit.png', :title => "edit #{u.title}"}
+                    %img{:src => '/img/icons/edit.png', :title => "Edit #{u.title}"}
       

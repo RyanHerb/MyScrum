@@ -3,7 +3,7 @@ global: &mysql
   database: myscrum
   encoding: utf8
   host: localhost
-  password: abdoulaye
+  password: Scrummi3
   username: root
 
 local:
@@ -16,7 +16,7 @@ development:
   database: myscrum
   encoding: utf8
   host: localhost
-  password: abdoulaye
+  password: Scrummi3
   username: root
 
 production:

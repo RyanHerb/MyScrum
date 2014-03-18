@@ -1,7 +1,5 @@
 # require /owner
 # load controllers
-
-
 module MyScrum
   class OwnerApp < Sinatra::Application
     

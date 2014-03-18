@@ -1,5 +1,5 @@
 module MyScrum
-  class OwnerApp < Sinatra::Application
+  class OwnerApp
 
     # =============
     # = /projects =

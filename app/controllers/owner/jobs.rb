@@ -1,5 +1,5 @@
 module MyScrum
-  class OwnerApp < Sinatra::Application
+  class OwnerApp
 
     #get '/projects/:pid/user_stories/:uid/jobs' do |pid, uid|
     #  @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
@@ -8,8 +8,16 @@ module MyScrum
     #  haml :"jobs/index"
     #end
 
-    get '/projects/:pid/jobs/create' do |pid|
+    get '/projects/:pid/jobs/create/:sid' do |pid, sid|
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
+      @sprint = @project.sprints_dataset.where(:id => sid).first || halt(404)
+      @job = Job.new
+      haml :"jobs/form"
+    end
+
+    get '/projects/:pid/user_stories/:uid/jobs/create' do |pid, uid|
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
+      @user_story = @project.user_stories_dataset.where(:id => uid).first || halt(404)
       @job = Job.new
       haml :"jobs/form"
     end
@@ -32,12 +40,17 @@ module MyScrum
 
     post '/projects/:pid/jobs' do |pid| 
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
-      @user_story = @project.user_stories_dataset.where(:id => params[:job][:user_story_id]).first || halt(404)
+      params[:job]["difficulty"] = params[:job]["difficulty"].to_i
       @job = Job.new
       @job.set(params[:job])
       if @job.valid?
         @job.save
+        @user_story = @project.user_stories_dataset.where(:id => params[:job][:user_story_id]).first || halt(404)
         @user_story.add_job(@job)
+
+        # if this was the last job to be finished update the status of the user story
+        @user_story.update_status
+
         redirect "/owner/projects/#{pid}/show"
       else
         haml :"jobs/form"
@@ -51,6 +64,10 @@ module MyScrum
       @job.update(params[:job])
       if @job.valid?
         @job.save
+
+        # if this was the last job to be finished update the status of the user story
+        @user_story.update_status
+
         @job.owners.each do |o|
           unless @current_owner.pk == o.pk
             @notif = Notification.new
@@ -81,6 +98,7 @@ module MyScrum
             unless @job.owners.include? @dev
               response << @dev.username
               @job.add_owner(dev)
+
               @notif = Notification.new
               @notif.set({:action => "affectation", :type => "job", :owner_id => @dev.pk, :id_object => @job.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/show", :params => {:name => @job.title, :project => @project.title}.to_json})
               @notif.save
@@ -97,16 +115,24 @@ module MyScrum
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @user_story = @project.user_stories_dataset.where(:id => uid).first || halt(404)
       @job = @user_story.jobs_dataset.where(:id => tid).first || halt(404)
+
       if state == "inprogress"
         state = "in progress"
       end
+
       @job.set({:status => state})
       if @job.valid?
+        @job.set({:state_changed_at => DateTime.now})
         @job.save
+
+        # if this was the last job to be finished update the status of the user story
+        @user_story.update_status
+
+        # Notify assigned developers of the change
         @job.owners.each do |o|
           unless @current_owner.pk == o.pk
             @notif = Notification.new
-            @notif.set({:action => "state", :type => "job", :owner_id => o.pk, :id_object => @job.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/show", :params => {:name => @job.title, :project => @project.title}.to_json})
+            @notif.set({:action => "state", :type => "job", :owner_id => o.pk, :id_object => @job.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/show", :params => {:name => @job.title, :project => @project.title, :status => @job.status}.to_json})
             @notif.save
           end
         end

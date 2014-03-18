@@ -13,14 +13,15 @@
     %tbody
       %a.badge{:href  => '/owner/projects/create'} Create a new project
       - @projects.each do |p|
-        %tr.selectable{:rel => "/owner/projects/#{p.pk}/show"}
+        %tr
           %td= p.title
           %td= p.description
-          %td= p.repo
+          %td
+            %a{:href => "#{p.repo}"}= p.repo
           %td= p.public ? "Yes" : "No"
           %td.right.actions
             %a{:href => "/owner/projects/#{p.pk}/show"}
-              %img{:src => '/img/icons/view.png', :title => "view #{p.title}"}
+              %img{:src => '/img/icons/view.png', :title => "View #{p.title}"}
             %a{:href => "/owner/projects/#{p.pk}/edit"}
-              %img{:src => '/img/icons/edit.png', :title => "edit #{p.title}"}
+              %img{:src => '/img/icons/edit.png', :title => "Edit #{p.title}"}
 

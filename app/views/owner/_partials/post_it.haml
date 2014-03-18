@@ -1,6 +1,14 @@
-- user_story = job.user_story
-- project = user_story.project
-.postIt{:class => "id_#{job.user_story.pk}", :"data-action" => "/owner/projects/#{project.pk}/user_stories/#{user_story.pk}/jobs/#{job.pk}", :"data-id" => "#{job.user_story.pk}", :"data-jobid" => "#{job.pk}"}
+:ruby
+  user_story = job.user_story
+  project = user_story.project
+  postItClass = ["id_#{job.user_story.pk}"]
+  if job.status == 'done'
+    postItClass << "postItDone"
+  else
+    postItClass << "postIt"
+  end
+
+%div{:class => "#{postItClass.join(' ')}", :"data-action" => "/owner/projects/#{project.pk}/user_stories/#{user_story.pk}/jobs/#{job.pk}", :"data-id" => "#{job.user_story.pk}", :"data-jobid" => "#{job.pk}"}
   .ownerIcon
     %img{:src => '/img/icons/user.png', :class => job.owners.length == 0 ? 'hidden' : '', :title => job.owners.inject([]){|arr, o| arr << o.username; arr}.join(', ')}
   .title= job.title

@@ -1,11 +1,8 @@
-require 'tempfile'
-require 'fileutils'
-require 'csv'
 require 'json'
 require 'date'
 
 module MyScrum
-  class OwnerApp < Sinatra::Application
+  class OwnerApp
     
     # ========
     # = Show =
@@ -20,42 +17,47 @@ module MyScrum
           @sprint_difficulty += j.difficulty
         end
       end
-      @Users = Owner.all
-      sortie = Tempfile.new(['data', '.csv'],ROOT_DIR + '/public/data')
-      #jsondata = Tempfile.new(['data', '.json'],ROOT_DIR + '/public/data')
-      @data_name = sortie.path.split("/").last
+      @remaining_difficulty = @sprint_difficulty
+      @users = Owner.all
 
-      CSV.open(sortie.path, 'ab') do |csv|
-        csv << ["name","num_jobs"]
-        @Users.each do |row|
-          number_of_job_done = 0
-          row.jobs_dataset.done.each do |j|
-            number_of_job_done += j.difficulty
-          end
-          h = {:name => row.username, :num_jobs => number_of_job_done}
-          csv << h.values
+      @json_data = Array.new
+      @users.each do |row|
+        number_of_job_done = 0
+        row.jobs_dataset.done.each do |j|
+          number_of_job_done += j.difficulty
         end
+        h = {:name => row.username, :num_jobs => number_of_job_done}
+        @json_data << h
       end
+      @json_data = @json_data.to_json
 
-      # sprint_end = @sprint.start_date.to_date + @sprint.duration
 
-      # timeDomain = []
-
-      # timeDomain << @sprint.start_date.to_date.to_s
-
-      # tab = ["start","end","sprint_difficulty","timeDomain"]
-     
-      # @sprint.duration.times do |i|
-      #   add = @sprint.start_date.to_date + (i+1)
-      #   timeDomain << add.to_s
-      # end
-
-      # hashmap = {:start => @sprint.start_date.to_date, :end => sprint_end, :sprint_difficulty => @sprint_difficulty, :timeDomain => timeDomain}
+      #get BurnDownChart Data
+      @burndown_chart_data = Array.new
+      @burndown_chart_data << [0,@sprint_difficulty]
+      @today_date = Date.today
+      @date = @sprint.start_date.to_date
       
-      # File.open(jsondata.path, 'w') do |f|
-        
-      #   f.puts JSON.pretty_generate(hashmap)
-      # end
+      @sprint.duration.times do |i|
+        if @date > @today_date
+          break
+        end
+        @jobs_done = Array.new
+        @user_stories.each do |u|
+          u.jobs_dataset.done.each do |j|
+            @jobs_done << j
+          end
+        end
+        @tab = Array.new
+        @tab = @jobs_done.select { |obj| obj.updated_at.to_date.to_s == @date.to_s }        
+        sum_difficulty = 0
+        @tab.each do |row|
+          sum_difficulty += row.difficulty
+        end
+        @remaining_difficulty -= sum_difficulty
+        @burndown_chart_data << [i+1, @remaining_difficulty]
+        @date += 1
+      end
       haml :"/burndown_chart/show"
     end
   end
