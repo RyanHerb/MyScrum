@@ -11,14 +11,17 @@ module MyScrum
     
     get '/projects/:pid/sprints/:sid/burndown_chart/show' do |pid, sid|
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
-      @sprint = Sprint.find(:id => sid)
+      @sprint = @project.sprints_dataset.where(:id => sid).first || halt(404)
+
       @user_stories = @sprint.user_stories
       @sprint_difficulty = 0
+
       @user_stories.each do |u|
         u.jobs.each do |j|
           @sprint_difficulty += j.difficulty
         end
       end
+      
       @remaining_difficulty = @sprint_difficulty
       @users = Owner.all
 

@@ -1,8 +1,8 @@
 !!!
-#data{:"data-bdc" => @json_data}
-.panel
-  %fieldset
-    %legend= "Sprint #{@sprint.id}"
+.fieldset
+  #data{:"data-bdc" => @json_data}
+  #chart
+    %h1= "Sprint #{@sprint.id}"
     %p= "Start Date: #{@sprint.start_date.to_date}"
     %p= "Duration: #{@sprint.duration}"
     %p= "Sprint Difficulty: #{@sprint_difficulty}"
