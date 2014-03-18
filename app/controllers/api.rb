@@ -17,8 +17,6 @@ module MyScrum
       unless params[:api_key].nil?
         if o = Owner.auth_with_key(params)
           @current_owner = o
-        else
-          halt(401)
         end
       else
         halt(401)
@@ -33,9 +31,25 @@ module MyScrum
     # = Profile =
     # ===========
 
-    get '/owner/profile' do
-      response = @owner.to_json
+    get'/owner/profile/api' do
+      @owner = Owner.find(:api_key => params['api_key'])
+      unless (@owner.nil?)
+        @key = @owner.api_key
+        response = @key.to_json
+      end
+      response
     end
+
+    get '/owner/profile' do
+      @owner = Owner.find(:api_key => params['api_key'])
+      unless (@owner.nil?)
+        response = @owner.to_json
+      else
+        halt 401
+      end
+      response
+    end
+    
 
     post '/owner/profile' do
       params[:owner] = JSON.parse(params[:owner])
@@ -46,6 +60,6 @@ module MyScrum
         "An error occured while updating account"
       end
     end
-    
+
   end
 end

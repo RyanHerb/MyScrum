@@ -15,7 +15,7 @@ module MyScrum
       haml :"jobs/form"
     end
 
-    get '/projects/:pid/jobs/create/:uid' do |pid, uid|
+    get '/projects/:pid/user_stories/:uid/jobs/create' do |pid, uid|
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @user_story = @project.user_stories_dataset.where(:id => uid).first || halt(404)
       @job = Job.new
