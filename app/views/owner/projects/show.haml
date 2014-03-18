@@ -73,34 +73,30 @@
                   %td.center.actions
                     - str = ""
                     - img = ""
-                    - fulltime = s.start_date + s.duration * 24 * 60 * 60
+                    - fulltime = s.start_date.to_date + s.duration
                     - closed = false
 
-                    - if !s.commit.nil?
+                    - unless s.commit.nil?
                       - str = "Closed"
                       - closed = true
-                      %img{:src => "/img/icons/check.png", :title => "Closed"}
+                      %img{:src => "/img/icons/check.png", :title => str}
                     - elsif fulltime < Time.now
                       - str = "Expired"
-                      %img{:src => "/img/icons/time.png", :title => "Expired"}
+                      %img{:src => "/img/icons/time.png", :title => str}
                     - elsif s.start_date > Time.now
                       - str = "Not started yet"
-             
-                    - elsif s.start_date <= Time.now and fulltime >= Time.now
+                    - else
                       - str = "Ongoing"
-                      %img{:src => "/img/icons/arrow.png", :title => "Ongoing"}
+                      %img{:src => "/img/icons/arrow.png", :title => str}
                     - editable = true
                     - if str.eql?("Expired") or str.eql?("Closed")
                       - editable = false
 
                     - jobs_done = []
                     - s.user_stories.each do |u|
-                      - u.jobs.each do |j|
-                        - if j.status == "done"
-                          - jobs_done << j
+                      - jobs_done << u.jobs_dataset.all
+
                     - if jobs_done.length > 0
-                      %br
-                      %br
                       %a{:href => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/burndown_chart/show"} 
                         %img{:src=>"/img/icons/chart.png", :title => "Burndown Chart"}
                   %td
@@ -116,7 +112,7 @@
                     - if editable
                       %a{:href => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/edit"}
                         %img{:src => '/img/icons/edit.png', :title => "Edit sprint"}
-                    - if !closed
+                    - unless closed
                       %a{:onclick => "return commitPrompt(#{s.pk})", :href => "?#tab3"}
                         %img{:src => '/img/icons/cross.png', :title => "Close sprint"}
         #tab4.pane
@@ -133,7 +129,6 @@
                 %th Validated
                 %th.right.nosort Actions
             %tbody
-              - puts "HEUHEUHEEUHEHUEE"
               - @user_stories.each do |u|
                 %tr
                   %td= u.title
@@ -192,18 +187,15 @@
 :javascript
   $(document).ready(function() {
   var oTable = $('#sprint').dataTable();
-  
-  oTable.fnSort( [ [2,'asc'] ] );
-
+    oTable.fnSort( [ [2,'asc'] ] );
   });
 
   function commitPrompt(sid) {
-  var vcommit=prompt("Enter the URL of the Sprint's last commit (optional)","None");
-  
-  if (!vcommit){
-  return false;
-  }
-  else{
-  $.post("/owner/projects/#{@project.pk}/sprints/" + sid + "/close", { commit: vcommit} );
-  }
+    var vcommit=prompt("Enter the URL of the Sprint's last commit (optional)","None");
+    
+    if (!vcommit) {
+      return false;
+    } else {
+      $.post("/owner/projects/#{@project.pk}/sprints/" + sid + "/close", { commit: vcommit} );
+    }
   }
