@@ -5,13 +5,13 @@
 %fieldset
   %legend Add a collaborator
   %body
-    - if !@project_owner.nil? and (@project_owner.pk == @current_owner.pk)
-      %form{:action => "/owner/projects/#{@project.pk}/users/project_owner", :method => :post}
+    - if !@product_owner.nil? and (@product_owner.pk == @current_owner.pk)
+      %form{:action => "/owner/projects/#{@project.pk}/users/product_owner", :method => :post}
         .field
-          %label{:for => :owner} Project Owner
+          %label{:for => :owner} Product Owner
           %select#project_owner{:name => :owner}
-            - if !@project_owner.nil?
-              - @id_owner = @project_owner.pk
+            - if !@product_owner.nil?
+              - @id_owner = @product_owner.pk
             - else
               - @id_owner = -1
             - Owner.all.each do |i|

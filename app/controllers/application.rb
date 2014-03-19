@@ -81,7 +81,7 @@ module MyScrum
           elsif n.action.eql?("modification")
             str += "The " +n.type + " \""+ param_notif["name"].to_s + "\" has been modified."
 
-          elsif n.action.eql?("project owner") || n.action.eql?("scrum master") || n.action.eql?("developer")
+          elsif n.action.eql?("product owner") || n.action.eql?("scrum master") || n.action.eql?("developer")
             str += "You have been assigned to the project \"" + param_notif["project"].to_s + "\" as a " + n.action + "."
 
           elsif n.action.eql?("remove")
@@ -101,7 +101,7 @@ module MyScrum
             str += "The sprint started the " + Date.parse(param_notif["date"]).strftime("%Y-%m-%d") + " in the project \"" + param_notif["project"].to_s + "\" has been closed."
 
           elsif n.action.eql?("new")
-            if n.type.eql?("scrum master") or n.type.eql?("project owner")
+            if n.type.eql?("scrum master") or n.type.eql?("product owner")
               str += "\"" + param_notif["name"].to_s + "\" is the new " + n.type.capitalize + " of the project \"" + param_notif["project"].to_s + "\"."  
             elsif
               str_prefix = "A new " + n.type.capitalize
