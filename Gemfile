@@ -19,6 +19,7 @@ gem 'rake'
 gem 'pusher'
 gem 'quick_magick'
 gem 'mail'
+gem 'gchartrb'
 
 
 group :development do
