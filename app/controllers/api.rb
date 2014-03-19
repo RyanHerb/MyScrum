@@ -1,4 +1,3 @@
-#bon fichier
 module MyScrum
   class ApiApp < Sinatra::Application
 
