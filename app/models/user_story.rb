@@ -33,8 +33,8 @@ class UserStory < Sequel::Model
   # =====================
 
   def after_create
-    self.finished = false
-    self.valid = false
+    self.update({:finished => false})
+    self.update({:valid => false})
   end
 
   def update_status

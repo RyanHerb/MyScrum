@@ -106,7 +106,7 @@ module MyScrum
             @notif.save
           end
         end
-        redirect "/owner/projects/#{@project.pk}/show"
+        redirect "/owner/projects/#{@project.pk}/show#tab2"
       end
     end
 
@@ -172,13 +172,9 @@ module MyScrum
         unless @project.has_rights(@current_owner)
           halt(404)
         end
-        @owner = Owner.all.inject([]) do |arr2, o|
-          if o.pk == params[:owner].to_i
-            arr2 << o
-          end
-          arr2
-        end
-        @owner = @owner.first
+
+        @owner = Owner.find(:id => params[:owner].to_i)
+
         isNew = false
         if !@owner.nil? and @owner.valid?
           if @project.users.find{|o| o.pk == @owner.pk}.nil?
@@ -273,7 +269,7 @@ module MyScrum
       end
       
       flash[:notice] = "Project updated"
-      redirect '/owner/projects'
+      redirect '/owner/projects/#{pid}/show'
     end
     
       # ==========
