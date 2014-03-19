@@ -525,6 +525,23 @@ function draw_burndown_charts(chart_data, sprint_duration, sprint_difficulty){
       .text(function(d) { return d.name; });
 }
 
+function updateDeveloperTable(collaborators, action) {
+  var table = collaborators.dataTable();
+  $.post(action, function (res) {
+    var team = JSON.parse(res);
+    table.fnClearTable();
+    $.each(team, function(index, value) {
+      var row = table.dataTable().fnAddData([
+        value['username'],
+        value['role'].charAt(0).toUpperCase() + value['role'].slice(1),
+        "<a href=\"/owner/projects/1/remove_user/" + value['id'] + "\" id=\"remove\" onclick=\"return confirm('Are you sure?')\"><img src=\"/img/icons/cross.png\" title=\"Remove\"></a>"
+      ]);
+      var nTr = table.fnSettings().aoData[ row[0] ].nTr;
+      nTr.cells.item(2).className = "right";
+    });
+  });
+}
+
 
 $(document).ready(function(){
   show_flash_notification();

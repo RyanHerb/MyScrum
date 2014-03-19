@@ -36,7 +36,7 @@ module MyScrum
       @roles = @project.users_dataset
       @user_stories = @project.user_stories
       @tests = []
-      if !UsersProject.all.find{ |u| u.user == @current_owner.pk and u.project == @project.pk and (u.position.eql?("project owner") or u.position.eql?("scrum master"))}.nil?
+      if @project.has_rights(@current_owner)
         @rights = true
       else
         @rights = false
@@ -56,7 +56,7 @@ module MyScrum
 
       
       @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
-      if UsersProject.all.find{ |u| u.user == @current_owner.pk and u.project == @project.pk and (u.position.eql?("project owner") or u.position.eql?("scrum master"))}.nil?
+      unless @project.has_rights(@current_owner)
         halt(404)
       end
 
@@ -76,7 +76,7 @@ module MyScrum
     post '/projects/:id/users/project_owner' do |id|
       
       @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
-      if UsersProject.all.find{ |u| u.user == @current_owner.pk and u.project == @project.pk and (u.position.eql?("project owner") or u.position.eql?("scrum master"))}.nil?
+      unless @project.has_rights(@current_owner)
         halt(404)
       end
 
@@ -113,9 +113,8 @@ module MyScrum
       # =========================
 
       post '/projects/:id/users/scrum_master' do |id|
-        
         @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
-        if UsersProject.all.find{ |u| u.user == @current_owner.pk and u.project == @project.pk and (u.position.eql?("project owner") or u.position.eql?("scrum master"))}.nil?
+        unless @project.has_rights(@current_owner)
           halt(404)
         end
 
@@ -170,7 +169,7 @@ module MyScrum
 
       post '/projects/:id/users/add' do |id|
         @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
-        if UsersProject.all.find{ |u| u.user == @current_owner.pk and u.project == @project.pk and (u.position.eql?("project owner") or u.position.eql?("scrum master"))}.nil?
+        unless @project.has_rights(@current_owner)
           halt(404)
         end
         @owner = Owner.all.inject([]) do |arr2, o|
@@ -207,6 +206,30 @@ module MyScrum
         end
       end
 
+      post '/projects/:id/add_developers' do |id|
+        @project = Project.find(:id => id) || halt(404)
+        @project.has_rights(@current_owner) || halt(404)
+        params[:role].each do |r|
+          @owner = Owner.find(:username => r[0]) || halt(404)
+          @project.remove_user(@owner)
+          @project.add_user(@owner)
+          @project.users_dataset.where(:user => @owner.pk).update(:position => r[1])
+        end
+        unless @project.product_owners.length + @project.scrum_masters.length > 0
+          @project.users_dataset.where(:user => @current_owner.pk).update(:position => 'scrum master')
+        end
+        "OK"
+      end
+
+      post '/projects/:id/developer_list' do |id|
+        @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
+        response = "[" << @project.users_dataset.all.inject([]) do |arr, o|
+          arr << "{\"username\": \"#{o.username}\", \"role\": \"#{o.values[:position]}\", \"id\": \"#{o.pk}\"}"
+          arr
+        end.join(', ') << "]"
+        response
+      end
+
 
       # ======================
       # = /projects/:id/edit =
@@ -214,9 +237,9 @@ module MyScrum
 
       get '/projects/:id/edit' do |id|
         @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
-        if UsersProject.all.find{ |u| u.user == @current_owner.pk and u.project == @project.pk and (u.position.eql?("project owner") or u.position.eql?("scrum master"))}.nil?
+        unless @project.has_rights(@current_owner)
           halt(404)
-        end           
+        end
         haml :"/projects/form"
       end
 
