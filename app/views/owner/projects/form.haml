@@ -1,5 +1,6 @@
 !!!
 %a{:href => "/owner/projects/#{@project.pk}/show"} Back to project
+%p
 %h1= @project.new? ? "Create Project" : "Edit #{@project.title}"
 %fieldset
   %legend Project Details
