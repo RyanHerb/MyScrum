@@ -2,6 +2,12 @@ require 'date'
 module MyScrum
   class OwnerApp
 
+
+    # ==========
+    # = Create =
+    # ==========
+
+
     get '/projects/:id/test/create' do |pid|
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @test = Test.new
@@ -9,6 +15,46 @@ module MyScrum
       @user_stories = @project.user_stories
       haml :"/tests/form"
     end
+
+
+    post '/projects/:id/tests' do |id|
+      @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
+      
+
+      @test = Test.new
+      @owners = @project.users
+      @user_stories = @project.user_stories
+
+      @test.set(params[:test])
+      if @test.valid?
+        @user_story = UserStory.find(:id => params[:test][:user_story_id]) || halt(404)
+        @test.save
+        
+        @user_story.update_testing_state
+
+        @project.users.each do |u|
+          unless u.pk == @current_owner.pk
+            @notif2 = Notification.new
+            @notif2.set({:action => "new", :type => "test", :owner_id => u.pk, :id_object => @test.id, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/user_stories/#{@test.user_story.pk}/tests/#{@test.id}/show", :params => {:name => @test.title, :project => @project.title}.to_json})
+            @notif2.save
+          end
+        end
+
+        @notif = Notification.new
+        @notif.set({:action => "affectation", :type => "test", :owner_id => @test.owner.pk, :id_object => @test.id, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/user_stories/#{@test.user_story.pk}/tests/#{@test.id}/show", :params => {:name => @test.title, :project => @project.title}.to_json})
+        @notif.save
+        
+        redirect "owner/projects/#{@project.pk}/show#tab5"
+      else
+        haml :"/tests/form"
+      end
+    end
+
+
+
+    # ========
+    # = Edit =
+    # ========
 
     get '/projects/:pid/user_stories/:uid/tests/:tid/edit' do |pid, uid, tid|
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
@@ -19,6 +65,7 @@ module MyScrum
       @user_stories = @project.user_stories
       haml :"/tests/form"
     end
+
 
     put '/projects/:pid/user_stories/:uid/tests/:tid' do |pid, uid, tid|
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
@@ -60,38 +107,11 @@ module MyScrum
       end
     end
 
-    post '/projects/:id/tests' do |id|
-      @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
-      
 
-      @test = Test.new
-      @owners = @project.users
-      @user_stories = @project.user_stories
 
-      @test.set(params[:test])
-      if @test.valid?
-        @user_story = UserStory.find(:id => params[:test][:user_story_id]) || halt(404)
-        @test.save
-        
-        @user_story.update_testing_state
-
-        @project.users.each do |u|
-          unless u.pk == @current_owner.pk
-            @notif2 = Notification.new
-            @notif2.set({:action => "new", :type => "test", :owner_id => u.pk, :id_object => @test.id, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/user_stories/#{@test.user_story.pk}/tests/#{@test.id}/show", :params => {:name => @test.title, :project => @project.title}.to_json})
-            @notif2.save
-          end
-        end
-
-        @notif = Notification.new
-        @notif.set({:action => "affectation", :type => "test", :owner_id => @test.owner.pk, :id_object => @test.id, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/user_stories/#{@test.user_story.pk}/tests/#{@test.id}/show", :params => {:name => @test.title, :project => @project.title}.to_json})
-        @notif.save
-        
-        redirect "owner/projects/#{@project.pk}/show#tab5"
-      else
-        haml :"/tests/form"
-      end
-    end
+    # ========
+    # = Show =
+    # ========
 
     get '/projects/:pid/user_stories/:uid/tests/:tid/show' do |pid, uid, tid|
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
@@ -100,6 +120,13 @@ module MyScrum
       @owner = @test.owner.username
       haml :"/tests/show"
     end
+
+
+
+    # ==========
+    # = Remove =
+    # ==========
+
 
     get '/projects/:pid/user_stories/:uid/tests/:tid/remove' do |pid, uid, tid|
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)

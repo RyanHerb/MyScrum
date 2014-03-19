@@ -8,6 +8,11 @@ module MyScrum
     #  haml :"jobs/index"
     #end
 
+
+    # ================
+    # = Job creation =
+    # ================
+
     get '/projects/:pid/jobs/create/:sid' do |pid, sid|
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @sprint = @project.sprints_dataset.where(:id => sid).first || halt(404)
@@ -19,22 +24,6 @@ module MyScrum
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @user_story = @project.user_stories_dataset.where(:id => uid).first || halt(404)
       @job = Job.new
-      haml :"jobs/form"
-    end
-
-    get '/projects/:pid/user_stories/:uid/jobs/:tid/show' do |pid, uid, tid|
-      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
-      @user_story = @project.user_stories_dataset.where(:id => uid).first || halt(404)
-      @job = @user_story.jobs_dataset.where(:id => tid).first || halt(404)
-
-      haml :"jobs/show"
-    end
-
-    get '/projects/:pid/user_stories/:uid/jobs/:tid/edit' do |pid, uid, tid|
-      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
-      @user_story = @project.user_stories_dataset.where(:id => uid).first || halt(404)
-      @job = @user_story.jobs_dataset.where(:id => tid).first || halt(404)
-
       haml :"jobs/form"
     end
 
@@ -56,6 +45,30 @@ module MyScrum
         haml :"jobs/form"
       end
     end
+
+
+
+    # =================
+    # = Show and edit =
+    # =================
+
+
+    get '/projects/:pid/user_stories/:uid/jobs/:tid/show' do |pid, uid, tid|
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
+      @user_story = @project.user_stories_dataset.where(:id => uid).first || halt(404)
+      @job = @user_story.jobs_dataset.where(:id => tid).first || halt(404)
+
+      haml :"jobs/show"
+    end
+
+    get '/projects/:pid/user_stories/:uid/jobs/:tid/edit' do |pid, uid, tid|
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
+      @user_story = @project.user_stories_dataset.where(:id => uid).first || halt(404)
+      @job = @user_story.jobs_dataset.where(:id => tid).first || halt(404)
+
+      haml :"jobs/form"
+    end
+
 
     put '/projects/:pid/user_stories/:uid/jobs/:tid/edit' do |pid, uid, tid|
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
@@ -81,9 +94,10 @@ module MyScrum
       end
     end
 
-    delete '/projects/:pid/user_stories/:uid/jobs/:tid/delete' do |pid, uid, tid|
-      # TODO
-    end
+
+    # =====================
+    # = Update developers =
+    # =====================
 
     post '/projects/:pid/user_stories/:uid/jobs/:tid/update_devs' do |pid, uid, tid|
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
@@ -110,6 +124,10 @@ module MyScrum
       end
       response.to_json
     end
+
+    # ================
+    # = Update state =
+    # ================
 
     post '/projects/:pid/user_stories/:uid/jobs/:tid/:state' do |pid, uid, tid, state|
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
@@ -140,6 +158,12 @@ module MyScrum
       else
         halt(404)
       end
+    end
+
+
+    
+    delete '/projects/:pid/user_stories/:uid/jobs/:tid/delete' do |pid, uid, tid|
+      # TODO
     end
   end
 end

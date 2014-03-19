@@ -41,6 +41,12 @@ module MyScrum
       haml :index
     end
 
+
+    # ===============
+    # = Notifications
+    # ===============
+
+
     get '/live' do
       @notif = []
       @today = Time.new
@@ -130,6 +136,12 @@ module MyScrum
       end
       haml :'live'
     end
+
+
+    # ========
+    # = Signup
+    # ========
+
 
     get '/signup' do
       @owner = Owner.new

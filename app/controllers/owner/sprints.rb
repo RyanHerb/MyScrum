@@ -56,6 +56,7 @@ module MyScrum
     # ========
     # = Show =
     # ========
+
     get '/projects/:pid/sprints/:sid/show' do |pid, sid|
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @sprint = Sprint.find(:id => sid)
@@ -69,34 +70,6 @@ module MyScrum
       haml :"/sprints/show"
     end
 
-    post '/projects/:pid/sprints/:sid/close' do |pid, sid|
-      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
-      @sprint = Sprint.find(:id => sid)
-
-      unless @sprint.commit.nil?
-        redirect "owner/projects/#{@project.pk}/show#tab3"
-      end
-
-      if params[:commit].start_with?("http://") or params[:commit].start_with?("https://")
-        @sprint.commit = params[:commit]
-      elsif params[:commit].eql?("None")
-        @sprint.commit = "none"
-      else
-        @sprint.commit = "http://" + params[:commit]
-      end
-      
-      @sprint.save
-      @project = Project.find(:id => pid)
-      @project.users.each do |u|
-        unless u.pk == @current_owner.pk
-          notif = Notification.new
-          notif.set({:action => "closed", :type => "sprint", :owner_id => u.pk, :id_object => @sprint.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/sprints/#{@sprint.pk}/show", :params => {:date => @sprint.start_date, :project => @project.title}.to_json})
-          notif.save
-        end
-      end
-
-      redirect "owner/projects/#{@project.pk}/show#tab3"
-    end
 
     # ========
     # = Edit =
@@ -148,6 +121,40 @@ module MyScrum
         end
         haml :"/sprints/edit"
       end
+    end
+
+
+    # =========
+    # = Close =
+    # =========
+
+    post '/projects/:pid/sprints/:sid/close' do |pid, sid|
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
+      @sprint = Sprint.find(:id => sid)
+
+      unless @sprint.commit.nil?
+        redirect "owner/projects/#{@project.pk}/show#tab3"
+      end
+
+      if params[:commit].start_with?("http://") or params[:commit].start_with?("https://")
+        @sprint.commit = params[:commit]
+      elsif params[:commit].eql?("None")
+        @sprint.commit = "none"
+      else
+        @sprint.commit = "http://" + params[:commit]
+      end
+      
+      @sprint.save
+      @project = Project.find(:id => pid)
+      @project.users.each do |u|
+        unless u.pk == @current_owner.pk
+          notif = Notification.new
+          notif.set({:action => "closed", :type => "sprint", :owner_id => u.pk, :id_object => @sprint.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{pid}/sprints/#{@sprint.pk}/show", :params => {:date => @sprint.start_date, :project => @project.title}.to_json})
+          notif.save
+        end
+      end
+
+      redirect "owner/projects/#{@project.pk}/show#tab3"
     end
 
   end
