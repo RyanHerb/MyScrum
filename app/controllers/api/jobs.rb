@@ -6,28 +6,33 @@ module MyScrum
       @user_stories = @project.user_stories
 
       @jobs = @user_stories.inject({}) do |a, u|
-        if a['all'].nil?
-          a['all'] = []
+        if a[u.pk].nil?
+          a[u.pk] = {}
         end
-        if a['done'].nil?
-          a['done'] = []
+        if a[u.pk]['all'].nil?
+          a[u.pk]['all'] = []
         end
-        if a['todo'].nil? 
-          a['todo'] = []
+        if a[u.pk]['done'].nil?
+          a[u.pk]['done'] = []
         end
-        if a['in_progress'].nil? 
-          a['in_progress'] = []
+        if a[u.pk]['todo'].nil? 
+          a[u.pk]['todo'] = []
         end
-        a['all'] << u.jobs.inject([]){|a, j| a << j.to_json; a}
-        a['done'] << u.jobs_dataset.done.all.inject([]){|a, j| a << j.to_json; a}
-        a['todo'] << u.jobs_dataset.todo.all.inject([]){|a, j| a << j.to_json; a}
-        a['in_progress'] << u.jobs_dataset.in_progress.all.inject([]){|a, j| a << j.to_json; a}
+        if a[u.pk]['in_progress'].nil? 
+          a[u.pk]['in_progress'] = []
+        end
+        a[u.pk]['all'] << u.jobs.inject([]){|arr, j| arr << j.to_json; arr}
+        a[u.pk]['done'] << u.jobs_dataset.done.all.inject([]){|arr, j| arr << j.to_json; arr}
+        a[u.pk]['todo'] << u.jobs_dataset.todo.all.inject([]){|arr, j| arr << j.to_json; arr}
+        a[u.pk]['in_progress'] << u.jobs_dataset.in_progress.all.inject([]){|arr, j| arr << j.to_json; arr}
+
+        a[u.pk]['all'].flatten!
+        a[u.pk]['done'].flatten!
+        a[u.pk]['todo'].flatten!
+        a[u.pk]['in_progress'].flatten!
+
         a
       end
-      @jobs['all'].flatten!
-      @jobs['done'].flatten!
-      @jobs['todo'].flatten!
-      @jobs['in_progress'].flatten!
 
       response = @jobs.to_json
     end
