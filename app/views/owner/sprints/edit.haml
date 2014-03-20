@@ -1,5 +1,6 @@
 !!!
 %a{:href => "/owner/projects/#{@project.pk}/show#tab3"} Back to project
+%p
 %h1= "Edit sprint #{@sprint.pk}"
 %fieldset
   %legend Sprint details
@@ -16,9 +17,12 @@
         %select{:name => "year"}
           -("2010".."2050").each do |i|
             %option{:value => i, :selected => @sprint.start_date.year == i.to_i}=i
+        - if !@sprint.errors.on(:start_date).nil?
+          .field_with_errors
+            .red= @sprint.errors.on(:start_date).first
         = f.select :duration, :options => ("1".."7").to_a, :immediate => true, :selected => @sprint.duration.to_s
         %label{:for => "userstories"} User Stories
         %select{:name => "userstories[]", :multiple => true}
-          -@user_stories.each do |u|
+          - @user_stories.each do |u|
             %option{:value => u.pk, :selected => @us.include?(u.pk)}= u.title
         = f.submit "Submit"

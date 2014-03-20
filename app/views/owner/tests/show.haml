@@ -1,5 +1,6 @@
 !!!
 %a{:href => "/owner/projects/#{@project.pk}/show#tab5"} Back to project
+%p
 %h1= "Test \"#{@test.title}\""
 %fieldset
   %legend Test details
@@ -18,6 +19,9 @@
             %img{:src => '/img/icons/no.png', :title => "Test failed"}
           - when "success"
             %img{:src => '/img/icons/yes.png', :title => "Test successful"}
+      %tr
+        %th Test Date
+        %td= @test.tested_at
       %tr
         %th Tester
         %td= @owner

@@ -1,6 +1,7 @@
-#bon fichier
 module MyScrum
   class ApiApp < Sinatra::Application
+
+    Dir[ROOT_DIR + '/app/controllers/api/*.rb'].sort.each {|file| require file }
 
     error 401 do
       "401"
@@ -325,7 +326,6 @@ module MyScrum
         "An error occured"
       end
     end
-
 
 
   end

@@ -74,5 +74,14 @@ module MyScrum
       '[' << response << ']'
     end
 
+    post '/projects/:id/developer_list' do |id|
+        @project = Project.find(:id => id) || halt(404)
+        response = "[" << @project.users_dataset.all.inject([]) do |arr, o|
+          arr << "{\"username\": \"#{o.username}\", \"role\": \"#{o.values[:position]}\", \"id\": \"#{o.pk}\"}"
+          arr
+        end.join(', ') << "]"
+        response
+      end
+
   end
 end

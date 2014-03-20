@@ -7,16 +7,21 @@ module MyScrum
     # ========
     # = Show =
     # ========
+
+    
     get '/projects/:pid/sprints/:sid/burndown_chart/show' do |pid, sid|
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
-      @sprint = Sprint.find(:id => sid)
+      @sprint = @project.sprints_dataset.where(:id => sid).first || halt(404)
+
       @user_stories = @sprint.user_stories
       @sprint_difficulty = 0
+
       @user_stories.each do |u|
         u.jobs.each do |j|
           @sprint_difficulty += j.difficulty
         end
       end
+      
       @remaining_difficulty = @sprint_difficulty
       @users = Owner.all
 
@@ -39,24 +44,24 @@ module MyScrum
       @date = @sprint.start_date.to_date
       
       @sprint.duration.times do |i|
-        if @date > @today_date
-          break
-        end
-        @jobs_done = Array.new
-        @user_stories.each do |u|
-          u.jobs_dataset.done.each do |j|
-            @jobs_done << j
+        unless @date > @today_date
+          @jobs_done = Array.new
+          @user_stories.each do |u|
+            u.jobs_dataset.done.each do |j|
+              @jobs_done << j
+            end
           end
+
+          @tab = Array.new
+          @tab = @jobs_done.select { |obj| obj.updated_at.to_date.to_s == @date.to_s }    
+          sum_difficulty = 0
+          @tab.each do |row|
+            sum_difficulty += row.difficulty
+          end
+          @remaining_difficulty -= sum_difficulty
+          @burndown_chart_data << [i+1, @remaining_difficulty]
+          @date += 1
         end
-        @tab = Array.new
-        @tab = @jobs_done.select { |obj| obj.updated_at.to_date.to_s == @date.to_s }        
-        sum_difficulty = 0
-        @tab.each do |row|
-          sum_difficulty += row.difficulty
-        end
-        @remaining_difficulty -= sum_difficulty
-        @burndown_chart_data << [i+1, @remaining_difficulty]
-        @date += 1
       end
       haml :"/burndown_chart/show"
     end

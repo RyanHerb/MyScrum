@@ -5,6 +5,7 @@
   %a{:href => "/owner/projects/#{@project.pk}/sprints/#{@sprint.pk}/show"} Back to sprint
 - else
   %a{:href => "/owner/projects/#{@project.pk}/show#tab3"} Back to project
+%p
 %fieldset
   %legend Job Details
   - action = @job.new? ? "/owner/projects/#{@project.pk}/jobs" : "/owner/projects/#{@project.pk}/user_stories/#{@user_story.pk}/jobs/#{@job.pk}/edit"

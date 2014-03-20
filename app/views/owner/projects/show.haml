@@ -38,8 +38,8 @@
 
         #tab2.pane
           - if @rights
-            %a.badge{:href  => "/owner/projects/#{@project.pk}/users/add"} Edit collaborators
-          %table.datatable
+            %a.badge#team_edit{:href  => "/owner/projects/#{@project.pk}/users/add"} Edit collaborators
+          %table.datatable#collaborators
             %thead
               %tr
                 %th Name
@@ -73,41 +73,38 @@
                   %td.center.actions
                     - str = ""
                     - img = ""
-                    - fulltime = s.start_date + s.duration * 24 * 60 * 60
+                    - fulltime = s.start_date + (s.duration * 60 * 60 * 24)
                     - closed = false
 
                     - if !s.commit.nil?
                       - str = "Closed"
                       - closed = true
-                      %img{:src => "/img/icons/check.png", :title => "Closed"}
+                      %img{:src => "/img/icons/check.png", :title => str}
                     - elsif fulltime < Time.now
                       - str = "Expired"
-                      %img{:src => "/img/icons/time.png", :title => "Expired"}
+                      %img{:src => "/img/icons/time.png", :title => str}
                     - elsif s.start_date > Time.now
                       - str = "Not started yet"
-             
-                    - elsif s.start_date <= Time.now and fulltime >= Time.now
+                    - else
                       - str = "Ongoing"
-                      %img{:src => "/img/icons/arrow.png", :title => "Ongoing"}
+                      %img{:src => "/img/icons/arrow.png", :title => str}
                     - editable = true
                     - if str.eql?("Expired") or str.eql?("Closed")
                       - editable = false
 
                     - jobs_done = []
                     - s.user_stories.each do |u|
-                      - u.jobs.each do |j|
-                        - if j.status == "done"
-                          - jobs_done << j
+                      - jobs_done << u.jobs_dataset.all
+
                     - if jobs_done.length > 0
-                      %br
-                      %br
                       %a{:href => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/burndown_chart/show"} 
                         %img{:src=>"/img/icons/chart.png", :title => "Burndown Chart"}
                   %td
                     %table
                       - s.user_stories.each do |u|
                         %tr
-                          %td.center= u.title
+                          %td.center
+                            %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{u.pk}/show" }= u.title
                   %td.center= s.start_date
                   %td.center= s.duration
                   %td.right.actions
@@ -116,7 +113,7 @@
                     - if editable
                       %a{:href => "/owner/projects/#{@project.pk}/sprints/#{s.pk}/edit"}
                         %img{:src => '/img/icons/edit.png', :title => "Edit sprint"}
-                    - if !closed
+                    - unless closed
                       %a{:onclick => "return commitPrompt(#{s.pk})", :href => "?#tab3"}
                         %img{:src => '/img/icons/cross.png', :title => "Close sprint"}
         #tab4.pane
@@ -162,14 +159,16 @@
             %thead
               %tr
                 %th Title
-                %th State
                 %th Tester
+                %th State
+                %th Test Date
                 %th.right.nosort Actions
             %tbody
               - @tests.each do |t|
                 - @tester = Owner.find(:id => t.owner_id)
                 %tr
                   %td= t.title
+                  %td.center= @tester.username
                   %td.center
                     - case t.state
                     - when "not_tested"
@@ -178,7 +177,7 @@
                       %img{:src => '/img/icons/no.png', :title => "Test failed"}
                     - when "success"
                       %img{:src => '/img/icons/yes.png', :title => "Test successful"}
-                  %td.center= @tester.username
+                  %td.center= t.tested_at
                   %td.right.actions
                     %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{t.user_story.pk}/tests/#{t.pk}/show"}
                       %img{:src => '/img/icons/view.png', :title => "View #{t.title}"}
@@ -187,22 +186,66 @@
                     %a{:onclick => "return confirm(\"Are you sure?\\n\\nThis operation is irreversible.\")", :href => "/owner/projects/#{@project.pk}/user_stories/#{t.user_story.pk}/tests/#{t.pk}/remove"}
                       %img{:src=>"/img/icons/cross.png", :title => "Remove"}
 
+    .dialog.hidden#assign_devs
+      %label Select a Project Member
+      %select#dev_list
+        - Owner.all.each do |u|
+          %option.dev{:value => u.pk}= u.username
+      %form#dev_form{:action => "/owner/projects/#{@project.pk}/add_developers", :method => :post}
+        %button#save_devs{:type => 'submit'} Save
+
 
 :javascript
   $(document).ready(function() {
-  var oTable = $('#sprint').dataTable();
-  
-  oTable.fnSort( [ [2,'asc'] ] );
 
+  $('#team_edit').click(function(e){
+    e.preventDefault();
+    $('#assign_devs').dialog();
+  });
+
+  $('#dev_list').change(function(){
+    var selected = $(this).find(':selected');
+    $('#dev_form').prepend('<span id="' + selected.attr('value') + '">' + 
+                            selected.text() + '\
+                            <select name="role[' + selected.text() + ']">\
+                              <option value="developer">Developer</option>\
+                              <option value="product owner">Product Owner</option>\
+                              <option value="scrum master">Scrum Master</option>\
+                            </select>\
+                            <img class="delete" src="/img/icons/cross.png" data-id="' + selected.attr('value') + '"/>\
+                            </span><div class="clear"></div>');
+    selected.attr('disabled', 'disabled');
+
+    $('.delete').click(function() {
+      $('#' + $(this).data('id')).remove();
+      selected.removeAttr('disabled');
+    });
+  });
+
+  $('#save_devs').click(function(e) {
+    e.preventDefault();
+    var form = $('#dev_form');
+    $.post(form.attr('action'), form.serialize(), function(res){
+      if(res == "OK") {
+        form.children('span').remove();
+        $('#assign_devs').dialog('close');
+        
+        updateDeveloperTable($('#collaborators'), '/owner/projects/#{@project.pk}/developer_list');
+        $('#dev_list').children().removeAttr('disabled');
+      }
+    });
+  });
+
+  var oTable = $('#sprint').dataTable();
+    oTable.fnSort( [ [2,'asc'] ] );
   });
 
   function commitPrompt(sid) {
-  var vcommit=prompt("Enter the URL of the Sprint's last commit (optional)","None");
-  
-  if (!vcommit){
-  return false;
-  }
-  else{
-  $.post("/owner/projects/#{@project.pk}/sprints/" + sid + "/close", { commit: vcommit} );
-  }
+    var vcommit=prompt("Enter the URL of the Sprint's last commit (optional)","None");
+    
+    if (!vcommit) {
+      return false;
+    } else {
+      $.post("/owner/projects/#{@project.pk}/sprints/" + sid + "/close", { commit: vcommit} );
+    }
   }

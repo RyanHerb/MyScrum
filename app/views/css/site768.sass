@@ -47,78 +47,6 @@ body
       .shop &
         font-size: 0.75em 
       
-    &.staff
-      padding: 0 !important
-      margin-left: 0 
-      li
-        background-image: none
-        font-weight: normal
-        list-style: none
-        clear: left
-        width: 550px
-        line-height: 1.5
-        padding: 0 0 25px 30px
-        span
-          font-weight: bold
-          color: $midgreen
-        img
-          box-shadow: none !important
-          width: 80px
-          border: none !important
-          margin: 0 10px 0 0!important
-          float: left
-          
-                    
-  &.veterinaries, &.klinictv, &.shoponline
-    // background-image: -webkit-linear-gradient(bottom, rgb(157,140,119) 14%, rgb(93,78,60) 97%)
-    background: white 
-    position: relative 
-    h2
-      font-size: 1.6em
-      color: $midgreen
-    h3
-      font-size: 1em
-      color: $brown
-      
-    h4
-      font-size: 1.2em
-      color: $brown
-      margin-bottom: 45px
-    a.badge
-      position: absolute
-      bottom: 8px
-      text-shadow: 0 2px 0 #333
-      &:hover
-        background-image: none
-      
-  &.veterinaries
-    h4
-      color: $brown
-    a.badge 
-      background: url(/img/bgds/orange-grd-bgd.png) repeat-x center top $orange 
-      // border: 1px solid white
-      border: none
-  &.klinictv
-    h2, h4
-      color: $orange  
-    a.badge 
-      background: url(/img/bgds/orange-grd-bgd.png) repeat-x center top #eb9719 
-      border: 2px solid #bd6c13
-  &.shoponline
-    float: left
-    width: 48%
-    h2, h4
-      color: $purple  
-    a.badge 
-      background: url(/img/bgds/purple-grd-bgd.png) repeat-x center top $purple 
-      border: 2px solid #8c3e77    
-  &.vetskstore, &.vetskitchen
-    float: right
-  &.vetskitchen
-    float: left  
-    img
-      width: 100%
-      display: block
   
   .wrapsections
     background-image: -webkit-linear-gradient(bottom, rgb(125,106,85) 0%, rgb(240,236,232) 100%)
@@ -145,14 +73,6 @@ body
     font-size: 0.95em
     line-height: 1.4
     margin: 0
-
-img.joepet  
-  margin: -12px -25px 0 0px
-  width: 260px
-
-img.petprofile
-  width: 240px
-  margin: 5px 0 0
   
 p.intro
   font-size: 1em  
@@ -221,8 +141,6 @@ a.badge
     border-right: 2px solid #fff
     padding: 8px 8px 10px
 
-#pets-and-procedures
-  width: 30%  
 
 #procedure-list 
   width: 65%
@@ -234,27 +152,3 @@ a.badge
   h2
     background: #483c2f
     text-align: left
-
-.userprofile, .petprofile
-  .details
-    p
-      font-size: 1.2em
-
-// SHOP 
-
-.shop
-  iframe
-    width: 265px
-    height: 180px
-  .product  
-    a
-      font-size: 0.9em
-      padding: 5px
-    &.detail
-      ul
-        width: 40%
-      img
-        width: 170px
-    &.action
-      input
-        width: 30%   

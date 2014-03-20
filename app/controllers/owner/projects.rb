@@ -17,7 +17,7 @@ module MyScrum
       if @project.valid?
         @project.save
         @project.add_user(@current_owner)
-        @project.users_dataset.where(:user => @current_owner.pk).update(:position => "project owner")
+        @project.users_dataset.where(:user => @current_owner.pk).update(:position => "product owner")
         flash[:notice] = "Project created"
         redirect "/owner/projects"
       else
@@ -36,7 +36,7 @@ module MyScrum
       @roles = @project.users_dataset
       @user_stories = @project.user_stories
       @tests = []
-      if !UsersProject.all.find{ |u| u.user == @current_owner.pk and u.project == @project.pk and (u.position.eql?("project owner") or u.position.eql?("scrum master"))}.nil?
+      if @project.has_rights(@current_owner)
         @rights = true
       else
         @rights = false
@@ -56,11 +56,11 @@ module MyScrum
 
       
       @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
-      if UsersProject.all.find{ |u| u.user == @current_owner.pk and u.project == @project.pk and (u.position.eql?("project owner") or u.position.eql?("scrum master"))}.nil?
+      unless @project.has_rights(@current_owner)
         halt(404)
       end
 
-      @project_owner = @project.users_dataset.where(:position => "project owner").first
+      @product_owner = @project.users_dataset.where(:position => "product owner").first
       @scrum_master = @project.users_dataset.where(:position => "scrum master").first
       @owners = Owner.all.inject([]) do |arr, o|
         if @project.users_dataset.where(:user => o.pk).first.nil?
@@ -73,10 +73,10 @@ module MyScrum
 
     # =========================
 
-    post '/projects/:id/users/project_owner' do |id|
+    post '/projects/:id/users/product_owner' do |id|
       
       @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
-      if UsersProject.all.find{ |u| u.user == @current_owner.pk and u.project == @project.pk and (u.position.eql?("project owner") or u.position.eql?("scrum master"))}.nil?
+      unless @project.has_rights(@current_owner)
         halt(404)
       end
 
@@ -87,35 +87,34 @@ module MyScrum
         arr2
       end
       @owner = @owner.first
-      @project_owner = @project.users_dataset.where(:position => "project owner").first
+      @product_owner = @project.users_dataset.where(:position => "product owner").first
       if @owner.valid?
-        unless @project_owner.nil?
-          @project.users_dataset.where(:user => @project_owner.pk).update(:position => "developer")
+        unless @product_owner.nil?
+          @project.users_dataset.where(:user => @product_owner.pk).update(:position => "developer")
         end
         @project.remove_user(@owner)
         @project.add_user(@owner)
-        @project.users_dataset.where(:user => @owner.pk).update(:position => "project owner")
+        @project.users_dataset.where(:user => @owner.pk).update(:position => "product owner")
         @notif = Notification.new
-        @notif.set({:action => "project owner", :type => "project", :owner_id => @owner.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/show#tab2", :params => {:project => @project.title}.to_json})
+        @notif.set({:action => "product owner", :type => "project", :owner_id => @owner.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/show#tab2", :params => {:project => @project.title}.to_json})
         @notif.save
 
         @project.users.each do |u|
           unless u.pk == @current_owner.pk or u.pk == @owner.pk
             @notif = Notification.new
-            @notif.set({:action => "new", :type => "project owner", :owner_id => u.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/show#tab2", :params => {:name => @owner.name, :project => @project.title}.to_json})
+            @notif.set({:action => "new", :type => "product owner", :owner_id => u.pk, :id_object => @project.pk, :viewed => 0, :date => Time.new, :link => "/owner/projects/#{id}/show#tab2", :params => {:name => @owner.name, :project => @project.title}.to_json})
             @notif.save
           end
         end
-        redirect "/owner/projects/#{@project.pk}/show"
+        redirect "/owner/projects/#{@project.pk}/show#tab2"
       end
     end
 
       # =========================
 
       post '/projects/:id/users/scrum_master' do |id|
-        
         @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
-        if UsersProject.all.find{ |u| u.user == @current_owner.pk and u.project == @project.pk and (u.position.eql?("project owner") or u.position.eql?("scrum master"))}.nil?
+        unless @project.has_rights(@current_owner)
           halt(404)
         end
 
@@ -170,16 +169,12 @@ module MyScrum
 
       post '/projects/:id/users/add' do |id|
         @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
-        if UsersProject.all.find{ |u| u.user == @current_owner.pk and u.project == @project.pk and (u.position.eql?("project owner") or u.position.eql?("scrum master"))}.nil?
+        unless @project.has_rights(@current_owner)
           halt(404)
         end
-        @owner = Owner.all.inject([]) do |arr2, o|
-          if o.pk == params[:owner].to_i
-            arr2 << o
-          end
-          arr2
-        end
-        @owner = @owner.first
+
+        @owner = Owner.find(:id => params[:owner].to_i)
+
         isNew = false
         if !@owner.nil? and @owner.valid?
           if @project.users.find{|o| o.pk == @owner.pk}.nil?
@@ -207,6 +202,30 @@ module MyScrum
         end
       end
 
+      post '/projects/:id/add_developers' do |id|
+        @project = Project.find(:id => id) || halt(404)
+        @project.has_rights(@current_owner) || halt(404)
+        params[:role].each do |r|
+          @owner = Owner.find(:username => r[0]) || halt(404)
+          @project.remove_user(@owner)
+          @project.add_user(@owner)
+          @project.users_dataset.where(:user => @owner.pk).update(:position => r[1])
+        end
+        unless @project.product_owners.length + @project.scrum_masters.length > 0
+          @project.users_dataset.where(:user => @current_owner.pk).update(:position => 'scrum master')
+        end
+        "OK"
+      end
+
+      post '/projects/:id/developer_list' do |id|
+        @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
+        response = "[" << @project.users_dataset.all.inject([]) do |arr, o|
+          arr << "{\"username\": \"#{o.username}\", \"role\": \"#{o.values[:position]}\", \"id\": \"#{o.pk}\"}"
+          arr
+        end.join(', ') << "]"
+        response
+      end
+
 
       # ======================
       # = /projects/:id/edit =
@@ -214,9 +233,9 @@ module MyScrum
 
       get '/projects/:id/edit' do |id|
         @project = @current_owner.projects_dataset.where(:project => id).first || halt(404)
-        if UsersProject.all.find{ |u| u.user == @current_owner.pk and u.project == @project.pk and (u.position.eql?("project owner") or u.position.eql?("scrum master"))}.nil?
+        unless @project.has_rights(@current_owner)
           halt(404)
-        end           
+        end
         haml :"/projects/form"
       end
 
@@ -235,7 +254,7 @@ module MyScrum
 
       @project = Project.find(:id => pid)
 
-      if UsersProject.all.find{ |u| u.user == @current_owner.pk and u.project == @project.pk and (u.position.eql?("project owner") or u.position.eql?("scrum master"))}.nil?
+      if UsersProject.all.find{ |u| u.user == @current_owner.pk and u.project == @project.pk and (u.position.eql?("product owner") or u.position.eql?("scrum master"))}.nil?
         halt(404)
       end
       
@@ -250,7 +269,7 @@ module MyScrum
       end
       
       flash[:notice] = "Project updated"
-      redirect '/owner/projects'
+      redirect '/owner/projects/#{pid}/show'
     end
     
       # ==========
@@ -259,16 +278,16 @@ module MyScrum
 
       get '/projects/:pid/remove_user/:oid' do |pid, oid|
         @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
-        @project_owner = @project.users_dataset.where(:position => "project owner").first
+        @product_owner = @project.users_dataset.where(:position => "product owner").first
         
         @owner = Owner.find(:id => oid) || halt(404)
 
-        if @project_owner.pk == @owner.pk
-          flash[:notice] = "The project owner can't be removed."
+        if @product_owner.pk == @owner.pk
+          flash[:notice] = "The product owner can't be removed."
           redirect "/owner/projects/#{@project.pk}/show#tab2"
         end
         
-        if !UsersProject.all.find{ |u| u.user == @current_owner.pk and u.project == @project.pk and (u.position.eql?("project owner") or u.position.eql?("scrum master"))}.nil?
+        if !UsersProject.all.find{ |u| u.user == @current_owner.pk and u.project == @project.pk and (u.position.eql?("product owner") or u.position.eql?("scrum master"))}.nil?
           @rights = true
         else
           @rights = false

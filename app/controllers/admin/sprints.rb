@@ -43,5 +43,60 @@ module MyScrum
         haml :"/sprints/form"
       end
     end
+
+
+    get '/sprints/:sid/burndown_charts/show' do |sid|
+      @sprint = Sprint.find(:id => sid) || halt(404)
+      @user_stories = @sprint.user_stories
+      @sprint_difficulty = 0
+      @user_stories.each do |u|
+        u.jobs.each do |j|
+          @sprint_difficulty += j.difficulty
+        end
+      end
+      @remaining_difficulty = @sprint_difficulty
+      @users = Owner.all
+
+      @json_data = Array.new
+      @users.each do |row|
+        number_of_job_done = 0
+        row.jobs_dataset.done.each do |j|
+          number_of_job_done += j.difficulty
+        end
+        h = {:name => row.username, :num_jobs => number_of_job_done}
+        @json_data << h
+      end
+      @json_data = @json_data.to_json
+
+
+      #get BurnDownChart Data
+      @burndown_chart_data = Array.new
+      @burndown_chart_data << [0,@sprint_difficulty]
+      @today_date = Date.today
+      @date = @sprint.start_date.to_date
+      
+      @sprint.duration.times do |i|
+        unless @date > @today_date
+          @jobs_done = Array.new
+          @user_stories.each do |u|
+            u.jobs_dataset.done.each do |j|
+              @jobs_done << j
+            end
+          end
+
+          @tab = Array.new
+          @tab = @jobs_done.select { |obj| obj.updated_at.to_date.to_s == @date.to_s }    
+          sum_difficulty = 0
+          @tab.each do |row|
+            sum_difficulty += row.difficulty
+          end
+          @remaining_difficulty -= sum_difficulty
+          @burndown_chart_data << [i+1, @remaining_difficulty]
+          @date += 1
+        end
+      end
+      haml :"/sprints/burndown_chart"
+    end
+
   end
 end
