@@ -7,12 +7,12 @@ module MyScrum
 
     get '/owner/projects/:pid/tests' do |pid|
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
-      @tests = @project.tests
+      @user_stories = @project.user_stories
+      @tests = @user_stories.inject([]) {|a, us| a << us.jobs; a.flatten!}
       @t = @tests.inject([]) do |arr, o|
         arr << o.to_json 
       end
-      tmp = @t.join(", ")
-      response = "[" << tmp << "]"
+      @t.to_json
     end
 
     get '/owner/projects/:pid/user_stories/:uid/tests' do |pid, uid|
@@ -24,7 +24,7 @@ module MyScrum
         arr << t.to_json
         arr
       end
-      response.to_s
+      response.to_json
     end
 
     post '/owner/projects/:pid/tests/create' do |pid|

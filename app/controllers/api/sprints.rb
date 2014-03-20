@@ -13,7 +13,7 @@ module MyScrum
       sp = @sprints.inject([]) do |arr, s|
         arr << s.to_json
       end
-      "[" << sp << "]"
+      sp.to_json
     end
 
     get '/owner/projects/:pid/sprints/:sid/user_stories' do |pid, sid|

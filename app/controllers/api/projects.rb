@@ -11,12 +11,11 @@ module MyScrum
       @p = @projects.inject([]) do |arr, o|
         arr << o.to_json 
       end
-      tmp = @p.join(",")
-      response = "[" << tmp << "]"
+      @p.to_json
     end
 
     get '/owner/projects/:pid/description' do |pid|
-      @project = @current_owner.projects_dataset.where(:project__id => pid).first || halt(404)
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @project.description.to_json
     end
 
@@ -33,7 +32,7 @@ module MyScrum
     end
 
     post '/owner/projects/:pid/edit' do |pid|
-      project = @current_owner.projects_dataset.where(:project__id => pid).first || halt(404)
+      project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       decoded_params = JSON.parse(params[:project])
       project.set(decoded_params)
       if project.valid?
@@ -49,17 +48,16 @@ module MyScrum
     # =========
 
     get '/owner/projects/:pid/users' do |pid|
-      @project = @current_owner.projects_dataset.where(:project__id => pid).first || halt(404)
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @users = @project.users
       @u = @users.inject([]) do |arr, o|
         arr << o.to_json 
       end
-      tmp = @u.join(",")
-      response = "[" << tmp << "]"
+      @u.to_json
     end
 
     post '/owner/projects/:pid/users/add' do |pid|
-      @project = @current_owner.projects_dataset.where(:project__id => pid).first || halt(404)
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       decoded_params = JSON.parse(params[:users])
       
       decoded_params.each do |k, v|
