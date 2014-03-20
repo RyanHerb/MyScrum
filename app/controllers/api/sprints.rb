@@ -12,8 +12,8 @@ module MyScrum
       @sprints = @project.sprints || halt(404)
       sp = @sprints.inject([]) do |arr, s|
         arr << s.to_json
-      end
-      sp.to_json
+      end.join(', ')
+      response = "[" << sp << "]"
     end
 
     get '/owner/projects/:pid/sprints/:sid/user_stories' do |pid, sid|
@@ -90,7 +90,7 @@ module MyScrum
       jobs_done['pie_chart'] = pie_chart
       jobs_done['line_chart'] = line_chart
       jobs_done['start_date'] = @sprint.start_date
-      jobs_done.to_json
+      "[" << jobs_done.join(', ') << "]"
     end
   end
 end

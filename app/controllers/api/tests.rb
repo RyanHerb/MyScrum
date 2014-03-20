@@ -11,8 +11,8 @@ module MyScrum
       @tests = @user_stories.inject([]) {|a, us| a << us.jobs; a.flatten!}
       @t = @tests.inject([]) do |arr, o|
         arr << o.to_json 
-      end
-      @t.to_json
+      end.join(', ')
+      "[" << @t << "]"
     end
 
     get '/owner/projects/:pid/user_stories/:uid/tests' do |pid, uid|
@@ -23,8 +23,8 @@ module MyScrum
       response = tests.inject([]) do |arr, t|
         arr << t.to_json
         arr
-      end
-      response.to_json
+      end.join(', ')
+      "[" << response << "]"
     end
 
     post '/owner/projects/:pid/tests/create' do |pid|

@@ -11,7 +11,8 @@ module MyScrum
       @p = @projects.inject([]) do |arr, o|
         arr << o.to_json 
       end
-      @p.to_json
+      tmp = @p.join(",")
+      response = "[" << tmp << "]"
     end
 
     get '/owner/projects/:pid/description' do |pid|
@@ -53,7 +54,8 @@ module MyScrum
       @u = @users.inject([]) do |arr, o|
         arr << o.to_json 
       end
-      @u.to_json
+      tmp = @u.join(",")
+      response = "[" << tmp << "]"
     end
 
     post '/owner/projects/:pid/users/add' do |pid|

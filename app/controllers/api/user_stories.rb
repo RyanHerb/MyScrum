@@ -10,8 +10,8 @@ module MyScrum
       @user_stories = @project.user_stories
       @us = @user_stories.inject([]) do |arr, o|
         arr << o.to_json 
-      end
-      @us.to_json
+      end.join(', ')
+      "[" << @us << "]"
     end
 
     post '/owner/projects/:pid/user_stories/create' do
