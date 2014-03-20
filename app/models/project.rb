@@ -16,7 +16,6 @@ class Project < Sequel::Model
     validates_format URI.regexp, :repo, :allow_blank => true, :message => 'Repository URL is not valid'
   end
 
-<<<<<<< HEAD
   def getTests
     arr = Array.new
     self.user_stories.each do |i|
@@ -25,7 +24,6 @@ class Project < Sequel::Model
     arr.flatten
   end
 
-=======
   # ====================
   # = Instance Methods =
   # ====================
@@ -50,6 +48,5 @@ class Project < Sequel::Model
   def scrum_masters
     users_dataset.where(:position => 'product owner').all
   end
->>>>>>> b77ca2dbea3f3166145832b38fb181c29acfab0f
   
 end
