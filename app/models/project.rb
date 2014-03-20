@@ -15,5 +15,14 @@ class Project < Sequel::Model
     validates_unique :title
     validates_format URI.regexp, :repo, :allow_blank => true, :message => 'Repository URL is not valid'
   end
+
+  def getTests
+    arr = Array.new
+    self.user_stories.each do |i|
+      arr << i.tests
+    end
+    arr.flatten
+  end
+
   
 end
