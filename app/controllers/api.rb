@@ -53,7 +53,8 @@ module MyScrum
       params[:owner] = JSON.parse(params[:owner])
       @current_owner.set(params[:owner])
       if @current_owner.valid?
-        @current_owner.save
+        @current_owner.save 
+        "OK"
       else
         "An error occured while updating account"
       end
@@ -81,6 +82,12 @@ module MyScrum
       response
     end
 
+    get '/owner/projects/:pid/project' do |pid|
+      @project = Project.find(:id => pid)
+      response = @project.to_json
+      response
+    end
+
 
     post '/owner/projects/create' do
       project = Project.new
@@ -88,6 +95,7 @@ module MyScrum
       project.set(decoded_params)
       if project.valid?
         project.save
+        current_owner.add_project(project)
         "OK"
       else
         "An error occured"
@@ -95,7 +103,7 @@ module MyScrum
     end
 
     post '/owner/projects/:pid/edit' do |pid|
-      project = @current_owner.projects_dataset.where(:project__id => pid) || halt(404)
+      project = Project.find(:id => pid)
       decoded_params = JSON.parse(params[:project])
       project.set(decoded_params)
       if project.valid?
@@ -133,20 +141,29 @@ module MyScrum
 
 
     post '/owner/projects/:pid/users/add' do |pid|
-      @project = @current_owner.projects_dataset.where(:project__id => pid) || halt(404)
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       decoded_params = JSON.parse(params[:users])
       
       decoded_params.each do |k, v|
-        user = User.find(:id => k)
+        user = Owner.find(:id => k)
         if(user.nil?)
           return "An unknown user was selected"
         end
         @project.remove_user(user)
         @project.add_user(user)
-        @project.users_dataset.where(:user => @owner.pk).update(:position => v)
+        @project.users_dataset.where(:user => user.pk).update(:position => v)
       end
       "OK"
     end
+
+    post '/signup' do
+      @user = Owner.new
+      decoded_params = JSON.parse(params[:user])
+      @user.set(decoded_params)
+      @user.save
+      "OK"
+    end
+
 
     # ================
     # = User Stories =
@@ -162,9 +179,16 @@ module MyScrum
       response = "[" << tmp << "]"
     end
 
+    get '/owner/projects/:pid/user_stories/:sid/show' do |pid, sid|
+       @project = Project.find(:id => pid)
+       @user_story = UserStory.find(:id => sid)
+       response = @user_story.to_json
+       response
+     end
 
-    post '/owner/projects/:pid/user_stories/create' do
-      project = @current_owner.projects_dataset.where(:project__id => pid) || halt(404)
+
+    post '/owner/projects/:pid/user_stories/create' do |pid|
+      project = @current_owner.projects_dataset.where(:project => pid) || halt(404)
       user_story = UserStory.new
       decoded_params = JSON.parse(params[:user_story])
       user_story.set(decoded_params)
@@ -176,9 +200,9 @@ module MyScrum
       end
     end
 
-    post '/owner/projects/:pid/user_stories/uid/edit' do |pid, uid|
-      project = @current_owner.projects_dataset.where(:project__id => pid) || halt(404)
-      user_story = project.user_stories_dataset.where(:user_story__id => uid) || halt(404)
+    post '/owner/projects/:pid/user_stories/:uid/edit' do |pid, uid|
+      project = Project.find(:id => pid)
+      user_story = UserStory.find(:id => uid)
       decoded_params = JSON.parse(params[:user_story])
       user_story.set(decoded_params)
       if user_story.valid?
@@ -194,12 +218,27 @@ module MyScrum
     # =========
 
     get '/owner/projects/:pid/tests' do |pid|
-      @tests = Test.all
+      @project = Project.find(:id => pid)
+      @tests = @project.getTests
       @t = @tests.inject([]) do |arr, o|
         arr << o.to_json
+        arr
       end
       tmp = @t.join(",")
       response = "[" << tmp << "]"
+    end
+
+    post '/owner/projects/:pid/tests' do |pid|
+      project = @current_owner.projects_dataset.where(:project__id => pid) || halt(404)
+      @test = Test.new
+      decoded_params = JSON.parse(params[:test])
+      @test.set(decoded_params)
+      if @test.valid?
+        @test.save
+        "OK"
+      else
+        "An error occured"
+      end
     end
 
     # ===========
@@ -239,6 +278,55 @@ module MyScrum
       tmp = @jobs.join(",")
       response = "[" << tmp << "]"
     end
+
+    get '/owner/projects/:pid/sprints/:sid/jobs/:jid/show' do |pid, sid, jid|
+      @job = Job.find(:id => jid)
+      response = @job.to_json
+      response
+    end
+
+    post '/owner/projects/:pid/create_sprint' do |pid|
+      @current_project = Project.find(:id => pid)
+      @sprint = Sprint.new
+
+      decoded_params = JSON.parse(params[:sprint])
+      decoded_params2 = JSON.parse(params[:user_stories])
+      @sprint.set(decoded_params)
+      if @sprint.valid?
+        @sprint.add_user_story(decoded_params2)
+        @sprint.save
+        "OK"
+      else
+        "An error occured"
+      end
+    end
+
+    post '/owner/projects/:pid/sprints/:sid/create_job' do |pid, sid|
+      @current_project = Project.find(:id => pid)
+      @job = Job.new
+      decoded_params = JSON.parse(params[:job])
+      @job.set(decoded_params)
+      if @job.valid?
+        @job.save
+        "OK"
+      else
+        "An error occured"
+      end
+    end
+
+    post '/owner/projects/:pid/sprints/:sid/jobs/:jid/edit_job' do |pid, sid, jid|
+      @job = Job.find(:id => jid)
+      decoded_params = JSON.parse(params[:job])
+      @job.set(decoded_params)
+      if @job.valid?
+        @job.save
+        "OK"
+      else
+        "An error occured"
+      end
+    end
+
+
 
   end
 end
