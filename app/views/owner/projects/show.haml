@@ -159,14 +159,16 @@
             %thead
               %tr
                 %th Title
-                %th State
                 %th Tester
+                %th State
+                %th Test Date
                 %th.right.nosort Actions
             %tbody
               - @tests.each do |t|
                 - @tester = Owner.find(:id => t.owner_id)
                 %tr
                   %td= t.title
+                  %td.center= @tester.username
                   %td.center
                     - case t.state
                     - when "not_tested"
@@ -175,7 +177,7 @@
                       %img{:src => '/img/icons/no.png', :title => "Test failed"}
                     - when "success"
                       %img{:src => '/img/icons/yes.png', :title => "Test successful"}
-                  %td.center= @tester.username
+                  %td.center= t.tested_at
                   %td.right.actions
                     %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{t.user_story.pk}/tests/#{t.pk}/show"}
                       %img{:src => '/img/icons/view.png', :title => "View #{t.title}"}

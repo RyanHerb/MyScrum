@@ -20,6 +20,9 @@
           - when "success"
             %img{:src => '/img/icons/yes.png', :title => "Test successful"}
       %tr
+        %th Test Date
+        %td= @test.tested_at
+      %tr
         %th Tester
         %td= @owner
       %tr
