@@ -19,8 +19,8 @@ Install Bundler
 
 Add the following line to your .bashrc file:
 
-    source /home/largaroth/.rvm/scripts/rvm<br />
-    PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting<br />
+    source /home/largaroth/.rvm/scripts/rvm
+    PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 
 cd into the website's root and accept the use of the .rvmrc file
 
