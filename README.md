@@ -7,6 +7,7 @@ Setting up your environment
 Either install rvm with Ruby 2.1.0
 
   https://rvm.io/rvm/install
+  
     \curl -sSL https://get.rvm.io | bash -s stable --ruby
 
 Or simply install Ruby 2.1.0
