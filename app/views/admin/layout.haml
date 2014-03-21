@@ -27,27 +27,15 @@
         #loggedinas
           %strong #{@current_admin.name}
           %a{:href => '/admin/logout'} logout
-    #nav
-      #topbar
-        %li
-          %a{:href => '/admin/'} home
-
-        %li
-          %ul.dropdown-menu
-            %li
-              %a{:href => '/admin/profiles'} Admins
-            %li
-              %a{:href => '/admin/owners'} Owners
-            %li
-              %a{:href => '/admin/projects'} Projects
-            %li
-              %a{:href => '/admin/sprints'} Sprints
-            %li
-              %a{:href => '/admin/user_stories'} User Stories
-            %li
-              %a{:href => '/admin/tests'} Tests
-            %li
-              %a{:href => '/admin/jobs'} Jobs
+        .clear
+        %a.badge{:href => '/admin/profiles'} Admins
+        %a.badge{:href => '/admin/owners'} Owners
+        %a.badge{:href => '/admin/projects'} Projects
+        %a.badge{:href => '/admin/sprints'} Sprints
+        %a.badge{:href => '/admin/user_stories'} User Stories
+        %a.badge{:href => '/admin/tests'} Tests
+        %a.badge{:href => '/admin/jobs'} Jobs
+      .clear
                 
 
 

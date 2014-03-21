@@ -12,8 +12,8 @@ module MyScrum
       @sprints = @project.sprints || halt(404)
       sp = @sprints.inject([]) do |arr, s|
         arr << s.to_json
-      end
-      "[" << sp << "]"
+      end.join(', ')
+      response = "[" << sp << "]"
     end
 
     get '/owner/projects/:pid/sprints/:sid/user_stories' do |pid, sid|
@@ -50,7 +50,7 @@ module MyScrum
 
       pie_chart = ''
       # Pie Chart
-      GoogleChart::PieChart.new('320x200', "Job Completion Distribution", false) do |pc|
+      GoogleChart::PieChart.new('640x400', "Job Completion Distribution", false) do |pc|
         jobs_done.each do |k, v|
           pc.data k, v
         end
@@ -77,7 +77,7 @@ module MyScrum
       
       # Line Chart
       line_chart = ''
-      GoogleChart::LineChart.new('320x200', 'Burndown Chart', false) do |lc|
+      GoogleChart::LineChart.new('640x400', 'Burndown Chart', false) do |lc|
         lc.data "Jobs", jobs_done_at, '0000ff'
         lc.show_legend = true
         lc.axis :y, :range => [0,total_difficulty], :color => '000000', :font_size => 16, :alignment => :center
