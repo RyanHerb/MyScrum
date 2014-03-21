@@ -8,7 +8,7 @@ module MyScrum
     get '/owner/projects/:pid/tests' do |pid|
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
       @user_stories = @project.user_stories
-      @tests = @user_stories.inject([]) {|a, us| a << us.jobs; a.flatten!}
+      @tests = @user_stories.inject([]) {|a, us| a << us.tests; a.flatten!}
       @t = @tests.inject([]) do |arr, o|
         arr << o.to_json 
       end.join(', ')

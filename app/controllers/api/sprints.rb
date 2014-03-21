@@ -50,7 +50,7 @@ module MyScrum
 
       pie_chart = ''
       # Pie Chart
-      GoogleChart::PieChart.new('320x200', "Job Completion Distribution", false) do |pc|
+      GoogleChart::PieChart.new('640x400', "Job Completion Distribution", false) do |pc|
         jobs_done.each do |k, v|
           pc.data k, v
         end
@@ -77,7 +77,7 @@ module MyScrum
       
       # Line Chart
       line_chart = ''
-      GoogleChart::LineChart.new('320x200', 'Burndown Chart', false) do |lc|
+      GoogleChart::LineChart.new('640x400', 'Burndown Chart', false) do |lc|
         lc.data "Jobs", jobs_done_at, '0000ff'
         lc.show_legend = true
         lc.axis :y, :range => [0,total_difficulty], :color => '000000', :font_size => 16, :alignment => :center
@@ -90,7 +90,7 @@ module MyScrum
       jobs_done['pie_chart'] = pie_chart
       jobs_done['line_chart'] = line_chart
       jobs_done['start_date'] = @sprint.start_date
-      "[" << jobs_done.join(', ') << "]"
+      jobs_done.to_json
     end
   end
 end
