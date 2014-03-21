@@ -19,8 +19,8 @@ Install Bundler
 
 Add the following line to your .bashrc file:
 
-  source /home/largaroth/.rvm/scripts/rvm
-  PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+  source /home/largaroth/.rvm/scripts/rvm<br />
+  PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting<br />
 
 cd into the website's root and accept the use of the .rvmrc file
 
@@ -31,14 +31,17 @@ Install the myscrum gemset:
 Once the bundle has intalled, you are ready to start using running our website.
 
 Running the server:
+
     thin -e local -R config.ru start
 
 Additionnaly you may install rerun:
+
     gem install rerun
-  And run the server like this:
+
+And run the server like this:
 
     rerun -p "{./,app/*/,app/*/*/,config/*/}*.rb" "thin -e local -R config.ru start"
 
-  This way, if may set a listener on critical files, in order to automatically restart the server when necessary.
+This way, if may set a listener on critical files, in order to automatically restart the server when necessary.
 
 
