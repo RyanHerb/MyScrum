@@ -3,18 +3,18 @@ MyScrum
 
 Setting up your environment
 
-Install rvm with Ruby 2.1.0
+Either install rvm with Ruby 2.1.0
 
   https://rvm.io/rvm/install
-  $\curl -sSL https://get.rvm.io | bash -s stable --ruby
+    \curl -sSL https://get.rvm.io | bash -s stable --ruby
 
 Or simply install Ruby 2.1.0
 
-  $sudo apt-get install ruby
+    sudo apt-get install ruby
 
 Install Bundler
 
-  $gem install bundler
+    gem install bundler
 
 Add the following line to your .bashrc file:
 
@@ -25,18 +25,18 @@ cd into the website's root and accept the use of the .rvmrc file
 
 Install the myscrum gemset:
   
-  $bundle install
+    bundle install
 
 Once the bundle has intalled, you are ready to start using running our website.
 
 Running the server:
-  $thin -e local -R config.ru start
+    thin -e local -R config.ru start
 
 Additionnaly you may install rerun:
-  $gem install rerun
+    gem install rerun
   And run the server like this:
 
-  $rerun -p "{./,app/*/,app/*/*/,config/*/}*.rb" "thin -e local -R config.ru start"
+    rerun -p "{./,app/*/,app/*/*/,config/*/}*.rb" "thin -e local -R config.ru start"
 
   This way, if may set a listener on critical files, in order to automatically restart the server when necessary.
 
