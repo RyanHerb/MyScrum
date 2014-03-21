@@ -2,6 +2,7 @@ MyScrum
 =======
 
 Setting up your environment
+-------
 
 Either install rvm with Ruby 2.1.0
 
