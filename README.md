@@ -45,4 +45,8 @@ And run the server like this:
 
 This way, if may set a listener on critical files, in order to automatically restart the server when necessary.
 
+Create a database and fill in the data in config/database.yaml to correspond to this database, then run:
+    
+    rake db:schema:load
+
 

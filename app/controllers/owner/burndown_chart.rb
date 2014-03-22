@@ -23,7 +23,7 @@ module MyScrum
       end
       
       @remaining_difficulty = @sprint_difficulty
-      @users = Owner.all
+      @users = @project.users
 
       @json_data = Array.new
       @users.each do |row|
