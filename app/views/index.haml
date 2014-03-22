@@ -1,12 +1,10 @@
 - @title = "Homepage"
 
-%h1.center MyScrum Homepage
-.div.center
-  MyScrum Website
-%p
-%p
+.pane
+  %h1.center MyScrum Homepage
 
-.content
+.panel
+  %h2.center Public projects
   %table.datatable{:style => "width: 100%"}
     %thead
       %tr
@@ -18,5 +16,8 @@
           %td= p.title
           %td= p.repo
 
-%footer
-  %a{:href => '/bug_reports/form'} Report bug
+.panel.floatright
+  %h4 Found a problem with our website ? Please report it to us !
+  .clear
+  %div{:style => 'height: 5px'}
+  %a.badge{:href => '/bug_reports/form'} Report bug

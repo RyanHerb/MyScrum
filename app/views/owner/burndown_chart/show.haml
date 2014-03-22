@@ -5,9 +5,17 @@
 .panel
   %fieldset
     %legend= "Sprint #{@sprint.id}"
-    %p= "Start Date: #{@sprint.start_date.to_date}"
-    %p= "Duration: #{@sprint.duration}"
-    %p= "Sprint Difficulty: #{@sprint_difficulty}"
+    %table
+      %tr
+        %th Start Date
+        %td= @sprint.start_date.to_date
+      %tr
+        %th Duration 
+        %td= @sprint.duration
+      %tr
+        %th Sprint Difficulty
+        %td= @sprint_difficulty
+        
     #burndownChart
       %h3 Burndown Chart (Sum of Task Estimates)
     %br

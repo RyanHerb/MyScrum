@@ -269,7 +269,7 @@ module MyScrum
       end
       
       flash[:notice] = "Project updated"
-      redirect '/owner/projects/#{pid}/show'
+      redirect "/owner/projects/#{pid}/show"
     end
     
       # ==========

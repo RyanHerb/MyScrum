@@ -10,7 +10,7 @@ module MyScrum
       @project = Project.find(:id => i)
       @sprint = Sprint.new
       @user_stories = @project.user_stories_dataset.not_finished.all
-      haml :"/sprints/form"
+      haml :"sprints/form"
     end
 
     post '/projects/:id/sprint/create' do |i|
@@ -49,7 +49,7 @@ module MyScrum
           @sprint.errors.add(:user_story, "You need to choose at least one User Story.")
         end
         @user_stories = @project.user_stories_dataset.not_finished.all
-        haml :"/sprints/form"
+        haml :"sprints/form"
       end
     end
 
@@ -67,7 +67,7 @@ module MyScrum
           @difficulty += j.difficulty.to_i
         end
       end
-      haml :"/sprints/show"
+      haml :"sprints/show"
     end
 
 
@@ -83,7 +83,7 @@ module MyScrum
         arr << o.pk
         arr
       end
-      haml :"/sprints/edit"
+      haml :"sprints/form"
     end
 
     put '/projects/:pid/sprints/:sid/edit' do |i,j|
@@ -119,7 +119,7 @@ module MyScrum
           arr << o.pk
           arr
         end
-        haml :"/sprints/edit"
+        haml :"sprints/form"
       end
     end
 

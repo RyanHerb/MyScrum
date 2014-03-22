@@ -1,23 +1,18 @@
 !!!
-%html
-  %head
-    %meta{charset: "UTF-8"}/
-    %title Signup
-  %body
-    = form_for @owner, :enctype => 'multipart/form-data' do |f|
-      %fieldset
-        %legend Registration
-        = f.input :first_name, :label => 'First name'
-        = f.input :last_name, :label => 'Last name'
-        = f.input :username, :label => 'Username'
-        = f.input :email, :label => 'Email'
-        = f.input :password, {:type => 'password', :label => "Password"}
-        = f.input :password_confirmation, {:type => 'password', :label => "Confirm your password"}
-        %label{:for => "answer"}
-          = @turing_test.question
-        %input#turing_test_answer.vshort{:style => 'width: 50px;', :type => :text, :name => "turing_answer"}          
-        .hint We just want to check that you're a real, live human being
-        - if(@errors[:turing_answer].length > 0 rescue false)
-          .error=@errors[:turing_answer]
-      %fieldset
-        %button{type: "submit"} Register
+= form_for @owner, :enctype => 'multipart/form-data' do |f|
+  %fieldset
+    %legend Registration
+    = f.input :first_name, :label => 'First name'
+    = f.input :last_name, :label => 'Last name'
+    = f.input :username, :label => 'Username'
+    = f.input :email, :label => 'Email'
+    = f.input :password, {:type => 'password', :label => "Password"}
+    = f.input :password_confirmation, {:type => 'password', :label => "Confirm your password"}
+    %label{:for => "answer"}
+      = @turing_test.question
+    %input#turing_test_answer.vshort{:style => 'width: 50px;', :type => :text, :name => "turing_answer"}          
+    .hint We just want to check that you're a real, live human being
+    - if(@errors[:turing_answer].length > 0 rescue false)
+      .error=@errors[:turing_answer]
+  %fieldset
+    = f.submit Register

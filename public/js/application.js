@@ -466,7 +466,7 @@ function draw_burndown_charts(chart_data, sprint_duration, sprint_difficulty){
 
   var data = JSON.parse($('#data').attr('data-bdc'));
   data.forEach(function(d) {
-    d.num_jobs = +d.num_jobs;
+    //d.num_jobs = +d.num_jobs;
   });
 
   var g = svg.selectAll(".arc")

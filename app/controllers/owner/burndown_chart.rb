@@ -25,13 +25,24 @@ module MyScrum
       @remaining_difficulty = @sprint_difficulty
       @users = @project.users
 
-      @json_data = Array.new
-      @users.each do |row|
-        number_of_job_done = 0
-        row.jobs_dataset.done.each do |j|
-          number_of_job_done += j.difficulty
+      @sprint_jobs_done = @user_stories.inject([]) do |arr, us|
+        arr << us.jobs_dataset.done.all
+        arr.flatten!
+      end
+
+      owner_jobs = {}
+      @sprint_jobs_done.each do |j|
+        j.owners.each do |o|
+          if owner_jobs[o.username].nil?
+            owner_jobs[o.username] = 0
+          end
+          owner_jobs[o.username] += j.difficulty
         end
-        h = {:name => row.username, :num_jobs => number_of_job_done}
+      end
+
+      @json_data = Array.new
+      owner_jobs.each do |k, v|
+        h = {:name => k, :num_jobs => v}
         @json_data << h
       end
       @json_data = @json_data.to_json

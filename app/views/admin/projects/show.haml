@@ -138,12 +138,13 @@
                       %img{:src=>"/img/icons/cross.png", :title => "Remove"}
 
     .dialog.hidden#assign_devs
-      %label Select a Project Member
-      %select#dev_list
-        - Owner.all.each do |u|
-          %option.dev{:value => u.pk}= u.username
-      %form#dev_form{:action => "/admin/projects/#{@project.pk}/add_developers", :method => :post}
-        %button#save_devs{:type => 'submit'} Save
+      %fieldset
+        %legend Select a Project Member
+        %select#dev_list
+          - Owner.all.each do |u|
+            %option.dev{:value => u.pk}= u.username
+        %form#dev_form{:action => "/admin/projects/#{@project.pk}/add_developers", :method => :post}
+          %button#save_devs{:type => 'submit'} Save
 
 :javascript
   $(document).ready(function(){
