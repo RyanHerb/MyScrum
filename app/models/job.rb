@@ -28,5 +28,14 @@ class Job < Sequel::Model
   subset :todo , :status => "todo"
   subset :in_progress, :status => "in progress"
   subset :done, :status => "done"
+
+
+  # ====================
+  # = Instance Methods =
+  # ====================
+
+  def last_changed_at
+    state_changed_at || updated_at || created_at
+  end
   
 end

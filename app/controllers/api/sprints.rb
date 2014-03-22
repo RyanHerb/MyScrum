@@ -60,7 +60,7 @@ module MyScrum
       difficulties_completed = Array.new(@sprint.duration, 0)
       @sprint.user_stories.each do |v|
         v.jobs_dataset.done.all.each do |jd|
-          difficulties_completed[(jd.state_changed_at.to_date - @date).to_i] = jd.difficulty
+          difficulties_completed[(jd.last_changed_at.to_date - @date).to_i] = jd.difficulty
         end
       end
 

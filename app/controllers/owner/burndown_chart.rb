@@ -4,10 +4,10 @@ require 'date'
 module MyScrum
   class OwnerApp
     
+    
     # ========
     # = Show =
     # ========
-
     
     get '/projects/:pid/sprints/:sid/burndown_chart/show' do |pid, sid|
       @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
@@ -53,7 +53,7 @@ module MyScrum
           end
 
           @tab = Array.new
-          @tab = @jobs_done.select { |obj| obj.updated_at.to_date.to_s == @date.to_s }    
+          @tab = @jobs_done.select { |obj| obj.last_changed_at.to_date.to_s == @date.to_s }    
           sum_difficulty = 0
           @tab.each do |row|
             sum_difficulty += row.difficulty
