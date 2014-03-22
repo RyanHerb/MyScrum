@@ -1,7 +1,7 @@
+require 'google_chart'
 module MyScrum
   class ApiApp < Sinatra::Application
 
-    Dir[ROOT_DIR + '/app/controllers/api/*.rb'].sort.each {|file| require file }
 
     error 401 do
       "401"
@@ -242,6 +242,25 @@ module MyScrum
       end
     end
 
+    post '/owner/projects/:pid/tests/:tid/edit' do |pid, tid|
+      @test = Test.find(:id => tid)
+      decoded_params = JSON.parse(params[:test])
+      @test.set(decoded_params)
+      if @test.valid?
+        @test.save
+        "OK"
+      else
+        "An error occured"
+      end
+    end
+
+   get '/owner/projects/:pid/tests/:tid/show' do |pid, tid|
+      @test = Test.find(:id => tid)
+      response = @test.to_json
+      response
+    end
+
+
     # ===========
     # = Sprints =
     # ===========
@@ -289,18 +308,37 @@ module MyScrum
     post '/owner/projects/:pid/create_sprint' do |pid|
       @current_project = Project.find(:id => pid)
       @sprint = Sprint.new
-
-      decoded_params = JSON.parse(params[:sprint])
-      decoded_params2 = JSON.parse(params[:user_stories])
-      @sprint.set(decoded_params)
+      decoded_params = JSON.parse(params[:Object])
+      @sprint.set(decoded_params['sprint'])
       if @sprint.valid?
-        @sprint.add_user_story(decoded_params2)
         @sprint.save
+        @sprint.add_user_story(decoded_params['user_stories']['user_story_id'])
         "OK"
       else
         "An error occured"
       end
     end
+
+    get '/owner/projects/:pid/sprints/:sid/show' do |pid, sid|
+      @sprint = Sprint.find(:id => sid)
+      response = @sprint.to_json
+      response
+    end
+
+    post '/owner/projects/:pid/sprints/:sid/edit' do |pid, sid|
+      @current_project = Project.find(:id => pid)
+      @sprint = Sprint.find(:id => sid)
+      decoded_params = JSON.parse(params[:Object])
+      @sprint.set(decoded_params['sprint'])
+      if @sprint.valid?
+        @sprint.save
+        @sprint.add_user_story(decoded_params['user_stories']['user_story_id'])
+        "OK"
+      else
+        "An error occured"
+      end
+    end
+
 
     post '/owner/projects/:pid/sprints/:sid/create_job' do |pid, sid|
       @current_project = Project.find(:id => pid)
@@ -318,6 +356,7 @@ module MyScrum
     post '/owner/projects/:pid/sprints/:sid/jobs/:jid/edit_job' do |pid, sid, jid|
       @job = Job.find(:id => jid)
       decoded_params = JSON.parse(params[:job])
+      show_me(decoded_params)
       @job.set(decoded_params)
       if @job.valid?
         @job.save
@@ -327,6 +366,72 @@ module MyScrum
       end
     end
 
+
+    get '/owner/projects/:pid/sprints/:sid/burndown_charts' do |pid, sid|
+      @project = @current_owner.projects_dataset.where(:project => pid).first || halt(404)
+      @sprint = @project.sprints_dataset.where(:id => sid).first || halt(404)
+
+      @date = @sprint.start_date.to_date
+
+      total_difficulty = 0
+      jobs_done = @sprint.user_stories.inject({}) do |h, v|
+        v.jobs_dataset.done.all.each do |jd|
+          total_difficulty += jd.difficulty
+          jd.owners.each do |o|
+            unless h[o.username].nil?
+              h[o.username] += jd.difficulty
+            else
+              h[o.username] = jd.difficulty
+            end
+          end
+        end
+        h
+      end
+
+      pie_chart = ''
+      # Pie Chart
+      GoogleChart::PieChart.new('640x400', "Job Completion Distribution", false) do |pc|
+        jobs_done.each do |k, v|
+          pc.data k, v
+        end
+        pie_chart = pc.to_url
+      end
+
+      difficulties_completed = Array.new(@sprint.duration, 0)
+      @sprint.user_stories.each do |v|
+        v.jobs_dataset.done.all.each do |jd|
+          difficulties_completed[(jd.state_changed_at.to_date - @date).to_i] = jd.difficulty
+        end
+      end
+
+      jobs_done_at = Array.new(@sprint.duration, total_difficulty)
+      difficulties_completed.each_with_index do |value, index|
+        if index == 0
+          current_difficulty = total_difficulty
+        else
+          current_difficulty = jobs_done_at[index - 1]
+        end
+        jobs_done_at[index] = current_difficulty - difficulties_completed[index]
+      end
+
+      
+      # Line Chart
+      line_chart = ''
+      GoogleChart::LineChart.new('640x400', 'Burndown Chart', false) do |lc|
+        lc.data "Jobs", jobs_done_at, '0000ff'
+        lc.show_legend = true
+        lc.axis :y, :range => [0,total_difficulty], :color => '000000', :font_size => 16, :alignment => :center
+        lc.axis :x, :range => [0,jobs_done_at.length+1], :color => '000000', :font_size => 16, :alignment => :center
+        lc.grid :x_step => 100.0/jobs_done_at.length.to_f, :y_step => 100.0/jobs_done_at.length.to_f, :length_segment => 1, :length_blank => 1
+        line_chart = lc.to_url
+      end
+
+      jobs_done['total_difficulty'] = total_difficulty
+      jobs_done['pie_chart'] = pie_chart
+      jobs_done['line_chart'] = line_chart
+      jobs_done['start_date'] = @sprint.start_date
+      jobs_done.to_json
+    end
 
   end
 end
