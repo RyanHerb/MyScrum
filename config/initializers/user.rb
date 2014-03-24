@@ -57,6 +57,10 @@ module GeneralUser
     self.update(:auth_token => Digest::SHA1.hexdigest("#{Time.now.to_f}#{self.email}"))
   end
     
+  def generate_api_key
+    self.update(:api_key => Digest::SHA1.hexdigest("#{self.email}#{self.password}"))
+  end
+
   def name
     "#{first_name} #{last_name}".strip
   end
@@ -83,7 +87,16 @@ module GeneralUser
       else
         false
       end
-    end  
+    end 
+
+    def auth_with_key(params)
+      o = first(["api_key = ?", params[:api_key]])
+      unless o && !o.api_key.blank?
+        false
+      else
+        o
+      end
+    end 
   
   end
     

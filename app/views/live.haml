@@ -1,0 +1,27 @@
+!!!
+- @title = "Live"
+%h1.center Notifications
+%p
+%p
+
+.content
+  %fieldset
+    %table{:style => "width: 100%"}
+      %thead
+        %tr
+          %th Notifications
+          %th Link
+      %tbody
+        - if @notif_sort.nil? || @notif_sort.empty?
+          %tr
+            %td There is no notification to display.
+        - else
+          - @full_notif.each do |n|
+            %tr.selectable
+              - if n[:viewed] < 2
+                %td.red= n[:message]
+              - else
+                %td= n[:message]
+              %td
+                %a{:href => n[:link]}
+                  %img{:src => '/img/icons/view.png', :title => "View"}

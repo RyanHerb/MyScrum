@@ -1,0 +1,20 @@
+%a.addmore{:href => "/admin/projects/new"} new Project
+%h1 Projects
+%table.datatable
+  %thead
+    %tr
+      %th Title
+      %th Description
+      %th Repository
+      %th Public
+      %th.nosort Action
+  %tbody
+    - @projects.each do |p|
+      %tr.selectable{:rel => "/admin/projects/#{p.pk}/show"}
+        %td= p.title
+        %td= p.description
+        %td= p.repo
+        %td= p.public ? "Yes" : "No"
+        %td
+          %a{:href => "/admin/projects/#{p.pk}/edit"}
+            %img{:src => "/img/icons/edit.png"}

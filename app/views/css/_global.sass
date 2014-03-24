@@ -1,0 +1,784 @@
+// Global Styles
+
+// Variables
+@import vars.sass
+
+// ========================================================
+// = RESET MARGINS AND PADDINGS (BUT NOT IN A STUPID WAY) =
+// ========================================================
+
+// Modified from Eric Meyer's reset - http://meyerweb.com/eric/tools/css/reset/
+
+html, body, div, applet, object, iframe,
+blockquote, pre, a, abbr, acronym, address, code,
+del, img, dl, dt, dd, fieldset, form, label, legend,
+table, tbody, tfoot, thead, tr, th, td
+  margin: 0
+  padding: 0
+  border: 0
+  outline: 0
+  font-size: 100%
+  background: transparent
+  list-style: none
+
+\:focus
+  outline: 0
+a
+  color: $linkcolor
+  text-decoration: none
+  cursor: pointer
+
+table
+  border-collapse: collapse
+  border-spacing: 0
+
+body
+  background: #fff
+  color: $textcolor
+  font-family: $basefont
+
+  
+  
+// =============================
+// =    GLOBAL MODIFIER STYLES =
+// =============================
+
+// ==========
+// = CHARTS =
+// ==========
+
+.chartTitle
+  margin-top: 30px
+
+.chart
+  font: 10px sans-serif
+
+.axis path, .axis line
+  fill: none
+  stroke: #000
+  shape-rendering: crispEdges
+
+.line
+  fill: none
+  stroke: steelblue
+  stroke-width: 1.5px
+
+.line.second 
+  stroke: red
+
+.area 
+  fill: none
+  opacity: 0.5
+
+.dot 
+  fill: #fff
+  stroke: steelblue
+  stroke-width: 1.5px
+
+path 
+  stroke-width: 1
+  fill: none
+
+.data1 
+  stroke: steelblue
+  stroke-width: 1.5px
+
+svg 
+  background-color: #fff
+  border: 1px solid #ddd
+  font: 10px sans-serif
+  border: 3px lightgray solid
+  border-radius: 10px
+
+
+// =============
+// = HTML TAGS =
+// =============
+
+iframe
+  border: 1px solid #999
+  padding: 5px
+  width: 95%
+  font-size: 0.8em
+
+p
+  margin: 0 0 1em
+
+
+// Tables
+table
+  margin: 0 0 1em
+  
+th, td
+  font-weight: normal
+  text-align: left
+  padding: 3px 10px 3px 3px
+  &.right
+    text-align: right
+  &.center
+    text-align: center
+  
+th
+  background: #f1f1f1
+  border-bottom: 1px dotted #ccc
+  font-weight: bold
+  tfoot &
+    border-bottom: 1px dotted #999
+tr.subheading
+  td 
+    background: #dadada
+    font-weight: bold
+    border-bottom: 1px solid #666
+    border-top: 1px solid #666
+
+
+// Definition lists
+dl
+  margin: 0 0 1em
+dt
+  clear: both
+
+.pseudotable
+  background: #fff
+  border: 5px solid #fff
+  +boxshadow(0, 0, 2px, 0, rgba(0,0,0,0.5))
+  margin: 0 0 1em
+  .title
+    padding: 5px
+    background: #f1f1f1
+    font-weight: bold
+    margin: 0 0 1em
+    img
+      margin-left: 5px
+
+
+
+// ======================
+// = DISPLAY PROPERTIES =
+// ======================
+
+.block
+  display: block
+  
+.noborder
+  border: none !important
+
+.nomargin
+  margin: 0  !important
+
+.nopadding
+  padding: 0 !important
+
+.hidden
+  display: none
+
+.inline
+  display: inline !important
+
+.center
+  text-align: center
+
+.blockright
+  display: block
+  text-align: right
+  margin-bottom: 15px
+.pseudowidget
+  border: 1px solid #aaa
+  background: white
+  +roundcorners(4px)
+  padding: 3px
+  > p.blankstate
+    padding: 10px
+
+
+// ==========================
+// = CLEARING AND ALIGNMENT =
+// ==========================
+
+// Dan Cederholm's clearfix replacement
+.group:after
+  content: "."
+  display: block
+  height: 0
+  clear: both
+  visibility: hidden
+  
+// in general you should NOT need to use .clear use the fix above on the *contasining div*
+
+.clear
+  clear: both
+  height: 0
+  font-size: 0
+
+    
+.clearleft
+  clear: left
+  height: 0
+  font-size: 0
+
+.clearright
+  clear: right
+  height: 0
+  font-size: 0
+
+.clearnone
+  clear: none
+  
+.floatleft
+  float: left
+
+.floatright
+  float: right
+
+.fullwidth
+  width: 99%
+
+.nofloat
+  float: none !important
+
+.vmiddle
+  vertical-align: middle
+
+// ================
+// = STYLING TEXT =
+// ================
+
+
+.nicefont
+  font-family: $nicefont
+.blankstate
+  font-size: 1.2em
+  font-size: 1.2rem
+  color: #999
+  font-family: $seriffont
+  font-style: italic
+  line-height: 1.3
+
+.lighter
+  font-weight: normal
+  color: #999
+
+.smaller
+  font-size: 0.8em 
+
+.muchsmaller
+  font-size: 0.7em
+
+.textleft
+  text-align: left
+
+.textcenter
+  text-align: center
+
+.textright
+  text-align: right
+
+.nowrap
+  white-space: nowrap
+  
+.strong
+  font-weight: bold
+
+.red 
+  color: #c00
+
+.black
+  color: #000000
+
+.unbold
+  font-weight: normal
+
+.italic
+  font-style: italic
+
+// ==========
+// = IMAGES =
+// ==========
+
+img
+  &.border
+    margin-right: 10px
+    border: 5px solid #fff
+    +boxshadow
+
+// ===============
+// = PAGE BLOCKS =
+// ===============
+
+#footer
+  border-top: 1px dotted #333
+  clear: both
+  text-align: right
+  padding: 5px
+  font-size: 0.7em
+  margin: 20px auto
+  a
+    color: $textcolor
+    border-bottom: 1px dotted $textcolor
+
+// =========
+// = LOGIN =
+// =========
+
+#loginpanel
+  background: #fff
+  margin: 50px auto
+  width: 280px
+  +boxshadow
+  padding: 10px
+  input[type=text], input[type=password]
+    width: 95%
+
+.article.mainpanel
+  margin: 0 0 10px
+
+
+#not_a_member.promo, #am_a_member.promo
+  border-bottom: 1px dotted $vetsk-grey
+  border-top: 1px dotted $vetsk-grey
+  padding: 5px
+  margin: 20px 0
+  text-align: center
+  a
+    color: darken($vetsk-green, 15%)
+    border-bottom: 1px solid darken($vetsk-green, 15%)
+    cursor: pointer
+
+// ==============
+// = RESPONSIVE =
+// ==============
+
+// this must be overidden in the 'min' stylesheets
+.nomobile
+  display: none
+
+// =======================
+// = FLASH NOTIFICATIONS =
+// =======================
+
+#flash
+  display: none
+  position: absolute
+  top: 0
+  color: #fff
+  font-size: 1em
+  text-align: center
+  margin: 0
+  width: 100%
+  z-index: 100
+  .notice
+    background: $greenmid
+    padding: 10px 1%
+    color: #fff
+  .alert, .error
+    background: #c00
+    padding: 10px 1%
+    color: #fff
+
+
+// =======================
+// = OTHER NOTIFICATIONS =
+// =======================
+    
+.warning
+  border: 2px solid #fc0
+  background: url(/img/icons/warning-badge-24.png) 10px 10px  no-repeat #fea
+  // +boxshadow
+  padding: 10px 10px 10px 45px
+  min-height: 24px
+  color: #f90
+  a
+    color: #f90
+    border-bottom: 1px dotted #f90
+
+.notice
+  border: 2px solid darken($vetsk-green, 20%)
+  background: url(/img/icons/notice-badge-24.png) 10px 10px  no-repeat lighten($vetsk-green, 40%)
+  // +boxshadow
+  padding: 10px 10px 10px 45px
+  min-height: 24px
+  color: darken($vetsk-green, 20%)
+  a
+    color: darken($vetsk-green, 20%)
+    border-bottom: 1px dotted darken($vetsk-green, 20%)
+
+.step
+  padding: 5px 10px
+  background: #fff
+  border: 1px dotted #ccc
+  +roundcorners(8px)
+  font-style: italic
+  color: #999
+  
+  
+  
+// =========
+// = FORMS =
+// =========
+
+fieldset
+  +roundcorners
+  background: #fff
+  font-size: 0.9em
+  padding: 10px
+  margin: 0 0 2em
+  border: 1px solid #ccc
+  h2
+    margin-top: 0  
+  #create_ticket &
+    background: #fff
+    box-shadow: 0 0 2px #999
+    +roundcorners(0)
+
+  legend
+    background: #f6f6f6
+    border: 1px solid #ccc
+    display: block
+    margin: 0
+    +lineargradient(#fff, #f6f6f6)
+    padding: 5px 20px  
+    color: $midgreen
+    font-weight: bold
+    font-size: 1.2em
+    text-shadow: 0 1px 0 #fff
+    +roundcorners
+    
+    
+
+    
+form
+  .field
+    clear: both
+    padding: 5px 0
+    &.submit
+      text-align: right
+  .checkbox, .radio
+    label, input 
+      display: inline
+      float: left
+    label
+      padding-right: 5px
+      margin-left: 5px
+    &.w25
+      width: 25%
+      float: left
+  .checkbox
+    label
+      margin-left: 0
+
+.terms
+  padding: 10px
+  height: 200px
+  overflow-y: scroll
+      
+// ==========
+// = INPUTS =
+// ==========
+
+label, .pseudolabel
+  color: $vetsk-grey
+  font-weight: bold 
+  display: block
+  font-size: 1em
+  padding: 0 0 5px
+
+input
+  font-size: 1.1em
+  font-family: $basefont
+  background: #f9fce8
+  padding: 5px
+  &[type=text], &[type=email]
+    width: 95%
+  &.medium
+    width: 50%
+  &.short
+    width: 25%
+  &[disabled=disabled]
+    color: #999
+    background: #efefef
+  &.vshort
+    width: 4em
+    margin-right: 5px
+  &[type=submit]
+    border: 2px solid $vetsk-green-dark
+    color: #fff
+    padding: 5px 15px
+    +roundcorners(5px)
+    background: $vetsk-green
+    +lineargradient($vetsk-green,$vetsk-green-mid)
+    text-shadow: 0 -1px 0 $vetsk-green-dark
+    cursor: pointer
+  //&[type=date], &[type=password], &[type=tel], &.short
+  //    max-width: 320px
+  .vshort &
+    width: 4em
+    margin-right: 5px
+    
+select
+  font-size: 1.1em 
+  &.medium
+    width: 50%
+  &.short
+    width: 25%
+  &.vshort
+    width: 5em 
+.field_options
+  margin: 0 0 1em
+  
+.hint, p.hint, .panel p.hint, .panel.v2 p.hint
+  font-family: $handwritingfont
+  font-style: italic
+  font-size: 0.9em
+  color: #999
+  margin: 2px 0 10px
+
+textarea
+  background: #f9fce8
+  width: 95%
+  font-family: $basefont
+  font-size: 1.1em
+  
+.error
+  color: #c00
+  font-size: 0.8em
+p.error
+  margin: 1em 0
+  font-weight: bold
+  
+
+
+// ==================
+// = PRESENTATIONAL =
+// ==================
+
+span.badge
+  background: #666
+  +roundcorners(3px)
+  color: #fff
+  padding: 3px
+  margin-left: 3px
+
+// ========================
+// = ADD / REMOVE RECORDS =
+// ========================
+
+.addmore, .ui-widget-content a.addmore, .remove, .viewlink, .addnew
+  float: right
+  font-size: 0.9em
+  font-weight: bold
+  color: #fff
+  margin: 0 0 5px 5px
+  padding: 5px 15px
+  +roundcorners(5px)
+  
+  #usertoolbar &
+    float: none
+    font-size: 1em
+
+
+.addmore, .ui-widget-content a.addmore, .addnew
+  background: $orange
+  +lineargradient($midorange, $orange)
+  text-shadow: 0 -1px 0 $vetsk-green-dark
+  border: 1px solid $orange
+  &:hover
+    background: $midorange
+    
+
+p.spacer
+  margin: 10px 0 0
+  padding-top: 15px
+  border-top: 1px dotted #ccc
+
+.addnew
+  +roundcorners(5px)
+  vertical-align: middle
+
+p.logo
+  background: $vetsk-grey
+  
+a.addheart
+  background: url(/img/icons/hearts-sprite.png) left top no-repeat
+  width: 37px
+  height: 35px
+  display:  inline-block
+  &:hover
+    background-position: 0 -35px
+
+// ============================
+// = DEVELOPER & CLIENT NOTES =
+// ============================
+
+.devnotes, .clientnotes
+  background: #ff8  
+  border: 1px solid #cc0
+  padding: 10px
+  font-style: italic
+  font-size: 0.9em
+.clientnotes
+  border: 1px solid #fa56f8
+  background: #fdc9fd
+
+
+
+// =================
+// = MEDICAL FILES AND PLOGS =
+// =================
+.medfiles
+  clear: both
+.medfile, .plog
+  background: lighten($vetsk-green, 40%)
+  padding: 5px
+  border: 5px solid #fff
+  +boxshadow
+  margin: 5px 0
+  .medfile_head, .plog_head
+    color: darken($vetsk-green, 20%)
+    font-size: 0.8em
+    margin: -5px -5px 5px
+    padding: 5px
+    background: lighten($vetsk-green, 30%)
+    border-bottom: 1px dotted lighten($vetsk-green, 30%)
+    font-size: 0.7em
+    border-bottom: 1px dotted $vetsk-green
+    img
+      vertical-align: middle
+      margin: 0 5px 0 10px
+      &:first-child
+        margin: 0 5px 0 0
+    .plog_date
+      padding-left: 25px
+  .description, .plog_body
+    font-size: 0.8em 
+    color: #333
+
+  &.step
+    box-shadow: none
+    font-size: 0.9em
+    background: #faf9f8
+    border: 3px solid #fff
+    font-style: normal
+    .plog_head
+      background: #ece8e4
+      border-bottom: 1px dotted #999
+      color: #999
+      .plog_date 
+        background: url(/img/plog/step.png) top left no-repeat
+    .plog_body
+      color: #999
+  &.appointment
+    margin: 5px 10px
+
+  &.apptboundry
+    background: #e9f2f7
+    margin: 5px 0
+    .plog_head
+      background: #abcde0
+      border-bottom: 1px solid #fc0
+      color: #2e6380
+      border-bottom: 1px dotted #2e6380
+      .plog_date 
+        background: url(/img/plog/appointment.png) top left no-repeat
+
+  &.note
+    background: #fff5cc
+    .plog_head
+      background: #fea
+      border-bottom: 1px solid #fc0
+      color: #f90
+      .plog_date
+        background: url(/img/plog/note.png) top left no-repeat
+  &.media, &.file
+    background: #ece8e4
+    .plog_head
+      background: #c3b6a7 
+      border-bottom: 1px dotted $vetsk-grey
+      color: $vetsk-grey
+      .plog_date 
+        background: url(/img/plog/media.png) top left no-repeat
+  &.file
+    .plog_head
+      .plog_date 
+        background: url(/img/plog/file.png) top left no-repeat
+
+  &.procedure
+    .plog_head
+      .plog_date 
+        background: url(/img/plog/procedure.png) top left no-repeat
+
+// CONTACT PHONE NUMBERS
+#userlogin
+  padding: 15px 0 0
+  text-align: right
+  .badge
+    margin-left: 5px
+
+
+.contact_header
+  font-family: $nicefont
+  font-size: 1.4em
+  line-height: 1
+  color: #fff 
+  text-align: right
+  margin-bottom: 25px
+  strong
+    text-shadow: 0 -1px 0 darken($vetsk-grey, 40%)
+  .smaller 
+    font-size: 0.7em
+  .muchsmaller
+    font-size: 0.5em
+
+
+// ===================
+// = PHOTO GALLERIES =
+// ===================
+
+
+.card-place
+  display: inline-block
+  // margin: -5px
+  #sort-description
+    border-top: 2px groove
+    font-size: 0.8em
+    font-style: italic
+    margin-top: 10px
+    margin-bottom: 10px
+    padding-top: 10px
+    text-align: right
+  .caption
+    font-style: italic
+    text-align: center
+
+.card
+  float: left
+  width: 120px
+  padding: 10px
+  margin: 5px
+  background-color: #f9f8f9
+  +boxshadow(3px)
+  -webkit-transition: all 500ms easy-in-out
+  +roundcorners
+  .card_image
+    width: 120px
+    border: 1px solid #666
+    cursor: pointer
+  .photo-place.clickable
+    color: #ccc
+    position: relative
+    height: 120px
+    max-height: 120px
+    overflow: hidden
+    border: 1px solid #ccc
+    text-align: center
+    img
+      margin-top: 25px
+      width: 20px
+      height: 20px
+      border: none
+  &.label
+    padding: 0 0 0 15px
+    width: 8.9cm
+    height: 3.6cm
+
+.ui-widget-content a.green
+  color: #8C9D1D

@@ -1,0 +1,45 @@
+!!!
+.wrapsections
+  %h1= "Sprint #{@sprint.id}"
+  %p= "Start Date: #{@sprint.start_date}"
+  %p= "Duration: #{@sprint.duration}"
+  %p= "Sprint Difficulty: #{@sprint_difficulty}"
+  %fieldset
+    %legend Sprint details
+    .tabs
+      %ul
+        %li.tab
+          %a.nolink{:href => '#tab1'} Wall
+        %li.tab
+          %a{:href => '#tab2'} User Stories
+      .clear
+
+      #tab1 
+        =partial :post_it_wall, :locals => {:user_stories => @user_stories}
+      #tab2.pane
+        %table.datatable
+          %thead
+            %tr
+              %th Id
+              %th Title
+              %th Description
+              %th Priority
+              %th Diffilculty
+              %th Finished
+              %th Validated
+              %th.right.nosort Actions
+          %tbody
+            - @user_stories.each do |u|
+              %tr.selectable
+                %td= u.id
+                %td= u.title
+                %td= u.description
+                %td= u.priority
+                %td= u.difficulty
+                %td= u.finished ? "Yes" : "No"
+                %td= u.valid ? "Yes" : "No"
+                %td.right.actions
+                  %a{:href => "/admin/user_stories/#{u.pk}/show"}
+                    %img{:src => '/img/icons/view.png', :title => "view #{u.title}"}
+                  %a{:href => "/admin/user_stories/#{u.pk}/edit"}
+                    %img{:src => '/img/icons/edit.png', :title => "edit #{u.title}"}

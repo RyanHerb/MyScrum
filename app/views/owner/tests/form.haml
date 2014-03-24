@@ -1,0 +1,25 @@
+!!!
+- @action = @test.new? ? "/owner/projects/#{@project.pk}/tests" : "/owner/projects/#{@project.pk}/user_stories/#{@user_story.pk}/tests/#{@test.pk}"
+%a{:href => "/owner/projects/#{@project.pk}/show#tab5"} Back to project
+%p
+- if @test.new? or @test.state.eql?("not_tested")
+  - options = [["not_tested", "Not tested"]]
+- else
+  - options = []
+- options += [["failed", "Failed"], ["success", "Success"]]
+%h1= @test.new? ? "Create a new Test" : "Edit \"#{@test.title}\""
+%fieldset
+  %legend Test details
+  %body
+    = form_for @test, :action => @action do |f|
+      %fieldset
+        = f.input :title, :label => "Title"
+        = f.select :state, :options => options, :label => "State"
+        = f.select :owner_id, :options => @owners.inject([]){ |arr, o| arr << [o.pk, o.username]; arr}, :label => "Tester"
+        = f.select :user_story_id, :options => @user_stories.inject([]){ |arr, o| arr << [o.pk, o.title]; arr}, :label => "User story"
+        = f.input :input, :label => "Input"
+        = f.textarea :test_case, :input_options => {:rows => 6}, :label => "Test Case"
+        = f.textarea :expected, :input_options => {:rows => 6}, :label => "Expected Result"
+        = f.textarea :comment, :input_options => {:rows => 6}, :label => "Comment"
+       
+        = f.submit "Submit"

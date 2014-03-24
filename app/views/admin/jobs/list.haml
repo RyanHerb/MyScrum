@@ -1,0 +1,27 @@
+%a.addmore{:href => "/admin/jobs/new"} new Job
+%h1 Jobs
+%table.datatable
+  %thead
+    %tr
+      %th Title
+      %th Description
+      %th Status
+      %th Difficulty
+      %th User Story
+      %th Assigned To
+      %th.right.nosort Actions
+  %tbody
+    -@jobs.each do |j|
+      %tr.selectable{:rel => "/admin/jobs/#{j.pk}/show"}
+        %td= j.title
+        %td= j.description
+        %td= j.status.split.map(&:capitalize).join(' ')
+        %td= j.difficulty
+        %td
+          %a{:href => "/admin/user_stories/#{j.user_story.pk}/show"}= j.user_story.title
+        %td= j.owners.inject([]){ |a, o| a << o.username; a}.join(', ')
+        %td.right
+          %a{:href => "/admin/jobs/#{j.pk}/edit"}
+            %img{:src => '/img/icons/edit.png'}
+          %a{:href => ''}
+            %img{:src => '/img/icons/cross.png'}

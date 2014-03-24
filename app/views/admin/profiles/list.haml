@@ -1,0 +1,14 @@
+%a.addmore{:href => '/admin/profiles/new'} new Admin
+%h2 Admin Index
+%table.datatable
+  %thead
+    %tr
+      %th Name
+      %th Email
+      %th.nosort Actions
+  %tbody
+    - @profiles.each do |admin|
+      %tr.selectable{:rel => "/admin/profiles/#{admin.pk}/show"}
+        %th= admin.name
+        %th= admin.email
+        %th

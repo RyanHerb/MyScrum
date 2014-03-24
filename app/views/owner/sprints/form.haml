@@ -1,0 +1,40 @@
+!!!
+-today = Date.today
+%a{:href => "/owner/projects/#{@project.pk}/show#tab3"} Back to project
+%h1= @sprint.new? ? "Create new sprint" : "Edit Sprint"
+%fieldset
+  %legend Sprint details
+  = form_for @sprint, :action => "/owner/projects/#{@project.pk}/sprint/create" do |f|
+    %fieldset
+      .field
+        %label{:for => :start_date} Select a Start date
+        %select{:name => "day", :required => true}
+          -(1..31).each do |i|
+            %option{:value => i, :selected => today.day == i}=i
+        %select{:name => "month"}
+          -["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"].each_with_index do |v, i|
+            %option{:value => i.to_i+1, :selected => today.month == i+1}=v
+        %select{:name => "year"}
+          - if @sprint.start_date
+            - start = @sprint.start_date.to_date.year.to_s
+          - else
+            - start = today.year
+            - end_date = start + 10
+          -(start.to_s..end_date.to_s).each do |i|
+            %option{:value => i}=i
+        - if !@sprint.errors.on(:start_date).nil?
+          .field_with_errors
+            .red= @sprint.errors.on(:start_date).first
+      = f.select :duration, :options => ("1".."7").to_a, :required => true
+      .field
+        %label{:for => "userstories"} User Stories
+        - if @user_stories.length > 0
+          %select{:id => "userstories", :name => "userstories[]", :multiple => true}
+            - @user_stories.each do |u|
+              %option{:value => u.pk}= u.title
+        - else
+          There are no user stories to be selected. Please add some in your Backlog
+        - if !@sprint.errors.on(:user_story).nil?
+          .field_with_errors
+            .red= @sprint.errors.on(:user_story).first
+      = f.submit "Submit"

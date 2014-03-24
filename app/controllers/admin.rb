@@ -27,12 +27,14 @@ module MyScrum
 
     before do
       show_me params.inspect
-      protected!(:user) unless ['/login'].include?(request.path_info)
+      protected!(:admin) unless ['/login'].include?(request.path_info)
       # set the empty breadcrumb array
       @breadcrumbs = []
     end
     
-
+    get '/' do
+      redirect '/admin/owners'
+    end
 
 
     get '/login' do
@@ -42,7 +44,7 @@ module MyScrum
 
     post '/login' do
       @title = "Login"
-      if authenticate!(:user)
+      if authenticate!(:admin)
         if session[:return_to] && session[:return_to] !~ /login/
           redirect "/admin#{session.delete(:return_to)}"
         else
@@ -55,7 +57,7 @@ module MyScrum
     end
 
     get '/logout' do
-      logout(:user)
+      logout(:admin)
       redirect '/'
     end
 

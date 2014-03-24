@@ -1,0 +1,30 @@
+%a.addmore{:href => "/admin/user_stories/new"} new User Story
+%h1 User Stories
+%table.datatable
+  %thead
+    %tr
+      %th Title
+      %th Description
+      %th Priority
+      %th Difficulty
+      %th Finished
+      %th Validated
+      %th Project
+      %th.right.nosort Actions
+  %tbody
+    - @user_stories.each do |us|
+      %tr.selectable{:rel => "/admin/user_stories/#{us.pk}/show"}
+        %td= us.title
+        %td= us.description
+        %td= us.priority
+        %td= us.difficulty
+        %td= us.finished ? "Yes" : "No"
+        %td= us.valid ? "Yes" : "No"
+        %td
+          - project = us.project
+          %a{:href => "/admin/projects/#{project.pk}/show"}= project.title
+        %td.right
+          %a{:href => "/admin/user_stories/#{us.pk}/edit"}
+            %img{:src => 'img/icons/edit.png'}
+          %a{:href => '#'}
+            %img{:src => 'img/icons/cross.png'}

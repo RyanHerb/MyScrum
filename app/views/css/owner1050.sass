@@ -1,0 +1,48 @@
+// Variables
+@import vars.sass
+@import global768.sass
+
+.panel, .panel.v2
+
+  h2.appointments, h2.alarm
+    padding: 3px 15px 3px 40px
+
+.panel
+  background: url(/img/bgds/grey-grd-bgd.png) repeat-x center top white 
+  border: 2px solid white
+  &.v2
+    background: url(/img/bgds/grey-grd-bgd-2.png) repeat-x center bottom white 
+  &.wrap
+    background: url(/img/bgds/grey-grd-bgd.png) repeat-x center top white
+    margin: 15px 0
+      
+
+.article
+  float: left
+  width: 66%
+  padding-right: 2%
+  .owner &
+    width: 50%
+
+.aside
+  float: right
+  width: 30%
+  .owner &
+    width: 48%
+  
+.userprofile  
+  h1
+    font-size: 2em  
+  .details
+    p
+      font-size: 1em
+      
+  
+#procedure-list
+  width: 64%
+  .procedure
+    margin: 0 1% 15px 1%
+    height: 120px
+    padding: 5px 1% 3%
+  h2
+    text-align: left

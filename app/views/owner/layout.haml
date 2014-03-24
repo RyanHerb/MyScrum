@@ -1,0 +1,61 @@
+!!! Strict
+%html{ html_attrs("en_us"), :manifest => "/application.manifest"}
+  %head
+    %title 
+      MyScrum Owner Area
+      = if_not_blank(@title, " | ")
+
+    %meta{:content => "text/html; charset=utf-8", "http-equiv" => "content-type"}/
+
+    - %w(jquery-1.7.2.min.js jquery.dataTables.min.js datatables-uk.js application.js bootstrap-dropdown.js jquery-ui-1.8.21.custom.min.js jquery.form.js jquery.cookie.js jquery.contextMenu.js d3.v3.min.js).each do |j|
+      %script{:type => 'text/javascript', :language => 'javascript', :src => "/js/#{j}"}
+
+    %link{:rel => "stylesheet", :type => "text/css",  :href => "/stylesheets/jqui-vetsk-public/vetsk-public.css"}
+    %link{:rel => "stylesheet", :type => "text/css",  :href => "/stylesheets/jquery.contextMenu.css"}
+    %link{:rel => "stylesheet", :type => "text/css",  :href => "/css/site.css"}
+    %link{:rel => "stylesheet", :type => "text/css",  :href => "/css/owner.css"}
+    %link{:rel => "stylesheet", :href => '/css/owner768.css', :media => "only screen and (min-width: 768px) and (max-width: 1049px)"}
+    %link{:rel => "stylesheet", :href => '/css/owner1050.css', :media => "only screen and (min-width: 1050px)"}
+    
+  %body{:class => @bclass, :id => @bid}
+    
+    -# show flash message if any (from sinatra-flash)
+    =styled_flash
+    
+    #header
+      #userlogin.floatright
+        %a.badge{:href => '/'} Home
+        - if @current_user
+          %a.badge{:href => '/admin/return'} Back to Admin
+        - number = current_owner.notifications.find_all{ |n| n.viewed == 0}.count
+        - if number > 0
+          %a.badge{:href => '/live'} Live (#{number})
+        - else
+          %a.badge{:href => '/live'} Live
+        %a.badge{:href => '/owner/projects'} Projects
+        %a.badge{:href => '/owner'} Account Settings
+        %a.badge{:href => '/owner/logout'} #{current_owner.username} - Log Out
+
+        
+      #logo
+        %a{:href => '/'} MyScrum
+
+          
+    
+    /content from views spits out here
+    #content{:class => @cclass}
+      = yield
+
+    #footer
+      %span.floatleft ©#{Date.today.year} My Scrum
+
+:javascript
+  $(document).ready(function(){
+    show_flash_notification();
+    setupDataTables();
+    setup_delete_links();
+    setup_form_dialogs();
+    setup_datepicker();
+    setup_tabs();
+    $('.tabs').tabs();
+  });

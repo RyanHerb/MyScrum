@@ -1,0 +1,28 @@
+%a.addmore{:href => "/admin/sprints/new"} new Sprint
+%h1 Sprints
+%table.datatable
+  %thead
+    %tr
+      %th Charts
+      %th User Stories
+      %th Start Date
+      %th Duration (days)
+      %th.nosort Action
+  %tbody
+    - @sprints.each do |s|
+      %tr.selectable{:rel => "/admin/sprints/#{s.pk}/show"}
+        %td.right.actions
+          %a{:href => "/admin/sprints/#{s.pk}/burndown_charts/show"} 
+            %img{:src=>"/img/icons/chart.png", :title => "Burndown Chart"}
+        %td
+          %table
+            - s.user_stories.each do |u|
+              %tr
+                %td= u.title
+        %td= s.start_date
+        %td= s.duration
+        %td.right.actions
+          %a{:href => "/admin/sprints/#{s.pk}/show"} 
+            %img{:src=>"/img/icons/view.png", :title => "View sprint #{s.pk}"}
+          %a{:href => "/admin/sprints/#{s.pk}/edit"}
+            %img{:src => '/img/icons/edit.png', :title => "Edit sprint #{s.pk}"}

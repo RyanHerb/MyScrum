@@ -1,0 +1,27 @@
+!!!Strict
+-@bclass = 'project edit'
+
+.content
+  %table.datatable{:style => "width: 100%"}
+    %thead
+      %tr
+        %th Title
+        %th Description
+        %th Repository
+        %th Public
+        %th.right.nosort Actions
+    %tbody
+      %a.badge{:href  => '/owner/projects/create'} Create a new project
+      - @projects.each do |p|
+        %tr
+          %td= p.title
+          %td= p.description
+          %td
+            %a{:href => "#{p.repo}"}= p.repo
+          %td= p.public ? "Yes" : "No"
+          %td.right.actions
+            %a{:href => "/owner/projects/#{p.pk}/show"}
+              %img{:src => '/img/icons/view.png', :title => "View #{p.title}"}
+            %a{:href => "/owner/projects/#{p.pk}/edit"}
+              %img{:src => '/img/icons/edit.png', :title => "Edit #{p.title}"}
+

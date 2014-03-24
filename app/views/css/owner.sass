@@ -1,0 +1,238 @@
+@import vars.sass
+@import datatables.sass
+// ================
+// = Pet profiles =
+// ================
+
+h1
+  color: $orange
+  font-size: 2.2em
+  margin: 0 0 15px
+
+.panel.greenhead
+  h2
+    font-size: 1.4em
+    color: white
+    // background-image: -webkit-linear-gradient(top, #CBD600 0%, #AAB200 100%)
+    +lineargradient($midgreen,$green)
+    padding: 10px 15px
+    margin: -8px -8px 10px
+    +roundcorners
+    +textshadow
+
+      
+#loggedinas
+  float: right
+  padding: 20px
+  a
+    float: right
+    font-size: 0.8em
+    color: #fff
+    border-bottom: 1px dotted #fff
+  img
+    float: right
+    margin-left: 7px
+      
+#ownerheading
+  h1
+    background: $vetsk-blue
+    color: $vetsk-blue-dark 
+
+  dt
+    color: $vetsk-blue-dark
+    
+h1.bigheading
+  +roundcorners(12px)
+  background: $vetsk-blue
+  color: $vetsk-blue-dark 
+  border: 7px solid #fff
+  padding: 5px
+  a.editprofile
+    float: right
+    font-size: 0.5em 
+    font-size: 0.8rem 
+    color: $vetsk-blue-dark 
+    border-bottom: 1px dotted $vetsk-blue-dark
+    margin-right: 5px
+    padding-top: 10px
+  
+
+p.updateprofile  
+  a
+    font-size: 0.85em
+        
+
+#procedure-list, #time_filter, #date_filter, #staff_filter, #appt-keyinfo, #customise_appt, .appt-keyinfo
+  background: lighten($vetsk-grey, 50%)
+  border: 4px solid white
+  +roundcorners(12px)
+  padding: 10px
+  +boxshadow
+  h2, .title
+    +lineargradient($brown, $darkbrown)
+    color: white
+    font-size: 1.3em
+    font-weight: normal
+    margin: -10px -10px 10px -10px
+    padding: 10px 15px
+    +roundcorners
+  .title
+    font-size: 1.1em
+    text-align: left
+    +textshadow
+    img
+      margin: -4px 5px 0 -8px
+      float: left
+  .procedure
+    background: url(/img/bgds/grey-grd-bgd.png) repeat-x center top white
+    border: 2px solid white
+    +roundcorners(5px)
+    float: left
+    width: 45%
+    padding: 10px 3% 3%
+    margin: 0 3% 15px 0
+    +boxshadow
+    height: 195px
+  .procedure-title
+    font-weight: bold
+    font-size: 1.1em
+    border-bottom: 1px dotted #ccc
+    padding: 0 0 10px 0
+    img
+      float: right
+
+  .procedure-description
+    margin: 5px 0
+    font-size: 0.8em
+  .procedure-price
+    font-size: 0.8em
+    color: #c00
+    padding: 5px 0
+    span.rrp
+      color: #999
+    border-bottom: 1px solid #ccc
+    .fixed
+      color: $textcolor
+#procedure-list
+  float: right
+  p.explain
+    padding-bottom: 5px
+    margin: 0 10px 5px
+  h2
+    line-height: 1.5
+    padding: 7px 10px
+    +textshadow
+    img
+      float: left
+      margin-right: 10px 
+.procedure
+  position: relative
+  .addProcedure
+    position: absolute
+    bottom: 3px
+    right: 5px
+  a.addmore
+    font-size: 0.9em
+ 
+#appt-procedures, #appt-add-procedures, #myappointments .appointment
+  +roundcorners(0)
+  +boxshadow 
+  background: url(/img/bgds/grey-grd-bgd.png) repeat-x center top white
+  
+  border: 4px solid white
+  padding: 10px
+  
+#appt-add-procedures
+  padding: 20px 5px 5px 5px
+
+.overlay
+  background-color: #aaa
+  img
+    text-align: center
+
+    
+#time_filter, #date_filter, #staff_filter
+  margin: 0 0 15px
+  #staff_filter
+    background: #fff
+  #time_filter
+    background: #fff
+    .hour
+      font-size: 0.8em
+  #date_filter
+    background: #fff
+  #time_scale
+    background: white
+    padding: 10px
+    margin: 10px 0
+    +roundcorners
+    +boxshadow
+    border: 1px solid $brown
+    .hour
+      font-weight: bold
+  #time_chooser
+    margin: 12px 0 0
+    background: lighten($vetsk-grey, 50%)   
+            
+.procs
+  h3
+    padding: 5px
+    margin: 10px 0 0
+    border-bottom: 1px solid $vetsk-grey
+    border-top: 3px solid $vetsk-grey
+    font-weight: bold
+    color: darken($vetsk-grey, 20%)
+  .petprocs, .closeoutnotes
+    background: #fff
+    padding: 10px
+    border-bottom: 1px dotted $vetsk-grey
+    &:last-child
+      border-bottom: none
+      +roundbottomcorners(5px)
+
+    h4
+      margin: 0 0 5px
+      font-weight: bold
+   
+.procsummary-title, .products-title
+  background: url(/img/icons/stethoscope-green.png) right 0 no-repeat lighten($vetsk-green, 45%)
+  color: $vetsk-green-mid
+  border-top: 3px solid $vetsk-green
+  font-size: 1em
+  padding: 10px 25px 5px 5px
+  span
+    color: $darkbrown
+    font-weight: bold
+  a
+    color: $vetsk-grey
+    border-bottom: 1px dotted $vetsk-grey
+       
+       
+         
+// Payment fields
+
+#ccv
+  width: 5%
+
+.expm
+  float: left
+  width: 40px
+  margin-right: 5px
+
+.expy
+  float: left
+  width: 40px
+
+#expm, #expy
+  width: 25px
+
+form
+  .field
+    background: #f6f6f6
+    padding: 10px
+    margin: 5px 0  
+    +roundcorners
+    &.submit
+      background: none
+
+

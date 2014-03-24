@@ -1,0 +1,202 @@
+// Variables
+@import vars.sass
+
+.tools
+  float: right
+  margin: 7px 10px 15px
+  
+  
+
+//.mailshot_actions
+  float: right
+  padding: 0 8px
+  border-right: 1px dotted #999
+  margin: 0 8px 0
+
+.dataTables_wrapper
+  clear: both
+  margin: 10px 0 
+  position: relative
+  
+.dataTables_info
+  float: left
+  color: #999
+  font-family: Georgia,"Times New Roman", serif
+  font-size: 0.8em
+  font-size: 0.8rem
+  font-style: italic
+  position: absolute
+  top: 13px
+  left: 10px
+ 
+.dataTables_filter
+  color: #999999
+  font-family: Georgia,"Times New Roman",serif
+  font-style: italic
+  font-size: 0.8em
+  padding: 7px 5px 6px
+  text-align: right
+  input
+    max-width: 200px
+    padding: 3px
+
+
+table, table.datatable
+  background: #fff
+  clear: both
+  width: 100%
+  margin: 20px 0 10px
+  border: 5px solid #fff
+  box-shadow: 0 0 2px #999
+  font-size: 0.9em
+  tr.even
+    background: #f3f3f3
+  th, td
+    font-size: 0.9em
+    padding: 10px 15px 4px 5px
+    a
+      color: $textcolor
+        
+  th
+    border-right: 1px solid #fff
+    padding: 5px 14px 5px 5px  
+    white-space: nowrap
+    font-weight: bold
+    vertical-align: top
+
+  td
+    border-bottom: 1px dotted #999
+  thead
+    color: #333
+    background: #ccc
+    border: 5px solid white
+  tbody
+    border-left: 5px solid white
+    border-right: 5px solid white
+    td
+      border-left: 1px dotted #999
+  tfoot
+    border-left: 5px solid white
+    border-right: 5px solid white
+    border-bottom: 5px solid white
+    background: #f4f4f4
+
+  th.sorting_asc
+    background: url("/img/datatables/sort_asc.png") no-repeat center right #7b6a54
+    color: #fff
+
+  th.sorting_desc
+    background: url("/img/datatables/sort_desc.png") no-repeat center right #7b6a54
+    color: #fff
+
+  th.sorting
+    background: url("/img/datatables/sort_both.png") no-repeat center right #998469
+    color: #fff
+  
+  th.sorting_disabled, th.nosort
+    background: #998469
+    color: #fff
+  
+table.datatable
+  th
+    color: #fff
+.dataTables_paginate
+  float: right
+  margin: 5px 0 0
+  //  text-align: right
+  span.paginate_button, span.paginate_active
+    background: #E0F6FF
+    font-size: 0.8em
+    border: 1px solid #0099cc
+    margin: 5px
+    padding: 3px
+    cursor: pointer
+    color: #0099cc
+  span.paginate_active
+    background: #09c
+    color: #fff
+
+.dataTables_length
+  color: #999
+  float: left
+  font-size: 0.8em
+  font-family: Georgia,"Times New Roman", serif
+  font-style: italic
+  margin: 5px 0 
+  width: 40%
+
+.paginate_disabled_previous, .paginate_enabled_previous, .paginate_disabled_next, .paginate_enabled_next
+  height: 18px
+  width: 19px
+  margin-left: 3px
+  float: left
+  cursor: pointer
+  text-indent: -1000em
+
+.paginate_disabled_previous
+  background-image: url("/img/datatables/back_disabled.png")
+
+.paginate_enabled_previous
+  background-image: url("/img/datatables/back_enabled.png")
+
+.paginate_disabled_next
+  background-image: url("/img/datatables/forward_disabled.png")
+
+.paginate_enabled_next
+  background-image: url("/img/datatables/forward_enabled.png")
+
+tr.selectable
+  cursor:  pointer
+  &:hover
+    background: #effaff
+    
+// weird styling only required because of using a form for the delete link in datatables
+td.actions
+  a, form
+    // display: inline-block
+    display: inline // this way it fixes IE..... //
+    margin:  0 5px 0 0
+    
+  a
+    text-decoration: none
+    img
+      margin: 0
+  a, form, img
+    margin:  0 5px 0 0
+
+// if we're waiting for data
+
+.dataTables_processing
+  background: url(/img/icons/hourglass.png) 5px 5px no-repeat #ffc
+  border: 1px solid #BD8C56
+  color: #BD8C56
+  font-style: italic
+  padding: 5px 5px 5px 29px
+  position: absolute
+  top: 5px
+  left: 5px
+  z-index: 500
+  margin: 0 0 10px
+// if we have a list in a td
+tbody td ul
+  margin: 0   
+  
+form td.actions.field input[type=checkbox]
+  float: none
+  
+tr.resolved td
+  color: #999
+  
+tfoot
+  td.act_on_selected
+    padding: 5px
+    text-align: right
+    
+span.count
+  display: block
+  float: left
+  width: 40px
+  
+td.expiring
+  background: #ffa3c9
+ 

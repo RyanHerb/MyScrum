@@ -1,0 +1,98 @@
+%table.postItWall
+  %thead
+    %tr
+      %td User Stories
+      %td To Do
+      %td In Progress
+      %td Done
+  %tbody
+    - user_stories.each do |us|
+      %tr{:class => "container_id_#{us.pk}"}
+        %td
+          %a{:href => "/owner/projects/#{us.project.pk}/user_stories/#{us.pk}/show"}= us.title
+        %td.todo.container_droppable{:id => "container_#{us.pk}_todo", :"data-state" => "todo"}
+          - us.jobs_dataset.todo.each do |job|
+            = partial :post_it, :locals => {:job => job}
+        %td.inprogress.container_droppable{:id => "container_#{us.pk}_inprogress", :"data-state" => "inprogress"}
+          - us.jobs_dataset.in_progress.each do |job|
+            = partial :post_it, :locals => {:job => job}
+        %td.done.container_droppable{:id => "container_#{us.pk}_done", :"data-state" => "done"}
+          - us.jobs_dataset.done.each do |job|
+            = partial :post_it, :locals => {:job => job}
+
+:javascript
+  $(function() {
+    var hash = {};
+    $('.postIt').each(function(){
+      // extract first class from postIt (represents US id)
+      var classId = $(this).attr('class').split(" ")[0];
+      hash[classId] = classId;
+      var currentPostIt = $(this);
+      $('.submit_' + currentPostIt.data('jobid')).click(function(e){
+        e.preventDefault();
+        var form = $('.form_for_' + currentPostIt.data('jobid'));
+        $.post(form.attr('action'), form.serialize(), function(res) {
+          if(res != 'NOT_OK') {
+            $('.ui-dialog-content').dialog("close");
+            var obj = $.parseJSON(res);
+            if(obj.length > 0) {
+              currentPostIt.find('.ownerIcon').find('img').removeAttr('class');
+              currentPostIt.find('.ownerIcon').find('img').attr('title', obj.join(', '));
+            } else {
+              currentPostIt.find('.ownerIcon').find('img').attr('class', 'hidden');
+              currentPostIt.find('.ownerIcon').find('img').removeAttr('title');
+            }
+          }
+        }).fail(function (res) {
+          storeData(form.attr('action'), 'post', form.serialize());
+        });
+      });
+    });
+
+    for(key in hash) {
+      $('.postIt.' + key).draggable({
+        containment: '.container_' + key,
+        revert: 'invalid'
+      });
+    }
+
+    $('.container_droppable').droppable({
+      accept: '.postIt',
+      tolerance: 'pointer',
+      hoverClass: 'container_highlight',
+      drop: function(event, ui) {
+        $(ui.helper).css({
+          'left': 'auto',
+          'top': 'auto'
+        });
+
+        change_postit_state($(ui.helper), $(this).data('state'));
+        if($(this).data('state') == "done") {
+          $(ui.helper).attr('class', 'postItDone');
+        }
+      }
+    });
+
+    $.contextMenu({
+      selector: '.postIt',
+      items: {
+        "edit": {name: "Edit", callback: function(key, opt){ document.location.href = $(this).data('action') + '/edit'; }},
+        "assign": {name: "Assign Devs", callback: function(key, opt){
+                                                    $('#' + $(this).data('jobid')).dialog({
+                                                      resizable: false,
+                                                      width: 400,
+                                                      height: 300,
+                                                      modal: true
+                                                    });
+                                                  }},
+        "sendTo": {
+          name: "Send To",
+          items: {
+            "todo": {name: "To Do", callback: function(key, opt) { change_postit_state($(this), "todo"); }},
+            "inprogress": {name: "In Progress", callback: function(key, opt) {change_postit_state($(this), "inprogress");}},
+            "done": {name: "Done", callback: function(key, opt) {change_postit_state($(this), "done");}}
+          }
+        }
+      }
+    });
+  });

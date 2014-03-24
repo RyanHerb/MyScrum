@@ -1,0 +1,28 @@
+!!!
+%a{:href => "/owner/projects/#{@project.pk}/show#tab3"} Back to sprints
+%p
+#data{:"data-bdc" => @json_data}
+.panel
+  %fieldset
+    %legend= "Sprint #{@sprint.id}"
+    %table
+      %tr
+        %th Start Date
+        %td= @sprint.start_date.to_date
+      %tr
+        %th Duration 
+        %td= @sprint.duration
+      %tr
+        %th Sprint Difficulty
+        %td= @sprint_difficulty
+        
+    #burndownChart
+      %h3 Burndown Chart (Sum of Task Estimates)
+    %br
+    #userContributions
+      %h3 User Contributions Chart for Tasks Done
+
+:javascript
+  $(document).ready(function() {
+    draw_burndown_charts(#{ @burndown_chart_data }, #{ @sprint.duration }, #{ @sprint_difficulty });
+  });

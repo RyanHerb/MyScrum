@@ -1,0 +1,828 @@
+// Get globally applicable styles
+@import global.sass
+@import datatables.sass
+
+
+body
+  background: $vetsk-blue-light
+
+
+h1, h2
+  color: darken($vetsk-grey, 10%)
+  text-shadow: 0 1px 0 #fff
+  span
+    font-weight: normal    
+
+h1
+  font-size: 1.5em
+  font-size: 1.5rem 
+  span.appt-pet-name
+    font-weight: normal
+  .appt-details
+    border-top: 1px dotted #ccc
+    padding: 5px 0
+    margin: 8px 0 
+    font-weight: normal
+    font-size: 0.8em
+    span
+      color: $orange
+
+
+.main
+  float: left
+  width: 75%
+
+#header
+  background: $vetsk-grey
+  +boxshadow($xoff: 0, $yoff: 5px, $blur: 6px, $spread: 0, $color: rgba(0,0,0,0.3))
+  margin: 0 auto
+  padding: 0 5%
+
+#loggedinas
+  color: lighten($vetsk-grey, 40%)
+  float: right
+  font-size: 0.8em
+  padding: 10px
+  +roundbottomcorners
+  a
+    color: #fff
+    border-bottom: 1px dotted #fff
+  
+  
+#nav
+  box-shadow: 0 5px 6px 0 rgba(0,0,0,0.3)
+  // border-top: 1px dotted #999
+  #topbar
+    padding: 0 5%
+
+#breadcrumb
+  font-size: 0.7em
+  padding: 2px 0
+  margin: 15px 0 20px
+  border-top: 1px dotted #ccc
+  border-bottom: 1px dotted #ccc
+  color: #999
+  
+  a
+    color: #999
+  p
+    margin: 0
+
+#content, #footer
+  width: 90%
+  margin: 0 auto
+
+
+
+
+// =========
+// = FORMS =
+// =========
+
+fieldset
+  +roundcorners
+  background: #fff
+  font-size: 0.9em
+  padding: 10px
+  margin: 0 0 2em
+  border: 1px solid #ccc
+  h2
+    margin-top: 0  
+  #create_ticket &
+    background: #fff
+    box-shadow: 0 0 2px #999
+    +roundcorners(0)
+  &.roles
+    label
+      width: 15%    
+
+
+  legend
+    background: #fff
+    border: 1px solid #ccc
+    display: block
+    margin: 0
+    padding: 8px 10px  
+    color: $midgreen
+    font-weight: bold
+    text-shadow: 0 1px 0 #fff
+    +roundcorners
+    
+form
+  .field
+    clear: both
+    padding: 5px 0
+    &.short
+      input
+        width: 4em
+  .field_input
+    width: auto
+  .checkbox, .radio
+    label, input 
+      display: inline
+    &.w15
+      width: 15%
+    &.w25
+      width: 25%
+      float: left
+
+label
+  &.checkbox
+    padding-left: 25px
+
+input
+  &.checkbox
+    float: left
+    
+
+
+// ==========
+// = INPUTS =
+// ==========
+
+.field
+  label
+    color: $vetsk-grey
+    font-weight: bold 
+    display: block
+    font-size: 1em
+    padding: 0 0 5px
+    &.checkbox
+      display: block
+      float: left
+      padding-left: 5px
+
+  input
+    &[type=submit]
+      background: $orange
+      border: 2px solid white
+      +roundcorners(10px)
+      padding: 5px 15px
+      &:hover
+        background: $midorange
+
+  select
+    font-size: 1.1em  
+
+.hint
+  font-size: 0.9em
+  font-style: italic
+  color: #999
+  padding: 5px 0
+
+textarea
+  background: #f9fce8
+  width: 95%
+  font-family: $basefont
+  font-size: 1.1em
+
+.inline_block
+  width: auto
+  display: inline-block
+
+
+
+// pusher
+.pusher_notification
+  display: block 
+  position: absolute
+  visibility: hidden
+  top: 10px
+  right: 10px
+  z-index: 1000
+  width: 150px
+  height: auto
+  filter: alpha(opacity=80)
+  -khtml-opacity: 0.8
+  -moz-opacity: 0.8
+  opacity: 0.8
+  padding: 5px 8px
+  background-color: #000
+  color: #fff
+
+.pusher_notification #msg
+  margin: 5px
+
+.working_pattern_canvas
+  width: 875px
+  position: relative
+  padding-top: 20px
+  font-size: 11px
+  text-indent: 3px
+  .hours_layer
+    position: absolute
+    width: 80%
+    margin-left: 20%
+    z-index: 0
+    .hour_grid
+      float: left
+      display: block
+      width: 6%
+      color: #999
+      margin-right: -1px
+      border-right: 1px solid #ccc
+  .row:first-child
+    margin-top: 20px
+    border-top: 1px solid #999
+    padding: 1px 0 0
+  .pattern
+    position: absolute
+    width: 100%
+    z-index: 1
+    .row
+      border-bottom: 1px solid #ccc
+      padding: 0 0 1px
+      margin: 0 0 1px
+      height: 25px
+      clear: both
+    .label
+      width: 20%
+      float: left
+      line-height: 25px
+      background: #efefef
+    .slots
+      position: relative
+      width: 80%
+      height: 100%
+      float: left
+      .slot
+        position: absolute
+        height: 21px
+        padding: 2px 0
+        +roundcorners(3px)
+        font-size: 11px
+        font-weight: bold
+        text-transform: uppercase
+        overflow: hidden
+        color: #fff
+        .times
+          font-size: 12px
+  
+        a
+          color: #fff
+          margin: -2px 2px 0 0
+        &.consulting
+          background: $greenmid
+          background: transparentize($greenmid, 0.4)
+          &.dirty
+            background: transparentize($greenmid, 0.7)
+            border: 2px dotted $greenmid
+            padding: 0
+        &.operating
+          background: $vetsk-blue-dark
+          background: transparentize($vetsk-blue-dark, 0.4)
+          &.dirty 
+            background: transparentize($vetsk-blue-dark, 0.7)
+            border: 2px dotted $vetsk-blue-dark
+        &.blocked
+          background: $vetsk-brown
+          background: transparentize($vetsk-brown, 0.4)
+          &.dirty
+            background: transparentize($vetsk-brown, 0.7)
+            border: 2px dotted $vetsk-brown
+            padding: 0
+            
+// ==============
+// = Pet owners =
+// ==============      
+
+.panel
+  &.pet-owner
+    //background: url(/img/bgds/grey-grd-bgd-2.png) repeat-x center bottom white
+    width: 60%
+    +roundcorners(10px)
+    margin: 0 0 15px
+    padding: 10px
+    +boxshadow
+    dl
+      font-size: 0.95em 
+    dt, dd
+      padding: 8px
+    dt
+      background: #ececec
+      font-weight: bold
+      border-top: 2px solid white
+
+
+#date_nav
+  margin: 0 auto
+  padding: 10px
+  a
+    border: 1px solid $lightgreen
+    background: #fff
+    margin: 0 2px 0 
+    font-size: 0.8em
+    padding: 5px 10px
+    +roundcorners(5px)
+    color: $green
+    &:hover
+      background: #ccc
+      color: #000
+    &.active
+      border: none
+      background: $green
+      color: #fff
+      font-weight: bold
+
+// ==============
+// = PROCEDURES =
+// ==============
+#steps
+  padding-top: 20px
+  padding-bottom: 20px
+
+.step.ui-state-default
+  background: lighten($vetsk-grey, 50%)
+  border: 1px solid $vetsk-grey
+  color: $vetsk-grey
+  margin: 5px 0
+  padding: 10px
+  +roundcorners
+  .step_number, .step_title, .step_icons
+    float: left
+    font-size: 1.2em
+    vertical-align: middle   
+    img
+      vertical-align: middle    
+  .step_title
+    &:hover
+      cursor: pointer
+
+  .step_number
+    font-weight: bold
+    margin-right: 10px
+  .step_icons
+    margin-right: 15px
+  .info
+    background: lighten($vetsk-grey, 80%)
+    border: 1px solid lighten($vetsk-grey, 30%)
+    font-weight: normal
+    padding: 5px
+    +roundbottomcorners
+    
+// ============
+// = PRODUCTS =
+// ============
+
+#product_summary_bar
+  +roundcorners
+  background: lighten($vetsk-grey, 30%)
+  border: 3px solid $vetsk-grey
+  padding: 5px
+  margin: 0 0 20px
+  .keydata
+    margin-left: 20px
+    padding-left: 20px 
+    border-left: 1px dotted $vetsk-grey
+    float: left
+    &:first-child
+      border-left: none
+      margin-left: 5px
+      padding-left: 0
+    .descriptor
+      font-size: 0.7em
+    .value
+      font-size: 1.2em
+      font-weight: bold
+
+
+
+
+    
+// ===============
+// = QUICKSEARCH =
+// ===============
+
+#search-tools
+  background: darken($vetsk-grey, 30%)
+  float: right
+  width: 200px
+  margin-right: 5px
+  +roundbottomcorners
+  padding: 10px
+  input
+    background: lighten($vetsk-grey, 55%)
+    border: 1px solid #000
+    font-size: 0.8em
+    width: 190px
+      
+// ==============
+// = FRONT DESK =
+// ==============
+.bar 
+  border-bottom: 1px solid $vetsk-grey
+  border-left: 1px solid $vetsk-grey
+  border-right: 1px solid $vetsk-grey
+  margin: 0 auto 15px
+  width: 99%
+
+  a
+    width: 33%
+    text-align: center
+    padding: 10px 0
+    +lineargradient(#f7f7f7,#cdcdcd)
+    color: #000
+    border-left: 1px solid #333
+    float: left
+    font-weight: bold
+    text-shadow: 0 1px 0 #fff
+    &:first-child
+      border-left: none
+    &#checkout
+      width: 34%
+      margin: 0 -1px 0 -1px 
+    &.current
+      +lineargradient(#F6C662,#AF783E)
+      text-shadow: 0 1px 0 #F6C662
+
+
+table#proceduresAndProducts
+  margin-top: 5px
+  td, th
+    font-size: 0.9em
+    border-right: none
+  tr.totals
+    th, td
+      background: lighten($vetsk-grey, 50%)
+
+.datetoday
+  +roundcorners
+  border: 1px solid darken($vetsk-grey, 20%)
+  background: darken($vetsk-grey, 10%)
+  text-align: center
+  font-size: 1.3em
+  margin: 0
+  padding: 5px 10px
+  font-weight: bold
+  color: #fff
+  text-shadow: 0 -1px 0 darken($vetsk-grey, 60%)
+#today-wrapper
+  +roundcorners
+  h3
+    background: #efefef
+    border-top: 1px dotted $vetsk-grey
+    padding: 5px
+    margin: 0
+.appt
+  font-size: 0.8em
+  a.badge
+    +roundcorners(3px)
+    padding: 5px
+    background: $vetsk-green
+    color: #fff
+    border: 1px solid darken($vetsk-green, 30%)    
+    text-shadow: 0 -1px 0 darken($vetsk-green, 10%)
+    float: right 
+    margin-left: 3px
+    &:hover
+      background: darken($vetsk-green, 30%)
+
+#day-wrapper
+  width: 96%
+  margin: 0 auto
+  
+#allday
+  padding: 5px 0
+  .appt
+    border: 1px solid $vetsk-grey
+    color: #333
+    float: left
+    width: 140px
+    margin: 0 0 5px
+    margin-right: 5px
+    padding: 5px
+    +roundcorners
+    min-height: 170px
+    .petphotos
+      min-height: 90px
+      padding: 5px 0
+    .ownerphone, .petname, .vetname, .ownername
+      padding: 3px 0
+    .ownerphone,.petname, .vetname, .petphotos
+      border-top: 1px dotted lighten($vetsk-grey, 30%)
+    .ownername
+      a
+        color: #333
+    .actions
+      border-top: 1px dotted lighten($vetsk-grey, 30%)
+      margin-top: 3px
+      padding-top: 3px
+      text-align: center
+      a
+        float: none
+        display: inline-block
+.hour, #hospital_list, #checkout_list, #inpatient_list
+  margin-top: 5px
+.hour, #hospital_list, #hospitalization_tab, #checkout_list, #inpatient_list
+  h4
+    background: $vetsk-grey
+    color: #fff
+    padding: 5px
+  .appt
+    background: #efefef
+    border: 3px solid #999
+    +roundcorners
+    color: #666
+    padding: 8px
+    margin: 0 0 5px
+    &.checked_in
+      background: lighten(#ffeeaa, 5%)
+      border: 3px solid #fc0
+      color: #333
+      padding: 4px
+      &.called_in
+        background: lighten($vetsk-green, 35%)
+        border: 3px solid darken($vetsk-green, 15%)
+        color: darken($vetsk-green, 15%)
+        text-shadow: 0 1px 0 #fff
+        .lighter.smaller
+          color: darken($vetsk-green, 15%)
+    &.readyfordischarge
+      background: #fea
+      border: 3px solid #fc0
+      padding: 6px
+    img
+      vertical-align: top
+      margin-right: 5px
+    .appttime
+      float: left
+      font-size: 1.5em
+      padding: 0 5px 0 0
+      line-height: 1
+      min-width: 100px
+      strong
+        display: block
+      .vetname
+        display: block
+        clear: both
+        padding: 3px 0 0
+        font-size: 0.5em
+      .actual_time_calledin, .actual_time_checkedin, .actual_time_ready_for_checkout
+        padding: 3px
+        margin: 2px 3px 0 0
+        +roundcorners(3px)
+        background: #666
+        color: #fff
+        font-size: 0.5em
+        display: block
+        float: left
+        clear: left
+      .actual_time_calledin, .actual_time_ready_for_checkout
+        color: #fff
+        text-shadow: none
+        background: darken($vetsk-green, 15%)
+      .actual_time_checkedin
+        color: #333
+        background: #fc0
+    .pets_owner_wrap
+      margin-left: 120px
+    .petname, .ownername
+      float: left
+      border-left: 1px dotted darken($vetsk-green, 30%)
+      margin: 0 0 5px 10px
+      padding-left: 10px
+    .ownername
+      min-width: 150px
+    .actions
+      float: right
+
+#mytools
+  position: fixed
+  right: -201px
+  top: 10px
+  width: 201px
+  background: #fc0
+  &:hover
+    right: 0
+  .frontdesk-tools
+    width: 200px
+    border-left: 1px solid #fff
+    a
+      display: block
+      padding: 5px
+      color: #fff
+      border-bottom: 1px dotted #fff
+      &:hover
+        background: #f90
+  .handle
+    margin-left: -32px
+    float: left
+    background: #fc0
+    width: 20px
+    padding: 6px
+    +roundleftcorners
+
+// ===========================================
+// = QUICK APPT BUILDER - OWNER / PET / PROC =
+// ===========================================   
+
+#petsInfo, #proceduresInfo
+  ul, li
+    list-style: none
+    margin: 0
+    padding: 0
+  li
+    background: #efefef
+    display: block
+    padding: 6px 
+    border: 1px solid #ccc
+    color: #999
+    margin: 0 0 2px  
+    font-size: 1.2em 
+    &:hover
+      background: lighten($vetsk-green, 20%)
+    &.petName.current
+      color: darken($vetsk-green, 25%)
+      border: 2px solid darken($vetsk-green, 25%)
+      background: lighten($vetsk-green, 35%)
+      padding: 5px
+
+#proceduresInfo
+  li
+    background: #ccc
+    color: #333
+    border: 2px solid #333
+ 
+#total_price
+  margin-top: 5px
+  border-top: 2px solid $vetsk-grey
+  padding-top: 5px
+  font-size: 1.2em
+  text-align: right    
+     
+
+// =======================
+// = Calendars=
+// =======================
+
+#appointment_calendar, #klinic_calendar
+  margin: 0 0 20px 
+  #calendar_title
+    border: 1px solid $vetsk-grey
+    +roundcorners
+    width: 94%
+    margin: 0 auto
+    text-align: center  
+    padding: 15px 1% 10px
+    background: lighten($vetsk-grey, 45%)
+    span
+      font-size: 1.3em
+      font-weight: bold
+    .month_name
+      font-size: 1.3em
+      font-weight: bold
+      color: $darkbrown
+      text-shadow: 0 1px 0 #fff
+      
+  .prev_next a
+    color: $vetsk-grey
+    font-size: 0.9em
+    +lineargradient($midbrown, $brown)
+    color: #fff
+    padding: 5px 10px
+    +roundcorners
+    &:hover
+      background: $brown
+  .prev_next#prev
+    float: left
+  .prev_next#next
+    float: right
+    
+  #days
+    +roundcorners
+    padding: 10px
+    overflow: hidden
+    //margin: -10px 0 0 85px
+  #day_names
+    border: none
+    // margin: -5px 0 0 20px
+    font-size: 1em
+    +roundcorners
+    .day
+      background: none
+      min-height: 0
+      border: none
+      text-align: center
+      font-weight: bold
+      font-size: 0.8em
+
+  .day
+    +lineargradient(#fff, #ececec)
+    float: left
+    width: 11%
+    padding: 5px 1%
+
+    +roundcorners
+    margin: 2px
+    border: 1px solid $midbrown
+    position: relative
+    min-height: 70px
+    padding-top: 16px
+    text-align: center
+    .date_number
+      position: absolute
+      top: 3px
+      right: 5px
+      font-size: 0.9em
+      // font-weight: bold
+      color: $brown
+
+  .rrp
+    font-size: 1em
+    color: #999
+    text-decoration: line-through
+  .best_price
+    font-size: 1.2em
+    font-weight: bold
+    img
+      margin-top: -8px
+#klinic_calendar
+  table
+    background: none
+    border: none
+    box-shadow: none
+    margin-top: 2px
+    tbody
+      border: none
+  td
+    border-bottom: none
+    padding: 4px 0
+    .consbar_wrap
+      border: 1px solid darken($vetsk-green, 20%)
+      margin: 0 0 2px
+      .consbar
+        background: $vetsk-green
+        height: 5px
+        .not_in &
+          background: transparent
+    .opsbar_wrap
+      border: 1px solid darken($vetsk-blue, 50%)
+      .opsbar
+        background: darken($vetsk-blue, 30%)
+        height: 5px
+  tr.not_in
+    td
+      color: #e1e1e1
+      .opsbar_wrap, .consbar_wrap
+        border: 1px solid #e1e1e1
+        .opsbar, .consbar
+          background: transparent
+.calendar_filters
+  border-top: 1px dotted lighten($vetsk-grey, 30%)
+  border-bottom: 1px dotted lighten($vetsk-grey, 30%)
+  padding: 5px 1%
+  width: 94%
+  margin: 0 auto 5px
+  text-align: right
+  .field
+    clear: none
+    display: inline
+    margin: 0 0 0 10px
+    input, label
+      display: inline
+      font-weight: normal
+      font-size: 0.8em
+// ================================
+// = APPOINTMENT CALENDAR OVERLAY =
+// ================================
+
+#time_accordion
+  .ui-accordion-content
+    padding: 2px
+  li, ul
+    list-style: none
+    padding: 0
+    margin: 0
+  li 
+    padding: 5px
+    background: lighten($vetsk-grey, 40%)
+    border: 1px solid $vetsk-grey
+    margin: 0 0 2px
+    font-size: 0.8em
+
+// APPOINTMENT LIST
+
+tr.cancelled
+  td
+    color: #ccc
+
+    
+// ===============
+// = QUICKSEARCH =
+// ===============
+
+.ui-autocomplete-category
+  margin: 0 0 3px
+  padding: 5px
+  text-shadow: 0 -1px 0 darken($vetsk-grey, 20%)
+  background: $vetsk-grey
+  color: #fff
+ul.ui-menu li.ui-menu-item
+  font-size: 0.8em
+
+
+//REFUNDS
+
+table.refund
+  th, td
+    font-size: 1em

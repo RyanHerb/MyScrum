@@ -1,0 +1,66 @@
+!!!
+%a{:href => "/owner/projects/#{@project.pk}/show#tab3"} Back to project
+%p
+.wrapsections
+  %h1= "Sprint #{@sprint.id}"
+  %p= "Start Date: #{@sprint.start_date}"
+  %p= "Duration: #{@sprint.duration}"
+  %p= "Sprint Difficulty: #{@difficulty}"
+  - if !@sprint.commit.nil?
+    %p<
+      = "Last commit: "
+      - if @sprint.commit.eql?("none")
+        = @sprint.commit.capitalize
+      - else
+        %a{:href => "#{@sprint.commit}"}= @sprint.commit
+  %fieldset
+    %legend Sprint details
+    .tabs
+      %ul
+        %li.tab
+          %a.nolink{:href => '#tab1'} Wall
+        %li.tab
+          %a{:href => '#tab2'} User Stories
+      .clear
+
+      #tab1 
+        %a.badge{:href  => "/owner/projects/#{@project.pk}/jobs/create/#{@sprint.pk}"} Create Job
+        = partial :post_it_wall, :locals => {:user_stories => @user_stories}
+      #tab2.pane
+        %table.datatable
+          %thead
+            %tr
+              %th Id
+              %th Title
+              %th Description
+              %th Priority
+              %th Diffilculty
+              %th Finished
+              %th Validated
+              %th.right.nosort Actions
+          %tbody
+            - @user_stories.each do |u|
+              %tr.selectable
+                %td= u.id
+                %td= u.title
+                %td= u.description
+                %td= u.priority
+                %td= u.difficulty
+                - if u.finished
+                  %td
+                    %img{:src => '/img/icons/yes.png'}
+                - else
+                  %td
+                    %img{:src => '/img/icons/no.png'}
+                - if u.valid
+                  %td
+                    %img{:src => '/img/icons/yes.png'}
+                - else
+                  %td
+                    %img{:src => '/img/icons/no.png'}
+                %td.right.actions
+                  %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{u.pk}/show"}
+                    %img{:src => '/img/icons/view.png', :title => "View #{u.title}"}
+                  %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{u.pk}/edit"}
+                    %img{:src => '/img/icons/edit.png', :title => "Edit #{u.title}"}
+      

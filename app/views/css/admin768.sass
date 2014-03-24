@@ -1,0 +1,61 @@
+// Variables
+@import vars.sass
+@import global768.sass
+
+dt
+  float: left
+  width: 38%
+  padding: 3px 1%
+  .emp_profile &
+    padding: 5px 1%
+dd
+  padding: 3px 1%
+  display: block
+  float: right
+  border-top: 1px dotted #ccc
+  width: 58%  
+  .emp_profile &
+    padding: 5px 1%
+
+    
+// ===============================
+// = Non mobile global modifiers =
+// ===============================
+
+.floatright, .addmore, .remove, .viewlink
+  float: right
+
+// ===============
+// = NAVIGATIONS =
+// ===============
+
+// ============================
+// = NARROW FORM INPUT FIELDS =
+// ============================
+
+.narrowfields, .widefields
+  width: 500px
+  background: #F3F8FC
+  border: 1px solid #333
+  +roundcorners(5px)
+  padding: 10px
+  margin: 1em auto 0
+  h1, h2
+    +roundtopcorners(5px)
+    margin: -9px -9px 10px
+    padding: 10px
+    background: #666
+    border-bottom: 1px solid #333
+    +lineargradient(#999, #666)
+    color: #fff
+    text-shadow: 0 -1px 0 #333
+    font-size: 1.5em
+    span.breadcrumb
+      display: block
+      font-size: 0.7em
+      margin: 0 0 5px
+    a
+      color: #fff
+      border-bottom: 1px dotted #fff
+  .widefields
+    width: 90%

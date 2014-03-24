@@ -1,0 +1,20 @@
+%a.addmore{:href => "/admin/tests/new"} new Test
+%h1 Sprints
+%table.datatable
+  %thead
+    %tr
+      %th Title
+      %th State
+      %th Tester
+      %th.nosort Action
+  %tbody
+    - @tests.each do |t|
+      %tr.selectable{:rel => "/admin/tests/#{t.pk}/show"}
+        %td= t.title
+        %td= t.state
+        %td= t.owner.username
+        %td.right.actions
+          %a{:href => "/admin/tests/#{t.pk}/show"} 
+            %img{:src=>"/img/icons/view.png", :title => "View sprint #{t.pk}"}
+          %a{:href => "/admin/tests/#{t.pk}/edit"}
+            %img{:src => '/img/icons/edit.png', :title => "Edit sprint #{t.pk}"}

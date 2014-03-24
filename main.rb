@@ -35,6 +35,13 @@ configure do
   session_options[:domain] = CONFIG['cookie_domain'] if CONFIG['cookie_domain']
   
   use Rack::Session::Cookie, session_options
+
+  # ===================
+  # = Mailer settings =
+  # ===================
+  set :mailer_test_domains, %w(gmail.com)
+  set :mailer_from_name, "MyScrum"
+  set :mailer_from_email, 'rya.herb@gmail.com'
   
 end
 

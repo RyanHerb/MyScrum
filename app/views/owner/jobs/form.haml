@@ -1,0 +1,23 @@
+- @title = ""
+- if @job.new? and !@user_story.nil?
+  %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{@user_story.pk}/show#tab2"} Back to user story
+- elsif @job.new? and !@sprint.nil?
+  %a{:href => "/owner/projects/#{@project.pk}/sprints/#{@sprint.pk}/show"} Back to sprint
+- else
+  %a{:href => "/owner/projects/#{@project.pk}/show#tab3"} Back to project
+%p
+%fieldset
+  %legend Job Details
+  - action = @job.new? ? "/owner/projects/#{@project.pk}/jobs" : "/owner/projects/#{@project.pk}/user_stories/#{@user_story.pk}/jobs/#{@job.pk}/edit"
+  =form_for @job, :action => action, :enctype => 'multipart/form-data' do |f|
+    = f.input :title, :label => 'Title'
+    = f.textarea :description, :label => 'Description'
+    = f.select :status, :label => 'Status', :options => [["todo", "To Do"], ["in progress", "In Progress"], ["done", "Done"]]
+    = f.input :difficulty, :label => 'Difficulty', :type => "number", :min => "1"
+    - if @job.new? and @user_story.nil? and @sprint.nil?
+      = f.select :user_story_id, :label => 'User Story', :options => @project.user_stories.inject([]){ |arr, us| arr << [us.pk, us.title]; arr}
+    - elsif !@user_story.nil? and @job.new?
+      = f.select :user_story_id, :label => 'User Story', :options => [[@user_story.pk, @user_story.title]], :selected => @user_story.pk
+    - elsif @job.new? and !@sprint.nil?
+      = f.select :user_story_id, :label => 'User Story', :options => @sprint.user_stories.inject([]){ |arr, us| arr << [us.pk, us.title]; arr}
+    = f.submit "Submit"

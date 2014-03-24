@@ -1,0 +1,19 @@
+!!!
+- @title = "User Stories"
+
+= form_for @user_story do |f|
+  %fieldset
+    %legend= @user_story.new? ? "Create New User Story" : "Edit #{@user_story.title}"
+    = f.input :title, :label => 'Title'
+    = f.textarea :description, :input_options => {:rows => 6}, :label => 'Description'
+    - unless @projects.nil?
+      %label{:for => :project} Project
+      %select{:name => :project}
+        %option{:value => nil} Choose
+        - @projects.each do |p|
+          %option{:value => p.pk}= p.title
+    - else
+      %input.hidden{:name => :project, :value => @project.pk}
+    = f.input :priority, :label => 'Priority', :type => "number", :min => "1"
+    = f.input :difficulty, :label => 'Diffilculty', :type => "number", :min => "1"
+    = f.submit "Submit"

@@ -1,0 +1,41 @@
+!!!
+%a{:href => "/owner/projects/#{@project.pk}/show#tab5"} Back to project
+%p
+%h1= "Test \"#{@test.title}\""
+%fieldset
+  %legend Test details
+  %body
+    %table
+      %tr
+        %th Title
+        %td= @test.title
+      %tr
+        %th Status
+        %td
+          - case @test.state
+          - when "not_tested"
+            %img{:src => '/img/icons/question.png', :title => "Not tested"}
+          - when "failed"
+            %img{:src => '/img/icons/no.png', :title => "Test failed"}
+          - when "success"
+            %img{:src => '/img/icons/yes.png', :title => "Test successful"}
+      %tr
+        %th Test Date
+        %td= @test.tested_at
+      %tr
+        %th Tester
+        %td= @owner
+      %tr
+        %th User Story
+        %td= @user_story.title
+      %tr
+        %th Input
+        %td= @test.input
+      %tr
+        %th Expected result
+        %td= @test.expected
+      %tr
+        %th Comment
+        %td= @test.comment
+     
+              

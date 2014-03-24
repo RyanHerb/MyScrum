@@ -1,0 +1,11 @@
+-@title = ""
+
+%fieldset
+  %legend Job Details
+  =form_for @job, :enctype => 'multipart/form-data' do |f|
+    = f.input :title, :label => 'Title'
+    = f.textarea :description, :label => 'Description'
+    = f.select :status, :label => 'Status', :options => [["todo", "To Do"], ["in progress", "In Progress"], ["done", "Done"]]
+    = f.input :difficulty, :label => 'Difficulty', :input_options => {:type => "number", :min => "1"}
+    = f.select :user_story_id, :label => 'User Story', :options => @user_stories.inject([]){ |arr, us| arr << [us.pk, us.title]; arr}
+    = f.submit "Submit"

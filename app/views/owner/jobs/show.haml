@@ -1,0 +1,28 @@
+- @title = "Job"
+%a{:href => "/owner/projects/#{@project.pk}/show"} Back to project
+%h1 Job
+
+%table.datatable
+  %thead
+    %tr
+      %th Title
+      %th Description
+      %th Status
+      %th Difficulty
+      %th Associated User Story
+      %th.nosort Actions
+  %tbody
+    %tr
+      %td= @job.title
+      %td= @job.description
+      %td= @job.status
+      %td= @job.difficulty
+      %td
+        %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{@user_story.pk}/show"} #US
+      %td
+        %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{@user_story.pk}/tasks/#{@job.pk}/show"}
+          %img{:src => "/img/icons/view.png"}
+        %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{@user_story.pk}/tasks/#{@job.pk}/edit"}
+          %img{:src => "/img/icons/edit.png"}
+        %a{:href => "/owner/projects/#{@project.pk}/user_stories/#{@user_story.pk}/tasks/#{@job.pk}/delete"}
+          %img{:src => "/img/icons/delete.png"}

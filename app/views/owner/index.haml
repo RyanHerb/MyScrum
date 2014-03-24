@@ -1,0 +1,28 @@
+!!!
+.wrapsections
+  .panel
+    %fieldset
+      %legend Account Settings
+      %table
+        %tr
+          %th First Name
+          %td= @current_owner.first_name
+        %tr
+          %th Last Name
+          %td= @current_owner.last_name
+        %tr
+          %th Username
+          %td= @current_owner.username
+        %tr
+          %th Email
+          %td= @current_owner.email
+        %tr
+          %th Api Key
+          %td
+            = @current_owner.api_key
+            %a.badge{:href => '/owner/generate_api_key'}= @current_owner.api_key.blank? ? "Generate" : "Update"
+
+      %a.badge{:href => '/owner/profile'} Edit
+
+
+

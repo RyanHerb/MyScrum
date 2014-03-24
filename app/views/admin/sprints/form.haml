@@ -1,0 +1,23 @@
+!!!
+%h1= @sprint.new? ? "Create Sprint" : "Edit sprint #{@sprint.pk}"
+%fieldset
+  %legend Sprint details
+  %body
+    = form_for @sprint, :action => "/admin/sprints/#{@sprint.pk}/edit" do |f|
+      %fieldset
+        %label{:for => "day"} Select date
+        %select{:name => "day", :required => true}
+          -(1..31).each do |i|
+            %option{:value => i}=i
+        %select{:name => "month"}
+          -["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"].each_with_index do |v, i|
+            %option{:value => i.to_i+1}=v
+        %select{:name => "year"}
+          -("2010".."2050").each do |i|
+            %option{:value => i}=i
+        = f.select :duration, :options => ("1".."7").to_a, :immediate => true
+        %label{:for => "userstories"} User Stories
+        %select{:name => "userstories[]", :multiple => true}
+          -@user_stories.each do |u|
+            %option{:value => u.pk}= u.title
+        = f.submit "Submit"

@@ -1,0 +1,13 @@
+!!!
+%fieldset
+  %legend
+    = @admin.new? ? "Edit Admin" : "Create Admin"
+    = @admin.name
+  = form_for @admin, :action => '/admin/profiles' do |f|
+    %fieldset
+      = f.input :first_name, :label => 'First Name'
+      = f.input :last_name, :label => 'Last Name'
+      = f.input :email, :label => 'Email'
+      = f.input :password, {:type => 'password', :label => "New Password"}
+      = f.input :password_confirmation, {:type => 'password', :label => "Confirm"}
+      = f.submit "Submit"

@@ -1,0 +1,18 @@
+!!!
+.fieldset
+  #data{:"data-bdc" => @json_data}
+  #chart
+    %h1= "Sprint #{@sprint.id}"
+    %p= "Start Date: #{@sprint.start_date.to_date}"
+    %p= "Duration: #{@sprint.duration}"
+    %p= "Sprint Difficulty: #{@sprint_difficulty}"
+    #burndownChart
+      %h3 Burndown Chart (Sum of Task Estimates)
+    %br
+    #userContributions
+      %h3 User Contributions Chart for Tasks Done
+
+:javascript
+  $(document).ready(function() {
+    draw_burndown_charts(#{ @burndown_chart_data }, #{ @sprint.duration }, #{ @sprint_difficulty });
+  });

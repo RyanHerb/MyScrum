@@ -1,7 +1,23 @@
 - @title = "Homepage"
 
-%h1.center MyScrum Homepage
-.div.center
-	YOLO SWAG
-	- @user = User.all
-	=@user.first.email
+.pane
+  %h1.center MyScrum Homepage
+
+.panel
+  %h2.center Public projects
+  %table.datatable{:style => "width: 100%"}
+    %thead
+      %tr
+        %th Title
+        %th Repository
+    %tbody
+      - @public.each do |p|
+        %tr.selectable
+          %td= p.title
+          %td= p.repo
+
+.panel.floatright
+  %h4 Found a problem with our website ? Please report it to us !
+  .clear
+  %div{:style => 'height: 5px'}
+  %a.badge{:href => '/bug_reports/form'} Report bug

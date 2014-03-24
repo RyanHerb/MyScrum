@@ -1,0 +1,154 @@
+// Get globally applicable styles
+@import vars.sass
+@import global768.sass
+
+body
+  background: url(/img/bg_body.png)
+
+// CONTENT TEMPLATES
+
+#content, #footer 
+  width: 95%
+
+#content h1
+  .shop &
+    font-size: 1.5em
+    font-weight: bold
+
+.article 
+  width: 73%
+
+.panel
+  // background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0.14, rgb(157,140,119)),color-stop(0.97, rgb(93,78,60))
+  background: url(/img/bgds/grey-grd-bgd.png) repeat-x 0 0 white 
+  +boxshadow
+  border: 2px solid white
+  margin: 0 0 15px
+  padding: 10px
+
+  &.wrap
+    padding: 10px 20px 15px
+
+  .col &
+    min-height: 320px
+    margin: 0
+    position: relative
+    img
+      width: 100%
+      border: 1px solid #999
+      margin: 10px 0 15px
+  ul
+    margin: 10px 0 
+    li
+      padding: 5px 0
+      font-size: 0.9em
+      color: $brown
+      font-weight: bold
+      .shop &
+        font-size: 0.75em 
+      
+  
+  .wrapsections
+    background-image: -webkit-linear-gradient(bottom, rgb(125,106,85) 0%, rgb(240,236,232) 100%)
+    background-image: -moz-linear-gradient(bottom, rgb(125,106,85) 0%, rgb(240,236,232) 100%)
+    border: 6px solid $lightgreen
+    +roundcorners(0 15px 15px 15px)
+    position: relative
+    margin-top: 65px
+    padding: 20px 10px
+    .header
+      background: url(/img/logos/vetsKlinic-heart-cornerL.png) no-repeat left top transparent
+      +roundcorners(10px)
+      height: 100px
+      width: 255px
+      position: absolute
+      top: -79px
+      left: -9px
+    &.tv
+      +roundcorners(8px)
+      padding: 10px
+
+  p
+    padding: 10px 0
+    font-size: 0.95em
+    line-height: 1.4
+    margin: 0
+  
+p.intro
+  font-size: 1em  
+  
+a.badge
+  padding: 5px 10px
+  font-size: 0.9em
+  // img
+  // margin: 2px 5px 0 0
+   
+.col a.badge 
+  width: 90px
+  font-size: 0.75em
+  text-align: center
+  font-weight: bold
+  // padding: 5px 10px
+    
+.media_thumb a 
+  font-size: 1.2em
+  clear: left
+  
+// TEMPORARY STYLE FOR DEVELOPMENT
+.placeholder
+  width: 100%
+  height: 100px
+  background: #ececec
+  border: 1px solid #ccc
+  float: left
+  margin: 0 10px 10px 0
+  &.last
+    margin-right: 0
+
+.shadow
+  background: url(/img/panel-shadow.png) no-repeat 0 0
+  height: 20px
+  display: none
+  margin: 0 auto
+
+
+#tab1
+  a
+    color: $linkcolor
+    font-size: 0.8em
+
+
+
+// ========
+// = tabs =
+// ========
+
+.pane
+  +roundcorners(10px)
+  padding: 10px
+  background: #fff
+.tab
+  +roundtopcorners(5px)
+  padding: 10px
+  float: left
+  color: $vetsk-blue-dark
+  background: #fff
+  margin-left: 10px
+  &.inactive
+    background: $vetsk-blue
+    border-top: 2px solid #fff
+    border-left: 2px solid #fff
+    border-right: 2px solid #fff
+    padding: 8px 8px 10px
+
+
+#procedure-list 
+  width: 65%
+  .procedure
+    width: 40%
+    padding: 5px 15px
+  
+#procedure-list, #time_filter, #date_filter, #staff_filter, #appt-keyinfo
+  h2
+    background: #483c2f
+    text-align: left

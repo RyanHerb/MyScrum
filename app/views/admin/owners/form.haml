@@ -1,0 +1,14 @@
+!!!
+%fieldset
+  %legend
+    Edit Owner |
+    = @owner.username || @owner.name
+  = form_for @owner do |f|
+    %fieldset
+      = f.input :first_name, :label => 'First Name'
+      = f.input :last_name, :label => 'Last Name'
+      = f.input :username, :label => 'Username'
+      = f.input :email, :label => 'Email'
+      = f.input :password, {:type => 'password', :label => "New Password"}
+      = f.input :password_confirmation, {:type => 'password', :label => "Confirm"}
+      = f.submit "Submit"
