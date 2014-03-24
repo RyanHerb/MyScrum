@@ -15,7 +15,7 @@
           -["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"].each_with_index do |v, i|
             %option{:value => i.to_i+1, :selected => today.month == i+1}=v
         %select{:name => "year"}
-          - if @sprint.start_date
+          - unless @sprint.new?
             - start = @sprint.start_date.to_date.year.to_s
           - else
             - start = today.year
